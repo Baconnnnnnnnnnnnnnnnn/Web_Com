@@ -265,6 +265,7 @@
     <Content Include="Content\Images\Preview\Choose.png" />
     <Content Include="Content\Images\Preview\Comment.png" />
     <Content Include="Content\Images\Preview\Content.png" />
+    <Content Include="Content\Images\Preview\ContentLN.png" />
     <Content Include="Content\Images\Preview\Details.png" />
     <Content Include="Content\Images\Preview\List.png" />
     <Content Include="Content\Images\Preview\MainPage.png" />
