@@ -262,6 +262,7 @@
     <Content Include="Content\Images\Manga\Chapter 1-4.png" />
     <Content Include="Content\Images\Manga\Chapter 1-5.png" />
     <Content Include="Content\Images\Manga\Chapter 1-6.png" />
+    <Content Include="Content\Images\Preview\HomePage.png" />
     <Content Include="Content\Images\register-bg.png" />
     <Content Include="Content\Images\Tonikaku-bg.png" />
     <Content Include="Content\profile-content.css" />
