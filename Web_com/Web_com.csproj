@@ -305,6 +305,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_AnimeLayout.cshtml" />
+    <Content Include="Web_com.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
