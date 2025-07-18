@@ -1,0 +1,193 @@
+﻿@inherits System.Web.Mvc.WebViewPage<Web_com.Models.Entities.user>
+@using Web_com.Models.Entities
+
+@{
+    ViewBag.Title = "User - " + @Model.usersName;
+    Layout = null;
+
+    int worksCount = Model.works?.Count ?? 0;
+    int followerCount = Model.author_Follow?.Count ?? 0;
+    var isCurrentUserAuthor = (Session["UserId"] != null && (int)Session["UserId"] == ViewBag.AuthorId);
+    var isGuestString = (ViewBag.IsGuest != null && (bool)ViewBag.IsGuest) ? "true" : "false";
+}
+
+@Html.AntiForgeryToken()
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="~/Content/anime-login.css" rel="stylesheet" />
+    <link href="~/Content/profile.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <div class="profile-wrapper">
+        <div class="profile-container">
+            <div class="profile-cover-internal" style="background-image: url('@Url.Content($"~/Content/Images/Cover/{Model.usersCover}")')" id="coverImageContainer">
+                @if (ViewBag.IsOwner != null && ViewBag.IsOwner)
+                {
+                    <input type="file" id="coverImageUpload" accept="image/*" style="display: none;">
+                    <i class="fas fa-camera camera-icon"></i>
+                }
+            </div>
+            <div class="profile-header">
+                <div class="profile-avatar" id="avatarContainer" style="background-image: url('@Url.Content($"~/Content/Images/Avatar/{Model.usersAvatar}")')">
+                    @if (ViewBag.IsOwner != null && ViewBag.IsOwner)
+                    {
+
+                        <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                        <i class="fas fa-camera camera-icon"></i>
+
+                    }
+                </div>
+                <div class="profile-info">
+                    <h1>@Model.usersName</h1>
+                    <p>Member since: @(Model.usersCreated?.ToString("MMM dd, yyyy") ?? "Unknown")</p>
+
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">@worksCount</div>
+                            <div class="stat-label">Works</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">@followerCount</div>
+                            <div class="stat-label">Followers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">@ViewBag.FollowingCount</div>
+                            <div class="stat-label">Following</div>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        @if (ViewBag.IsGuest != null && ViewBag.IsGuest)
+                        {
+                            <!-- Guest - chỉ hiện nút Back -->
+                            <a href="javascript:history.back()">
+                                <button class="action-btn back-btn">
+                                    <i class="fa fa-arrow-left"></i> Back
+                                </button>
+                            </a>
+                        }
+                        else if (ViewBag.IsOwner != null && ViewBag.IsOwner)
+                        {
+                            <!-- Chủ sở hữu (tác giả)-->
+                            <button class="action-btn edit-btn">
+                                <i class="fas fa-cog"></i> Edit Profile
+                            </button>
+
+                            <a href="@Url.Action("AddWork", "Profile", new { id = Model.usersId })">
+                                <button class="action-btn add-btn">
+                                    <i class="fas fa-plus-circle"></i> Add Work
+                                </button>
+                            </a>
+                            <a href="/Web_Com/Login/User@(Session["UserId"])">
+                                <button class="action-btn back-btn">
+                                    <i class="fa fa-arrow-left"></i> Back
+                                </button>
+                            </a>
+                        }
+                        else
+                        {
+                            <!-- Người dùng khác (đã đăng nhập) -->
+                            <button class="action-btn follow-btn @(ViewBag.IsFollowing ? "following" : "")"
+                                    onclick="followAuthor(@Model.usersId)">
+                                <i class="fas fa-heart"></i> @(ViewBag.IsFollowing ? "Following" : "Follow")
+                            </button>
+                            <a href="javascript:history.back()">
+                                <button class="action-btn back-btn">
+                                    <i class="fa fa-arrow-left"></i> Back
+                                </button>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-tabs">
+                <button class="tab-btn active">Works</button>
+                <button class="tab-btn">Favorited</button>
+                <button class="tab-btn">Followers</button>
+                <button class="tab-btn">Following</button>
+            </div>
+
+            <div class="works-section">
+                <div class="works-grid">
+                    @foreach (var work in (Model.works ?? Enumerable.Empty<Web_com.Models.Entities.work>()).Where(w => !(w.isDisabled ?? false)))
+                    {
+                        <div class="work-card" data-work-id="@work.workId">
+                            <div class="work-image" style="background-image: url('@Url.Content(!string.IsNullOrEmpty(work.workImage) ? $"~/Content/Images/{work.workImage}" : "~/Content/Images/default-image.jpg")')">
+                                @if (ViewBag.IsOwner)
+                                {
+                                    <div class="work-actions">
+                                        @if (work.workId > 0)
+                                        {
+                                            <button class="work-edit-btn" onclick="window.location.href='@Url.Action("EditWork", "Profile", new { workId = work.workId })'">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="work-delete-btn"
+                                                    onclick="deleteWork(@work.workId, '@work.workName.Replace("'", "\\'")')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div class="work-info">
+                                <div class="work-title">@work.workName</div>
+                                <div class="work-meta">
+                                    <span class="work-genre">@(work.genre?.genreName ?? "Unknown")</span>
+                                    <span class="work-status">@(work.work_Status?.work_StatusName ?? "Unknown")</span>
+                                </div>
+                                <div class="work-stats">
+                                    <span><i class="fas fa-heart"></i> @(work.work_Heart?.Count ?? 0)</span>
+                                    <span><i class="fas fa-eye"></i> @(work.work_View?.Count ?? 0)</span>
+                                    <span><i class="fas fa-book"></i> @(work.work_Arc?.Count ?? 0) Arcs</span>
+                                    <span><i class="fas fa-file-alt"></i> @(work.work_Arc?.Sum(a => a.work_Chapter?.Count ?? 0) ?? 0) Chaps</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="favorited-grid" style="display: none;"></div>
+                <div class="followers-grid" style="display: none;"></div>
+                <div class="following-grid" style="display: none;"></div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const isGuest = "@isGuestString";
+    console.log("isGuest =", isGuest);
+    // Kiểm tra trạng thái follow khi tải trang
+    document.addEventListener('DOMContentLoaded', function() {
+        const userId = @(Session["UserId"] ?? 0);
+        const authorId = @ViewBag.AuthorId;
+
+        if (userId > 0 && userId !== authorId) {
+            fetch(`@Url.Action("IsFollowing", "Profile")?authorId=${authorId}`)
+            .then(response => response.json())
+            .then(data => {
+                const btn = document.getElementById('followBtn');
+                if (data.isFollowing) {
+                    btn.innerHTML = '<i class="fa fa-check"></i> Following';
+                    btn.classList.add('following');
+                }
+            });
+        }
+    });
+</script>
+<script src="~/Scripts/profile.js"></script>

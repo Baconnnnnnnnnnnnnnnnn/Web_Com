@@ -1,0 +1,81 @@
+﻿@model Web_com.Models.Entities.work
+
+@{
+    ViewBag.Title = "Add Work";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Web_Com</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="/Content/anime-login.css" />
+    <link rel="stylesheet" href="/Content/admin-content.css" />
+    <link rel="stylesheet" href="/Content/edit-work-style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <div class="container">
+        <h2>Add Work</h2>
+        @using (Html.BeginForm("AddWork", "Profile", FormMethod.Post, new { enctype = "multipart/form-data", id = "addWorkForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label for="workName">Work Name</label>
+                @Html.TextBoxFor(model => model.workName, new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="workOverview">Overview</label>
+                @Html.TextAreaFor(model => model.workOverview, new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="genreId">Genre</label>
+                @Html.DropDownListFor(model => model.genreId, new SelectList(ViewBag.Genres, "genreId", "genreName"), "-- Select Genre --", new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label>Tags</label>
+                <div class="tag-container">
+                    @foreach (var tag in ViewBag.Tags)
+                    {
+                        <button type="button" class="tag-button" data-tag-id="@tag.tagId">@tag.tagName</button>
+                    }
+                </div>
+                <!-- Container for hidden inputs -->
+                <div id="selectedTagsContainer"></div> <!-- Đảm bảo ID này khớp với JavaScript -->
+            </div>
+            <div class="form-group">
+                <label for="workImage">Cover Image</label>
+                <input type="file" name="workImage" id="workImage" accept="image/*" required />
+            </div>
+            @Html.HiddenFor(model => model.work_StatusId)
+            <button type="submit" class="btn btn-submit" style="font-size: 18px">Add Work</button>
+            <a href="@Url.Action("Index", "Profile", new { id = Model.authorId })" class="btn btn-back">Cancel</a>
+        }
+    </div>
+</body>
+</html>
+
+<script src="/Scripts/edit-work.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Khởi tạo validate tags
+        validateTagSelection();
+
+        // Xử lý sự kiện click cho các tag button
+        document.querySelectorAll('.tag-button').forEach(button => {
+            button.addEventListener('click', function () {
+                this.classList.toggle('selected');
+                updateSelectedTags();
+            });
+        });
+    });
+</script>

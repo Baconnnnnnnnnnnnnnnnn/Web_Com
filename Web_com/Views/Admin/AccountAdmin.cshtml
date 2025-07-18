@@ -1,0 +1,136 @@
+﻿@model IEnumerable<Web_com.Models.ModelView.UserSummaryViewModel>
+
+@{
+    ViewBag.Title = "Account Admin - Web_Com";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Web_Com</title>
+    @{
+        var token = Html.AntiForgeryToken().ToHtmlString();
+    }
+    @Html.Raw(token)
+
+    @Styles.Render("~/Content/css")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Content/anime-login.css" />
+    <link rel="stylesheet" href="/Content/admin-account.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <div class="logout-container">
+        <a href="@Url.Action("Web_Com", "Home")" class="btn btn-logout">Logout</a>
+    </div>
+
+    <div class="container">
+        <h2>Account Admin - Manage Users</h2>
+        <div class="search-container">
+            <div class="search-group">
+                <label for="searchUserName">
+                    <b>Search by User's name</b>
+                </label>
+                <input type="text" id="search-name" class="search-bar" placeholder="Enter user name..." />
+            </div>
+            <div class="search-group">
+                <label for="searchUserEmail">
+                    <b>Search by User's mail</b>
+                </label>
+                <input type="text" id="search-email" class="search-bar" placeholder="Enter user email..." />
+            </div>
+        </div>
+        <div class="role-filter">
+            <label>
+                <b>User's Status</b>
+            </label>
+            <div>
+                <button id="filter-all" class="filter-btn active">All</button>
+                <button id="filter-author" class="filter-btn">Author</button>
+                <button id="filter-reader" class="filter-btn">Reader</button>
+            </div>
+        </div>
+        @Html.AntiForgeryToken()
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Avatar</th>
+                    <th>Registration Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr class="account-row"
+                        data-name="@user.UsersName"
+                        data-email="@user.UsersEmail"
+                        data-is-author="@(user.IsAuthor.HasValue && user.IsAuthor.Value ? "True" : "False")">
+
+
+                        <td>@user.UsersName</td>
+                        <td>@user.UsersEmail</td>
+                        <td>
+                            <span class="masked-password" data-real-password="@user.UsersPass">********</span>
+                            <button class="btn-eye-toggle" data-users-name="@user.UsersName">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <img src="/Content/Images/Avatar/@user.UsersAvatar" class="profile-avatar" />
+                        </td>
+                        <td>@(user.UsersCreated.HasValue ? user.UsersCreated.Value.ToString("dd/MM/yyyy") : "N/A")</td>
+                        <td>@(user.IsAuthor.HasValue && user.IsAuthor.Value ? "Author" : "Reader")</td>
+                        <td>
+                            @if (user.IsDisabled == true)
+                            {
+                                <button class="btn-status btn-enable" data-users-id="@user.UsersId" data-users-name="@user.UsersName">Enable</button>
+                            }
+                            else
+                            {
+                                <button class="btn-status btn-disable" data-users-id="@user.UsersId" data-users-name="@user.UsersName">Disable</button>
+                            }
+
+                            <button class="btn btn-delete"
+                                    data-users-id="@user.UsersId"
+                                    data-users-name="@user.UsersName">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="pagination-wrapper">
+            <button id="prev-page" class="pagination-button"><</button>
+            <input id="page-number-input" class="pagination-input" type="number" min="1" value="1" />
+            <button id="next-page" class="pagination-button">></button>
+        </div>
+
+        <div class="page-size-selector">
+            Show
+            <select id="page-size-select">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+            </select>
+            users per page
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Scripts/admin-account.js"></script>
+</body>
+</html>

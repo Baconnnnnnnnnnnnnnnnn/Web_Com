@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Web_com.Models.ModelView.CommentAdminViewModel>
+
+@{
+    ViewBag.Title = "Comment Admin - Web_Com";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @Html.AntiForgeryToken()
+
+    <title>@ViewBag.Title - Web_Com</title>
+
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="/Content/anime-login.css" />
+    <link rel="stylesheet" href="/Content/admin-comment.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <div class="logout-container">
+        <a href="@Url.Action("Web_Com", "Home")" class="btn btn-logout">Logout</a>
+    </div>
+
+    <div class="container">
+        <h2>Comment Admin - Manage Comments</h2>
+
+        <div class="search-container">
+            <div class="search-group">
+                <label><b>Search by User's name</b></label>
+                <input type="text" id="search-name" class="search-bar" placeholder="Enter user's name..." />
+            </div>
+            <div class="search-group">
+                <label><b>Search by Work's name</b></label>
+                <input type="text" id="search-work" class="search-bar" placeholder="Enter work's name..." />
+            </div>
+        </div>
+
+        <div class="status-filter">
+        <label><b>Comment Status</b></label>
+        <div>
+            <button id="filter-all" class="filter-btn active">All</button>
+            <button id="filter-approved" class="filter-btn">Approved</button>
+            <button id="filter-unapproved" class="filter-btn">Unapproved</button>
+        </div>
+        </div>
+        @Html.AntiForgeryToken()
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Avatar</th>
+                    <th>Content</th>
+                    <th>Created</th>
+                    <th>Like</th>
+                    <th>Work</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var comment in Model)
+                {
+                    <tr class="comment-row"
+                        data-comment-id="@comment.Work_CommentId"
+                        data-username="@(comment.UserName?.ToLower() ?? "")"
+                        data-work="@(comment.WorkName?.ToLower() ?? "")" 
+                        data-is-approved="@(comment.IsApproved.ToString().ToLower())">
+                        <td>@(comment.UserName ?? "Unknown")</td>
+                        <td>
+                            <img src="/Content/Images/Avatar/@comment.UserAvatar" alt="Avatar" class="profile-avatar" />
+                        </td>
+                        <td>@(comment.Work_CommentContent ?? "")</td>
+                        <td>@comment.Work_CommentCreated.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@comment.HeartCount</td>
+                        <td>@(comment.WorkName ?? "")</td>
+                        <td>
+                            <button class="btn-status @(comment.IsApproved ? "btn-disable" : "btn-enable")"
+                                    data-comment-id="@comment.Work_CommentId"
+                                    data-username="@(comment.UserName ?? "Unknown")">
+                                @(comment.IsApproved ? "Unapprove" : "Approve")
+                            </button>
+                            <button class="btn btn-delete"
+                                    data-comment-id="@comment.Work_CommentId"
+                                    data-username="@(comment.UserName ?? "Unknown")">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="pagination-wrapper">
+            <button id="prev-page" class="pagination-button"><</button>
+            <input id="page-number-input" class="pagination-input" type="number" min="1" value="1" />
+            <button id="next-page" class="pagination-button">></button>
+        </div>
+
+        <div class="page-size-selector">
+            Show
+            <select id="page-size-select">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+            </select>
+            comments per page
+        </div>
+    </div>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Scripts/admin-comment.js"></script>

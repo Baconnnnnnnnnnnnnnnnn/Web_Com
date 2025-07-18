@@ -1,0 +1,144 @@
+﻿@model Web_com.Models.Entities.work
+@{
+    ViewBag.Title = "Add Content - " + Model.workName;
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Web_Com</title>
+
+    <script src="https://cdn.tiny.cloud/1/p2k2n5zgq77njmq2tcp1zuw3vty1j123w227ma3544ytvzdm/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="/Content/anime-login.css" />
+    <link rel="stylesheet" href="/Content/profile-content.css">
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addContentForm" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="container">
+    <h2>Add Content - @Model.workName</h2>
+
+    <!-- Work Info Section -->
+    <div class="work-info-section">
+        <div style="display: flex; gap: 20px;">
+            <div>
+                <img src="@Url.Content("~/Content/Images/" + Model.workImage)" class="work-cover" alt="Cover Image">
+            </div>
+            <div style="flex: 1;">
+                <h3 style="color: #ff99cc; margin-top: 0;">@Model.workName</h3>
+                <p><strong>Genre:</strong> @Model.genre.genreName</p>
+                <p><strong>Status:</strong> @Model.work_Status.work_StatusName</p>
+                <p>
+                    <strong>Tags:</strong>
+                    @foreach (var tag in Model.work_Tag.Select(wt => wt.tag))
+                    {
+                        <span class="tag-button">@tag.tagName</span>
+                    }
+                </p>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <h4 style="color: #ff99cc;">Overview</h4>
+            <p>@Model.workOverview</p>
+        </div>
+    </div>
+
+    <!-- Arc Creation Section -->
+    <div class="creation-section">
+        <h3 class="section-title">
+            <i class="fas fa-bookmark"></i> Add New Arc
+            <button id="btnAddArc" class="btn-add" type="button">
+                <i class="fas fa-plus"></i> Add Arc
+            </button>
+        </h3>
+
+        <div id="arcCreationForm" class="creation-form" style="display: none;">
+            <div class="form-group">
+                <label>Arc Name</label>
+                <input type="text" id="arcNameInput" class="form-control" placeholder="Enter arc name">
+                <small class="form-text" style="color:white">Name must be unique for this work</small>
+            </div>
+            <div class="form-group">
+                <label>Order</label>
+                <input type="number" id="arcOrderInput" class="form-control" value="1" readonly>
+            </div>
+            <button id="btnSubmitArc" class="btn-submit" type="button">Create Arc</button>
+        </div>
+
+        <!-- Hiển thị Arc vừa tạo -->
+        <div id="arcList" class="items-list"></div>
+    </div>
+
+    <!-- Chapter Creation Section (sẽ hiện sau khi tạo Arc) -->
+    <div id="chapterSection" class="creation-section" style="display: none;">
+        <h3 class="section-title">
+            <i class="fas fa-file-alt"></i> Add Chapter to:
+            <span id="currentArcName"></span>
+            <button id="btnAddChapter" class="btn-add" type="button">
+                <i class="fas fa-plus"></i> Add Chapter
+            </button>
+        </h3>
+
+        <div id="chapterCreationForm" class="creation-form" style="display: none;">
+            <div class="form-group">
+                <label>Chapter Name</label>
+                <input type="text" id="chapterNameInput" class="form-control" placeholder="Enter chapter name">
+                <small class="form-text">Name must be unique in this arc</small>
+            </div>
+            <div class="form-group">
+                <label>Order</label>
+                <input type="number" id="chapterOrderInput" class="form-control" value="1" readonly>
+            </div>
+
+            <!-- Nội dung chapter (tùy thể loại) -->
+            <div id="chapterContentSection">
+                @if (Model.genre.genreName == "Manga")
+                {
+                    <div class="form-group">
+                        <label>Upload Images</label>
+                        <input type="file" id="chapterImages" multiple accept="image/*">
+                        <div id="imagePreview" class="image-preview"></div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea id="chapterContentInput" class="form-control" rows="6"></textarea>
+                    </div>
+                }
+            </div>
+
+            <button id="btnSubmitChapter" class="btn-submit" type="button">Create Chapter</button>
+        </div>
+
+        <!-- Hiển thị Chapter vừa tạo -->
+        <div id="chapterList" class="items-list"></div>
+    </div>
+    <a href="@Url.Action("Index", "Profile", new { id = Model.authorId })" class="btn btn-back">Cancel</a>
+</div>
+    }
+    @Html.AntiForgeryToken()
+    <script>
+        window.workData = {
+            workId: @Model.workId,
+            genre: "@Model.genre.genreName",
+            existingArcs: @Html.Raw(Json.Encode(Model.work_Arc?.Select(a => a.work_ArcTitle) ?? new List<string>())),
+            existingChapters: @Html.Raw(Json.Encode(Model.work_Arc?.SelectMany(a => a.work_Chapter?.Select(c => c.work_ChapterTitle)) ?? new List<string>()))
+    };
+    </script>
+    <script src="/Scripts/profile-content.js" defer></script>
+</body>
+</html>

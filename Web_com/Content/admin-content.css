@@ -1,0 +1,405 @@
+﻿/* Anime-inspired styling for admin pages */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: #fff;
+    overflow-y: auto;
+}
+
+    body.swal2-shown {
+        overflow: hidden !important;
+        padding-right: 0 !important;
+    }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #a1a1a1;
+    }
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 153, 204, 0.4);
+    font-size: 18px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 40px;
+    color: #ff99cc;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    animation: sakuraColorCycle 3s infinite alternate;
+}
+
+@keyframes sakuraColorCycle {
+    0% {
+        color: #FFB7C5;
+    }
+    /* Sakura Pink */
+    25% {
+        color: #FFCEDF;
+    }
+    /* Cherry Blossom Pink */
+    50% {
+        color: #FFDDDD;
+    }
+    /* Light Pink */
+    75% {
+        color: #FFE4E1;
+    }
+    /* Misty Rose */
+    100% {
+        color: #DB7093;
+    }
+    /* Pale Violet Red */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ff99cc;
+    text-align: left;
+    color: #fff;
+}
+
+th {
+    background-color: #ff99cc;
+    color: white;
+}
+
+tr:hover {
+    background-color: rgba(255, 153, 204, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-work-image {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ff99cc;
+    cursor: pointer;
+}
+
+.work-details {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+    .work-details h3 {
+        font-size: 24px;
+        color: #ff66b2;
+        margin-bottom: 15px;
+    }
+
+    .work-details p {
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 5px 0;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #ff99cc;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #ff99cc;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-family: 'M PLUS Rounded 1c', sans-serif;
+    }
+
+        .form-group select[multiple] {
+            height: 100px;
+        }
+
+        .form-group select option {
+            background: #333;
+            color: white;
+            padding: 5px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #ff66b2;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 102, 178, 0.5);
+        }
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-details {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-edit {
+    background-color: #ffc107;
+    color: black;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    font-size: 18px;
+}
+
+.btn-submit {
+    background-color: #ff99cc;
+    color: white;
+}
+
+.btn-disable {
+    background-color: #6c757d;
+    color: white;
+    font-size: 18px;
+}
+
+.btn-enable {
+    background-color: #28a745;
+    color: white;
+    font-size: 18px;
+}
+
+.btn-back {
+    background-color: #ff66b2;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-logout {
+    background-color: #ff4d94;
+    color: white;
+}
+
+    .btn-logout:hover {
+        background-color: #e60073;
+    }
+
+/* Search bar styling (adapted from work-list.css) */
+.search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.search-group {
+    width: 100%;
+}
+
+    .search-group label {
+        color: whitesmoke;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+.search-bar {
+    left: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 16px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+    .search-bar:focus {
+        border-color: #ff66b2;
+        outline: none;
+        box-shadow: 0 0 5px rgba(255, 153, 204, 0.5);
+    }
+
+/* Image zoom styling (adapted from arc-details.css) */
+.image-overlay {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 153, 204, 0.5);
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Thêm style cho input password trong dialog */
+.swal2-popup {
+    background: rgba(40, 40, 60, 0.95) !important;
+    border: 1px solid #ff99cc !important;
+    border-radius: 10px !important;
+    color: white !important;
+}
+
+.swal2-input {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border: 1px solid #ff99cc !important;
+}
+
+.tag-cell span {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+/* Genre/Tag buttons */
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.genre-buttons, .tag-buttons, .status-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.genre-btn, .tag-btn, .status-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+    .genre-btn.active, .tag-btn.active, .status-btn.active {
+        background-color: #ff99cc;
+        color: white;
+        box-shadow: 0 0 10px rgba(255, 153, 204, 0.5);
+    }
+
+/* Căn giữa chữ trong nút Action */
+td > .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.tag-management {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 153, 204, 0.3);
+}
+
+#deleteTagLabel {
+    transition: all 0.3s ease;
+}
+
+.tag-btn i {
+    margin-right: 5px;
+}
+
+.tag-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.tag-btn.selected-to-delete {
+    background-color: #dc3545 !important;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+}
+
+.tag-buttons.delete-mode .tag-btn:not(.disabled) {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .tag-buttons.delete-mode .tag-btn:not(.disabled):hover {
+        background-color: rgba(220, 53, 69, 0.3) !important;
+    }
+
+.tag-btn.selected-to-delete {
+    background-color: #dc3545 !important;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+}
+

@@ -1,0 +1,74 @@
+﻿@model Web_com.Models.Entities.work
+
+@{
+    ViewBag.Title = "Add Work";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Web_Com</title>
+    <script src="/Scripts/edit-work.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="/Content/anime-login.css" />
+    <link rel="stylesheet" href="/Content/admin-content.css" />
+    <link rel="stylesheet" href="/Content/edit-work-style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <div class="container">
+        <h2>Content Admin - Add Work</h2>
+        @using (Html.BeginForm("AddWork", "ContentAdmin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label for="workName">Work Name</label>
+                @Html.TextBoxFor(model => model.workName, new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="workOverview">Overview</label>
+                @Html.TextAreaFor(model => model.workOverview, new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="genreId">Genre</label>
+                @Html.DropDownListFor(model => model.genreId, new SelectList(ViewBag.Genres, "genreId", "genreName"), "-- Select Genre --", new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="work_StatusId">Status</label>
+                @Html.DropDownListFor(model => model.work_StatusId, new SelectList(ViewBag.Statuses, "work_StatusId", "work_StatusName"), "-- Select Status --", new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="authorName">Author</label>
+                @Html.TextBox("authorName", null, new { @required = "required" })
+                @Html.HiddenFor(model => model.authorId)
+            </div>
+            <div class="form-group">
+                <label>Tags</label>
+                <div class="tag-container">
+                    @foreach (var tag in ViewBag.Tags)
+                    {
+                        <button type="button" class="tag-button" data-tag-id="@tag.tagId">@tag.tagName</button>
+                    }
+                </div>
+                <!-- Container for hidden inputs -->
+                <div id="selectedTagsContainer"></div>
+            </div>
+            <div class="form-group">
+                <label for="workImage">Cover Image</label>
+                <input type="file" name="workImage" id="workImage" accept="image/*" required />
+            </div>
+            <button type="submit" class="btn btn-submit" style="font-size: 18px">Add Work</button>
+            <a href="@Url.Action("ContentAdmin", "ContentAdmin")" class="btn btn-back">Cancel</a>
+        }
+    </div>
+</body>
+</html>

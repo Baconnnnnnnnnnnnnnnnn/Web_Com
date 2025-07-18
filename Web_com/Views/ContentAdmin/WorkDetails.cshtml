@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Work Details";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Web_Com</title>
+
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/anime-login.css" rel="stylesheet" />
+    <link href="~/Content/work-details.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <div class="arc-container">
+        <h2>Content Admin - Work Details</h2>
+        <div class="header-section">
+            @if (!string.IsNullOrEmpty(ViewBag.Work.workImage))
+            {
+                <img src="~/Content/Images/@ViewBag.Work.workImage" alt="@ViewBag.Work.workName" />
+            }
+            <div class="info-block">
+                <h1>@ViewBag.Work.workName</h1>
+                <div class="info-item"><strong>Genre:</strong> @ViewBag.Genre</div>
+                <div class="info-item"><strong>Status:</strong> @ViewBag.Status</div>
+                <div class="info-item"><strong>Tags:</strong> @ViewBag.Tags</div>
+                <div class="info-item"><strong>Author:</strong> @ViewBag.Author</div>
+                <div class="info-item"><strong>Overview:</strong> @ViewBag.Work.workOverview</div>
+                <div class="info-item"><strong>Created on:</strong> @(((DateTime)ViewBag.Work.workCreated).ToString("dd/MM/yyyy"))</div>
+                @{
+                    var arcs = ViewBag.Arcs as List<Web_com.Models.Entities.work_Arc> ?? new List<Web_com.Models.Entities.work_Arc>();
+                    var chapters = ViewBag.Chapters as List<Web_com.Models.Entities.work_Chapter> ?? new List<Web_com.Models.Entities.work_Chapter>();
+                }
+                <div class="info-item"><strong>Total Arcs:</strong> @arcs.Count</div>
+                <div class="info-item"><strong>Total Chapters:</strong> @chapters.Count</div>
+            </div>
+        </div>
+
+        <h3 class="section-title">Arc List</h3>
+        <p>*Click on an arc to view its chapters. Click a chapter title to read.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Arc</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (arcs.Any())
+                {
+                    foreach (var arc in arcs.OrderBy(a => a.work_ArcOrder))
+                    {
+                        <tr onclick="toggleChapters(@arc.work_ArcId)">
+                            <td>@arc.work_ArcOrder</td>
+                            <td>@arc.work_ArcTitle</td>
+                        </tr>
+                        <tr id="chapters-@arc.work_ArcId" style="display:none;">
+                            <td colspan="2">
+                                <table class="inner-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Chapter</th>
+                                            <th>Title</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            var arcChapters = chapters
+                                                .Where(c => c.work_ArcId == arc.work_ArcId)
+                                                .OrderBy(c => c.work_ChapterOrder)
+                                                .ToList();
+                                        }
+                                        @if (arcChapters.Any())
+                                        {
+                                            foreach (var chap in arcChapters)
+                                            {
+                                                var isImage = chap.work_ChapterIsImage == true;
+                                                var rawContent = (chap.work_ChapterContent ?? "")
+                                                   .Replace("\"", "&quot;")
+                                                   .Replace("\n", "&#10;");
+                    <tr class="chapter-row" onclick="showChapterContent(@chap.work_ChapterId)"
+                        data-isimage="@isImage"
+                        data-title="@chap.work_ChapterTitle"
+                        data-content="@rawContent">
+                        <td>@chap.work_ChapterOrder</td>
+                        <td>@chap.work_ChapterTitle</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2">No chapters available.</td>
+                </tr>
+            }
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2">No arcs available</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div id="chapter-content-box" class="chapter-content-box"></div>
+
+        <div class="button-group-inline">
+            <a href="@Url.Action("ContentAdmin", "ContentAdmin")" class="button-back">Back to Content Admin</a>
+        </div>
+    </div>
+
+    <div class="image-overlay" id="imageOverlay" onclick="closeImagePopup()">
+        <img class="popup-image" id="popupImage" src="" alt="Zoomed Image" />
+    </div>
+
+    <footer class="anime-footer">
+        © @DateTime.Now.Year Web_Com. All rights reserved. Content and artwork belong to their respective authors
+    </footer>
+
+    <button id="btnTop" title="Go to top">↑</button>
+
+    <script src="~/Scripts/work-details.js"></script>
+</body>
+</html>

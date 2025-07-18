@@ -1,0 +1,122 @@
+﻿@inherits System.Web.Mvc.WebViewPage<List<Web_com.Models.Entities.work>>
+@using Web_com.Models.Entities
+@{
+    Layout = null;
+    ViewBag.Title = "Guest";
+
+    var db = new web_comEntities();
+    var genres = db.genres.ToList();
+    var tags = db.tags.ToList();
+    var statuses = db.work_Status.ToList();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Web_Com</title>
+
+    <!-- Fonts and icons -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- CSS -->
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/anime-login.css" rel="stylesheet" />
+    <link href="~/Content/work-list.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <!-- Header (Search bar) -->
+    <header class="anime-header">
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search for manga or light novel..." id="searchInput">
+            <!-- Genre Filter -->
+            <div class="filter-dropdown-container" id="genreFilter">
+                <div class="filter-label" id="genreLabel">
+                    <i class="fas fa-book"></i> Genre <i class="fas fa-caret-down"></i>
+                </div>
+                <div class="filter-menu">
+                    @foreach (var genre in genres)
+                    {
+                        <a href="#" class="tag-item" data-genre="@genre.genreId">@genre.genreName</a>
+                    }
+                </div>
+            </div>
+            <!-- Tag Filter -->
+            <div class="filter-dropdown-container" id="tagFilter">
+                <div class="filter-label" id="tagLabel">
+                    <i class="fas fa-tags"></i> Tags <i class="fas fa-caret-down"></i>
+                </div>
+                <div class="filter-menu">
+                    @foreach (var tag in tags)
+                    {
+                        <a href="#" class="tag-item" data-tag="@tag.tagId">@tag.tagName</a>
+                    }
+                </div>
+            </div>
+            <!-- Status Filter -->
+            <div class="filter-dropdown-container" id="statusFilter">
+                <div class="filter-label" id="statusLabel">
+                    <i class="fas fa-info-circle"></i> Status <i class="fas fa-caret-down"></i>
+                </div>
+                <div class="filter-menu">
+                    @foreach (var status in statuses)
+                    {
+                        <a href="#" class="tag-item" data-status="@status.work_StatusId">@status.work_StatusName</a>
+                    }
+                </div>
+            </div>
+            <!-- User -->
+            <div class="user-dropdown">
+                <div class="user-name">
+                    <b>
+                        <i class="fas fa-user"></i> Guest <i class="fas fa-caret-down"></i>
+                    </b>
+                </div>
+                <div class="user-menu">
+                    <a href="/Home/Web_Com"><i class="fas fa-user-lock"></i> Login</a>
+                    <a href="/Home/Web_Com"><i class="fas fa-user-plus"></i> Register</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content (Works list) -->
+    <main class="anime-container">
+        <!-- Recommend -->
+        <div id="recommend-section" class="recommend">
+            <h2>Recommend For You</h2>
+            <div id="recommend-list" class="works-list"></div>
+        </div>
+
+        <!-- List -->
+        <div id="main-section" class="recommend">
+            <h2>Work List</h2>
+            <div id="main-list" class="works-list"></div>
+        </div>
+    </main>
+
+    <!-- Footer (Introduction section) -->
+    <footer class="anime-footer">
+        <h2>About Us</h2>
+        <p>
+            Welcome to Web_Com, your ultimate destination for unique manga and light novel!
+            Dive into a world of captivating stories, from action-packed shonen to heartwarming shojo.
+            Explore, read, and connect with a community of manga lovers today! Our platform offers a vast
+            collection of works, updated regularly to keep you entertained. Whether you're a fan of epic
+            adventures or romantic tales, there's something for everyone here. Join us and start your
+            journey into the world of manga and light novels now!
+        </p>
+    </footer>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/search-guest.js"></script>
+</body>
+</html>

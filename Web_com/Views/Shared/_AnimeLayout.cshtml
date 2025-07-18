@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Web_Com</title>
+
+    <!-- Fonts and icons -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- CSS -->
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/anime-login.css" rel="stylesheet" />
+
+    <!-- Inline styles -->
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+            overflow: hidden; /* Ngăn scroll toàn trang */
+        }
+
+        .anime-container {
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1;
+            background: transparent;
+        }
+
+        .anime-header {
+            padding: 10px 0;
+            width: 100%;
+            text-align: center;
+            font-family: 'Kaushan Script', cursive;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            background: transparent;
+            animation: sakuraColorCycle 3s infinite alternate;
+        }
+
+            .anime-header:hover {
+                transform: translateY(-2px);
+            }
+
+        .anime-footer {
+            padding: 10px 0;
+            width: 100%;
+            text-align: center;
+            font-family: 'Kaushan Script', cursive;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            background: transparent;
+            animation: sakuraColorCycle 3s infinite alternate;
+            position: fixed; /* Cố định footer ở dưới cùng */
+            bottom: 0;
+            left: 0;
+        }
+
+            .anime-footer:hover {
+                transform: translateY(2px);
+            }
+
+        /* Main content area */
+        main.anime-container {
+            flex: 1;
+            overflow-y: auto; /* Cho phép scroll nội dung chính */
+            padding-bottom: 60px; /* Đệm cho footer */
+        }
+
+            /* Ẩn thanh scroll nhưng vẫn cho phép scroll */
+            main.anime-container::-webkit-scrollbar {
+                width: 0 !important;
+                display: none;
+            }
+    </style>
+
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <!-- Header -->
+    <header class="anime-header">
+        <div class="anime-container">
+            <h1>
+                <a href="@Url.Action("Web_Com", "Home")" style="text-decoration: none; color: inherit;">
+                    <i class="fas fa-book-open"></i> Welcome to Web Com!
+                </a>
+            </h1>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="anime-container">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="anime-footer">
+        <div class="anime-container">
+            <p>© @DateTime.Now.Year - Explore Amazing Manga and Light Novel!</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

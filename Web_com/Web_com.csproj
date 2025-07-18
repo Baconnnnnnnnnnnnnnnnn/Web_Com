@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0C9D46FD-7A56-4E9B-AF37-DBCAB7A0EAE0}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Web_com</RootNamespace>
+    <AssemblyName>Web_com</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44373</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.9\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ContentAdminController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\Web_ComController.cs" />
+    <Compile Include="Controllers\WorkController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\admin.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\author_Follow.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\author_Warning.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\badge.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\comment_Heart.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\genre.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\role_Admin.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\tag.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\user.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\user_Badge.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\user_History.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\user_Warning.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\web_com.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>web_com.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\web_com.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\web_com.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>web_com.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work_Arc.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work_Chapter.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work_ChapterImage.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work_Comment.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work_Favorite.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work_Heart.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work_Status.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work_Tag.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\work_View.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ModelView\CommentAdminViewModel.cs" />
+    <Compile Include="Models\ModelView\CommentViewModel.cs" />
+    <Compile Include="Models\ModelView\UserSummaryViewModel.cs" />
+    <Compile Include="Models\ModelView\UserUpdateViewModel.cs" />
+    <Compile Include="Models\ModelView\WorkSummaryViewModel.cs" />
+    <Compile Include="Models\ModelView\WorkTagViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\admin-account.css" />
+    <Content Include="Content\admin-comment.css" />
+    <Content Include="Content\admin-content.css" />
+    <Content Include="Content\anime-login.css" />
+    <Content Include="Content\arc-details.css" />
+    <Content Include="Content\chapter-reader.css" />
+    <Content Include="Content\edit-work-style.css" />
+    <Content Include="Content\Images\Alya-bg.png" />
+    <Content Include="Content\Images\Aobuta-bg.png" />
+    <Content Include="Content\Images\Avatar\DefaultAvatar.png" />
+    <Content Include="Content\Images\Cover\DefaultCover.png" />
+    <Content Include="Content\Images\DAL-bg.png" />
+    <Content Include="Content\Images\Elaina-bg.png" />
+    <Content Include="Content\Images\Gotoubun-bg.png" />
+    <Content Include="Content\Images\guest-bg.png" />
+    <Content Include="Content\Images\anime-bg.png" />
+    <Content Include="Content\Images\login-bg.png" />
+    <Content Include="Content\Images\Mahiru-bg.png" />
+    <Content Include="Content\Images\Manga\Chapter 1-1.png" />
+    <Content Include="Content\Images\Manga\Chapter 1-2.png" />
+    <Content Include="Content\Images\Manga\Chapter 1-3.png" />
+    <Content Include="Content\Images\Manga\Chapter 1-4.png" />
+    <Content Include="Content\Images\Manga\Chapter 1-5.png" />
+    <Content Include="Content\Images\Manga\Chapter 1-6.png" />
+    <Content Include="Content\Images\register-bg.png" />
+    <Content Include="Content\Images\Tonikaku-bg.png" />
+    <Content Include="Content\profile-content.css" />
+    <Content Include="Content\profile.css" />
+    <Content Include="Content\work-details.css" />
+    <Content Include="Content\work-list.css" />
+    <Content Include="Models\Entities\web_com.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>web_com.edmx</DependentUpon>
+      <LastGenOutput>web_com.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Entities\web_com.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>web_com.edmx</DependentUpon>
+      <LastGenOutput>web_com.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\account.js" />
+    <Content Include="Scripts\admin-account.js" />
+    <Content Include="Scripts\admin-comment.js" />
+    <Content Include="Scripts\admin-content.js" />
+    <Content Include="Scripts\anime-login.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\chapter-reader.js" />
+    <Content Include="Scripts\comment-guest.js" />
+    <Content Include="Scripts\comment-handler.js" />
+    <Content Include="Scripts\edit-work.js" />
+    <Content Include="Scripts\profile-content.js" />
+    <Content Include="Scripts\profile.js" />
+    <Content Include="Scripts\search-guest.js" />
+    <Content Include="Scripts\search.js" />
+    <Content Include="Scripts\work-details.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_AnimeLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Models\Entities\web_com.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>web_com.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Entities\web_com.edmx.diagram">
+      <DependentUpon>web_com.edmx</DependentUpon>
+    </Content>
+    <None Include="packages.config" />
+    <Content Include="Views\Home\Web_Com.cshtml" />
+    <Content Include="Views\Web_Com\Guest.cshtml" />
+    <Content Include="Views\Web_Com\Login.cshtml" />
+    <Content Include="Views\Web_Com\Register.cshtml" />
+    <Content Include="Views\Work\Arc.cshtml" />
+    <Content Include="Views\Work\ArcGuest.cshtml" />
+    <Content Include="Views\Admin\SuperAdmin.cshtml" />
+    <Content Include="Views\Admin\AccountAdmin.cshtml" />
+    <Content Include="Views\Admin\CommentAdmin.cshtml" />
+    <Content Include="Views\Admin\ComplainAdmin.cshtml" />
+    <Content Include="Views\ContentAdmin\ContentAdmin.cshtml" />
+    <Content Include="Views\ContentAdmin\AddWork.cshtml" />
+    <Content Include="Views\ContentAdmin\EditChapterContent.cshtml" />
+    <Content Include="Views\ContentAdmin\EditWork.cshtml" />
+    <Content Include="Views\ContentAdmin\WorkDetails.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\AddWork.cshtml" />
+    <Content Include="Views\Profile\AddContent.cshtml" />
+    <Content Include="Views\Profile\EditWork.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>55258</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44373/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

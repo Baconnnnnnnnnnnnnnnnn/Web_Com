@@ -1,0 +1,177 @@
+﻿@model IEnumerable<Web_com.Models.ModelView.WorkSummaryViewModel>
+
+@{
+    ViewBag.Title = "Content Admin";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Web_Com</title>
+
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="/Content/anime-login.css" />
+    <link rel="stylesheet" href="/Content/admin-content.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <div class="logout-container">
+        <a href="@Url.Action("Web_Com", "Home")" class="btn btn-logout">Logout</a>
+    </div>
+
+    <div class="container">
+        <h2>Content Admin - Manage Works</h2>
+        <div class="search-container">
+            <div class="search-group">
+                <label for="searchWorkName">
+                    <b>Search by Work's name</b>
+                </label>
+                <input type="text" id="searchWorkName" class="search-bar" placeholder="Enter work name..." />
+            </div>
+            <div class="search-group">
+                <label for="searchAuthor">
+                    <b>Search by Author's name</b>
+                </label>
+                <input type="text" id="searchAuthor" class="search-bar" placeholder="Enter author name..." />
+            </div>
+            <div class="search-container">
+                <div class="search-group">
+                    <div class="filter-group">
+                        <label>
+                            <b>Status</b>
+                        </label>
+                        <div class="status-buttons">
+                            <button class="btn status-btn active" data-status="">All</button>
+                            @if (ViewBag.Statuses != null)
+                            {
+                                foreach (var status in ViewBag.Statuses)
+                                {
+                                    <button class="btn status-btn" data-status="@status.work_StatusName">@status.work_StatusName</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="search-group">
+                    <div class="filter-group">
+                        <label>
+                            <b>Genre</b>
+                        </label>
+                        <div class="genre-buttons">
+                            <button class="btn genre-btn active" data-genre="">All</button>
+                            @if (ViewBag.Genres != null)
+                            {
+                                foreach (var genre in ViewBag.Genres)
+                                {
+                                    <button class="btn genre-btn" data-genre="@genre">@genre</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="search-group">
+                    <div class="filter-group">
+                        <label>
+                            <b>Tag</b>
+                        </label>
+                        <div class="tag-buttons">
+                            <button class="btn tag-btn active" data-tag="" data-tag-id="0">All</button>
+                            @foreach (var tag in ViewBag.Tags)
+                            {
+                                <button class="btn tag-btn" data-tag="@tag.tagName" data-tag-id="@tag.tagId">@tag.tagName</button>
+                            }
+                        </div>
+                        <div class="tag-management">
+                            <button id="addTagBtn" class="btn tag-btn" style="background-color: #28a745;">
+                                <i class="fas fa-plus"></i> Add New Tag
+                            </button>
+                            <div style="display: flex; align-items: center; margin-top: 10px;">
+                                <button id="deleteTagBtn" class="btn tag-btn" style="background-color: #dc3545;">
+                                    Delete Tag
+                                </button>
+                                <span id="deleteTagLabel" style="margin-left: 10px; color: red; display: none;">
+                                    <b>Choose 1 Tag above to delete</b>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="@Url.Action("AddWork", "Admin")" class="btn btn-add">Add New Work</a>
+        @Html.AntiForgeryToken()
+        <table id="worksTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Cover Image</th>
+                    <th>Author</th>
+                    <th>Status</th>
+                    <th>Genre</th>
+                    <th>Tag</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var work in Model)
+                    {
+                        <tr class="work-row">
+                            <td class="work-name">@work.WorkName</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(work.WorkImage))
+                                {
+                                    <img src="/Content/Images/@work.WorkImage" alt="@work.WorkName" class="admin-work-image zoomable-image" />
+                                }
+                                else
+                                {
+                                    <span>No Image</span>
+                                }
+                            </td>
+                            <td class="author-name">@work.AuthorName</td>
+                            <td class="status-cell">@work.StatusName</td>
+                            <td class="genre-name">@work.GenreName</td>
+                            <td class="tag-cell">
+                                <div style="display: flex; flex-direction: column;">
+                                    @foreach (var tag in work.TagNames)
+                                    {
+                                        <span>@tag</span>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                    <a href="@Url.Action("WorkDetails", new { workId = work.WorkId })" class="btn btn-details">Details</a>
+                                    <a href="@Url.Action("EditWork", new { workId = work.WorkId })" class="btn btn-edit">Edit</a>
+                                    <button class="btn btn-delete" data-work-id="@work.WorkId">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr class="no-results">
+                        <td colspan="7">No works available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div id="imageOverlay" class="image-overlay">
+            <img id="popupImage" class="popup-image" src="" alt="Enlarged Image" />
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/Scripts/admin-content.js"></script>
+</body>
+</html>

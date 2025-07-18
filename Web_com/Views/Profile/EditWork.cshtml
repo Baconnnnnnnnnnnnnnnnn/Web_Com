@@ -1,0 +1,168 @@
+﻿@model Web_com.Models.Entities.work
+@using Web_com.Models.Entities
+
+@{
+    ViewBag.Title = "Edit Work";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Web_Com</title>
+
+    <!-- jQuery (nếu dùng chung với Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- TinyMCE CDN -->
+    <script src="https://cdn.tiny.cloud/1/p2k2n5zgq77njmq2tcp1zuw3vty1j123w227ma3544ytvzdm/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="/Content/anime-login.css" />
+    <link rel="stylesheet" href="/Content/admin-content.css" />
+    <link rel="stylesheet" href="/Content/edit-work-style.css" />
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <div class="container">
+        <h2>Content Admin - Edit Work</h2>
+        @using (Html.BeginForm("EditWork", "ContentAdmin", FormMethod.Post, new { enctype = "multipart/form-data", id = "editWorkForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.workId)
+            <div class="form-group">
+                <label for="workName">Work Name</label>
+                @Html.TextBoxFor(model => model.workName, new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="workOverview">Overview</label>
+                @Html.TextAreaFor(model => model.workOverview, new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="genreId">Genre</label>
+                @Html.DropDownListFor(model => model.genreId, new SelectList(ViewBag.Genres, "genreId", "genreName"), "-- Select Genre --", new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="work_StatusId">Status</label>
+                @Html.DropDownListFor(model => model.work_StatusId, new SelectList(ViewBag.Statuses, "work_StatusId", "work_StatusName"), "-- Select Status --", new { @required = "required" })
+            </div>
+            <div class="form-group">
+                <label for="authorName">Author</label>
+                <p>@ViewBag.AuthorName</p>
+                @Html.HiddenFor(model => model.authorId)
+            </div>
+            <div class="form-group">
+                <label>Tags</label>
+                <div class="tag-container">
+                    @foreach (var tag in ViewBag.Tags)
+                    {
+                        var isSelected = ViewBag.SelectedTags.Contains(tag.tagId);
+                        <button type="button" class="tag-button @(isSelected ? "selected" : "")" data-tag-id="@tag.tagId">@tag.tagName</button>
+                    }
+                </div>
+                <!-- Container for hidden inputs -->
+                <div id="selectedTagsContainer">
+                    
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="workImage">Cover Image (Leave empty to keep current image)</label>
+                <input type="file" name="workImage" id="workImage" accept="image/*" />
+            </div>
+            <div id="arcChapterDataContainer">
+                @if (ViewBag.Arcs != null)
+                {
+                    foreach (var arc in (List<work_Arc>)ViewBag.Arcs)
+                    {
+                        <input type="hidden" name="arcIds[]" value="@arc.work_ArcId" />
+
+
+                        foreach (var chap in (ViewBag.Chapters as List<work_Chapter>).Where(c => c.work_ArcId == arc.work_ArcId))
+                        {
+                            <input type="hidden" name="chapterIds[]" value="@chap.work_ChapterId" />
+
+                        }
+                    }
+                }
+            </div>
+            <h3>Work Content</h3>
+
+            <div id="arc-chapter-manager">
+                @if (ViewBag.Arcs != null && ViewBag.Arcs is List<work_Arc>)
+                {
+                    foreach (var arc in (List<work_Arc>)ViewBag.Arcs)
+                    {
+                        <div class="arc-block">
+                            <div class="arc-block">
+                                <div class="form-group">
+                                    <label>Arc Title</label>
+                                    <input type="text" name="arcTitles" value="@arc.work_ArcTitle"
+                                           class="form-control arc-name-input" data-arc-id="@arc.work_ArcId" />
+                                </div>
+                                <table class="table chapter-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Chapter</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var chap in (ViewBag.Chapters as List<work_Chapter>).Where(c => c.work_ArcId == arc.work_ArcId))
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        @chap.work_ChapterTitle
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="edit-chapter-btn" data-chapter-id="@chap.work_ChapterId" data-isimage="@chap.work_ChapterIsImage">Edit</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p style="color: red;">No Arc available</p>
+                }
+            </div>
+
+            <!-- Modal để chỉnh sửa nội dung chương -->
+            <div class="modal fade" id="chapterEditModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content bg-dark text-white">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Chapter Content</h5>
+                        </div>
+                        <div class="modal-body" id="chapter-edit-body">
+                            <!-- Nội dung sẽ được AJAX load -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-submit" style="font-size: 18px">Update Work</button>
+            <a href="@Url.Action("Index", "Profile", new { id = Model.authorId })" class="btn btn-back">Cancel</a>
+        }
+    </div>
+
+    <script src="/Scripts/edit-work.js"></script>
+</body>
+</html>

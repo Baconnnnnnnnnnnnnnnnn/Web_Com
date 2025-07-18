@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_AnimeLayout.cshtml";
+}
+
+<div class="anime-login-container">
+    <!-- Register Form -->
+    <div class="anime-login-box anime-login-box-register">
+        <h2><i class="fa fa-user-plus"></i> Register</h2>
+        <form id="registerForm" method="post">
+            @Html.AntiForgeryToken()
+            <div class="anime-form-row">
+                <div class="anime-form-column">
+                    <div class="anime-form-group">
+                        <div class="anime-input-group">
+                            <i class="fa fa-user"></i>
+                            <input type="text" name="usersName" class="anime-input" placeholder="Username..." required />
+                        </div>
+                    </div>
+                    <div class="anime-form-group">
+                        <div class="anime-input-group">
+                            <i class="fa fa-envelope"></i>
+                            <input type="email" name="usersEmail" class="anime-input" placeholder="Email..." required />
+                        </div>
+                    </div>
+                </div>
+                <div class="anime-form-column">
+                    <div class="anime-form-group">
+                        <div class="anime-input-group">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" name="usersPass" class="anime-input" placeholder="Password..." required />
+                        </div>
+                    </div>
+                    <!-- Bỏ qua trường Waifu trong xử lý -->
+                    <div class="anime-form-group">
+                        <div class="anime-input-group">
+                            <i class="fa fa-heart"></i>
+                            <input type="text" name="usersWaifu" class="anime-input" placeholder="Your Waifu..." required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="anime-btn">Register</button>
+        </form>
+    </div>
+    <!-- Login Form -->
+    <div class="anime-login-box anime-login-box-login">
+        <h2><i class="fa fa-user-lock"></i> Login</h2>
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "loginForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="anime-form-group">
+                <div class="anime-input-group">
+                    <i class="fa fa-envelope"></i>
+                    <input type="email" class="anime-input" placeholder="Email..." name="usersEmail" required>
+                </div>
+            </div>
+            <div class="anime-form-group">
+                <div class="anime-input-group">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" class="anime-input" placeholder="Password..." name="usersPass" required>
+                </div>
+            </div>
+            <button type="submit" class="anime-btn">Login</button>
+        }
+    </div>
+    <!-- Guest Form -->
+    <div class="anime-login-box anime-login-box-guest">
+        <h2><i class="fa fa-eye"></i> Guest Mode</h2>
+        <p style="color: ghostwhite; text-align: center; font-size: 20px; margin: 20px 0; text-shadow: 2px 2px 4px black;">
+            Curious to explore? No login needed!
+        </p>
+        <p style="color: ghostwhite; text-align: center; font-size: 15px; margin: 15px 0; text-shadow: 2px 2px 4px black;">
+            You can freely browse stories and creators,<br>but actions like commenting or following require an account
+        </p>
+        <button type="button" class="anime-btn guest-btn"
+                onclick="window.location.href='@Url.Action("Guest", "Web_Com")'">
+            Enter as Guest
+        </button>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Scripts/account.js"></script>
+}

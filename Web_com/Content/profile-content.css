@@ -1,0 +1,199 @@
+﻿/* ========== UPDATED PROFILE-CONTENT.CSS ========== */
+
+/* Container styling to match AddWork */
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 153, 204, 0.4);
+    font-size: 18px;
+}
+
+/* Title styling */
+h2 {
+    text-align: center;
+    font-size: 40px;
+    color: #ff99cc;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+}
+
+/* Work info section */
+.work-info-section {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 20px rgba(255, 153, 204, 0.2);
+}
+
+.work-cover {
+    width: 200px;
+    height: auto;
+    border-radius: 12px;
+    border: 3px solid #ff99cc;
+}
+
+.work-info-section h3 {
+    color: #ffccdd;
+    font-size: 28px;
+    margin-top: 0;
+}
+
+.work-info-section p {
+    margin: 8px 0;
+    color: #ddd;
+    font-size: 16px;
+}
+
+.work-info-section strong {
+    color: #ff99cc;
+}
+
+/* Tag styling to match AddWork */
+.tag-button {
+    display: inline-block;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #ffccdd;
+    color: #333;
+    font-size: 14px;
+    margin: 5px 5px 5px 0;
+    transition: background-color 0.3s ease;
+}
+
+/* Form controls */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 16px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid #ff99cc;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+    .form-control:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(255, 153, 204, 0.5);
+    }
+
+label {
+    font-weight: bold;
+    color: #ff99cc;
+    margin-top: 10px;
+    display: block;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.btn-add, .btn-submit {
+    background-color: #ff66b2;
+    color: white;
+}
+
+    .btn-add:hover, .btn-submit:hover {
+        background-color: #ff3385;
+    }
+
+.btn-back {
+    background-color: #6c757d;
+    color: white;
+    margin-top: 20px;
+}
+
+    .btn-back:hover {
+        background-color: #5a6268;
+    }
+
+/* Creation sections */
+.creation-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid #ff99cc33;
+}
+
+.section-title {
+    color: #ff99cc;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* Image preview */
+.image-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.image-preview-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid #ff99cc;
+}
+
+/* Form text */
+.form-text {
+    color: #aaa;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Items list */
+.items-list {
+    margin-top: 20px;
+}
+
+.item-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid #ff99cc33;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+    .item-card h4 {
+        margin-top: 0;
+        color: #ffccdd;
+    }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .work-info-section {
+        flex-direction: column;
+    }
+
+    .work-cover {
+        margin-bottom: 20px;
+    }
+}

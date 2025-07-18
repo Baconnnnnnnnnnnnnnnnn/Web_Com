@@ -1,0 +1,1822 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="web_comModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="admins">
+          <Key>
+            <PropertyRef Name="adminsId" />
+          </Key>
+          <Property Name="adminsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="adminsName" Type="varchar" MaxLength="50" />
+          <Property Name="adminsEmail" Type="varchar" MaxLength="50" />
+          <Property Name="adminsPass" Type="varchar" MaxLength="50" />
+          <Property Name="role_AdminId" Type="int" />
+        </EntityType>
+        <EntityType Name="author_Follow">
+          <Key>
+            <PropertyRef Name="author_FollowId" />
+          </Key>
+          <Property Name="author_FollowId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="followerId" Type="int" />
+          <Property Name="authorId" Type="int" />
+        </EntityType>
+        <EntityType Name="author_Warning">
+          <Key>
+            <PropertyRef Name="author_WarningId" />
+          </Key>
+          <Property Name="author_WarningId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="author_WarningReason" Type="varchar" MaxLength="255" />
+          <Property Name="author_WarningWorkId" Type="int" />
+          <Property Name="author_WarningDate" Type="datetime" />
+          <Property Name="authorId" Type="int" />
+        </EntityType>
+        <EntityType Name="badge">
+          <Key>
+            <PropertyRef Name="badgeId" />
+          </Key>
+          <Property Name="badgeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="badgeName" Type="varchar" MaxLength="100" />
+          <Property Name="badgeDescription" Type="varchar" MaxLength="500" />
+          <Property Name="isForAuthor" Type="bit" />
+        </EntityType>
+        <EntityType Name="comment_Heart">
+          <Key>
+            <PropertyRef Name="comment_HeartId" />
+          </Key>
+          <Property Name="comment_HeartId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="usersId" Type="int" />
+          <Property Name="work_CommentId" Type="int" />
+        </EntityType>
+        <EntityType Name="genre">
+          <Key>
+            <PropertyRef Name="genreId" />
+          </Key>
+          <Property Name="genreId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="genreName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="role_Admin">
+          <Key>
+            <PropertyRef Name="role_AdminId" />
+          </Key>
+          <Property Name="role_AdminId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role_AdminName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tag">
+          <Key>
+            <PropertyRef Name="tagId" />
+          </Key>
+          <Property Name="tagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tagName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="user_Badge">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="badgeId" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="badgeId" Type="int" Nullable="false" />
+          <Property Name="user_BadgeObtained" Type="datetime" />
+        </EntityType>
+        <EntityType Name="user_History">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="chapterId" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="workId" Type="int" />
+          <Property Name="arcId" Type="int" />
+          <Property Name="chapterId" Type="int" Nullable="false" />
+          <Property Name="user_HistoryReadTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="user_Warning">
+          <Key>
+            <PropertyRef Name="user_WarningId" />
+          </Key>
+          <Property Name="user_WarningId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_WarningType" Type="varchar" MaxLength="50" />
+          <Property Name="user_WarningReason" Type="varchar" MaxLength="255" />
+          <Property Name="user_WarningLevel" Type="int" />
+          <Property Name="user_WarningDate" Type="datetime" />
+          <Property Name="userId" Type="int" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="usersId" />
+          </Key>
+          <Property Name="usersId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="usersName" Type="varchar" MaxLength="50" />
+          <Property Name="usersEmail" Type="varchar" MaxLength="50" />
+          <Property Name="usersPass" Type="varchar" MaxLength="50" />
+          <Property Name="usersCreated" Type="datetime" />
+          <Property Name="isAuthor" Type="bit" />
+          <Property Name="isDisabled" Type="bit" />
+          <Property Name="usersAvatar" Type="varchar" MaxLength="500" />
+          <Property Name="usersCover" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="work">
+          <Key>
+            <PropertyRef Name="workId" />
+          </Key>
+          <Property Name="workId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="workName" Type="varchar" MaxLength="500" />
+          <Property Name="workCreated" Type="datetime" />
+          <Property Name="workImage" Type="varchar" MaxLength="500" />
+          <Property Name="genreId" Type="int" />
+          <Property Name="authorId" Type="int" />
+          <Property Name="work_StatusId" Type="int" />
+          <Property Name="workOverview" Type="varchar(max)" />
+          <Property Name="isDisabled" Type="bit" />
+        </EntityType>
+        <EntityType Name="work_Arc">
+          <Key>
+            <PropertyRef Name="work_ArcId" />
+          </Key>
+          <Property Name="work_ArcId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="work_ArcTitle" Type="varchar" MaxLength="100" />
+          <Property Name="work_ArcOrder" Type="int" />
+          <Property Name="work_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="work_Chapter">
+          <Key>
+            <PropertyRef Name="work_ChapterId" />
+          </Key>
+          <Property Name="work_ChapterId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="work_ChapterTitle" Type="varchar" MaxLength="100" />
+          <Property Name="work_ChapterContent" Type="varchar(max)" />
+          <Property Name="work_ChapterOrder" Type="int" />
+          <Property Name="work_ChapterIsImage" Type="bit" />
+          <Property Name="work_ArcId" Type="int" />
+        </EntityType>
+        <EntityType Name="work_ChapterImage">
+          <Key>
+            <PropertyRef Name="work_ChapterImageId" />
+          </Key>
+          <Property Name="work_ChapterImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="work_ChapterImageName" Type="varchar" MaxLength="500" />
+          <Property Name="work_ChapterImageOrder" Type="int" />
+          <Property Name="work_ChapterId" Type="int" />
+        </EntityType>
+        <EntityType Name="work_Comment">
+          <Key>
+            <PropertyRef Name="work_CommentId" />
+          </Key>
+          <Property Name="work_CommentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="work_CommentContent" Type="varchar(max)" />
+          <Property Name="work_CommentCreated" Type="datetime" />
+          <Property Name="work_CommentIsApproved" Type="bit" />
+          <Property Name="work_CommentIsDeleted" Type="bit" />
+          <Property Name="workId" Type="int" />
+          <Property Name="userId" Type="int" />
+          <Property Name="arcId" Type="int" />
+          <Property Name="chapterId" Type="int" />
+        </EntityType>
+        <EntityType Name="work_Favorite">
+          <Key>
+            <PropertyRef Name="work_FavoriteId" />
+          </Key>
+          <Property Name="work_FavoriteId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="int" />
+          <Property Name="workId" Type="int" />
+        </EntityType>
+        <EntityType Name="work_Heart">
+          <Key>
+            <PropertyRef Name="work_HeartId" />
+          </Key>
+          <Property Name="work_HeartId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="int" />
+          <Property Name="workId" Type="int" />
+        </EntityType>
+        <EntityType Name="work_Status">
+          <Key>
+            <PropertyRef Name="work_StatusId" />
+          </Key>
+          <Property Name="work_StatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="work_StatusName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="work_Tag">
+          <Key>
+            <PropertyRef Name="work_TagId" />
+          </Key>
+          <Property Name="work_TagId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="workId" Type="int" />
+          <Property Name="tagId" Type="int" />
+        </EntityType>
+        <EntityType Name="work_View">
+          <Key>
+            <PropertyRef Name="work_ViewId" />
+          </Key>
+          <Property Name="work_ViewId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="work_ViewDate" Type="datetime" />
+          <Property Name="workId" Type="int" />
+          <Property Name="usersId" Type="int" />
+        </EntityType>
+        <Association Name="FK__admins__role_Adm__398D8EEE">
+          <End Role="role_Admin" Type="Self.role_Admin" Multiplicity="0..1" />
+          <End Role="admins" Type="Self.admins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role_Admin">
+              <PropertyRef Name="role_AdminId" />
+            </Principal>
+            <Dependent Role="admins">
+              <PropertyRef Name="role_AdminId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__author_Fo__autho__71D1E811">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="author_Follow" Type="Self.author_Follow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="author_Follow">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__author_Fo__follo__70DDC3D8">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="author_Follow" Type="Self.author_Follow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="author_Follow">
+              <PropertyRef Name="followerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__author_Wa__autho__07C12930">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="author_Warning" Type="Self.author_Warning" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="author_Warning">
+              <PropertyRef Name="author_WarningWorkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__author_Wa__autho__09A971A2">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="author_Warning" Type="Self.author_Warning" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="author_Warning">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comment_H__users__6C190EBB">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="comment_Heart" Type="Self.comment_Heart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="comment_Heart">
+              <PropertyRef Name="usersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comment_H__work___6D0D32F4">
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="0..1" />
+          <End Role="comment_Heart" Type="Self.comment_Heart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Comment">
+              <PropertyRef Name="work_CommentId" />
+            </Principal>
+            <Dependent Role="comment_Heart">
+              <PropertyRef Name="work_CommentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Badg__badge__797309D9">
+          <End Role="badge" Type="Self.badge" Multiplicity="1" />
+          <End Role="user_Badge" Type="Self.user_Badge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="badge">
+              <PropertyRef Name="badgeId" />
+            </Principal>
+            <Dependent Role="user_Badge">
+              <PropertyRef Name="badgeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Badg__userI__787EE5A0">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="user_Badge" Type="Self.user_Badge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_Badge">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Hist__arcId__02FC7413">
+          <End Role="work_Arc" Type="Self.work_Arc" Multiplicity="0..1" />
+          <End Role="user_History" Type="Self.user_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Arc">
+              <PropertyRef Name="work_ArcId" />
+            </Principal>
+            <Dependent Role="user_History">
+              <PropertyRef Name="arcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Hist__chapt__03F0984C">
+          <End Role="work_Chapter" Type="Self.work_Chapter" Multiplicity="1" />
+          <End Role="user_History" Type="Self.user_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Chapter">
+              <PropertyRef Name="work_ChapterId" />
+            </Principal>
+            <Dependent Role="user_History">
+              <PropertyRef Name="chapterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Hist__userI__01142BA1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="user_History" Type="Self.user_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_History">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Hist__workI__02084FDA">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="user_History" Type="Self.user_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="user_History">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Warn__userI__7E37BEF6">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_Warning" Type="Self.user_Warning" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_Warning">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work__authorId__49C3F6B7">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="work" Type="Self.work" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work__genreId__48CFD27E">
+          <End Role="genre" Type="Self.genre" Multiplicity="0..1" />
+          <End Role="work" Type="Self.work" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genre">
+              <PropertyRef Name="genreId" />
+            </Principal>
+            <Dependent Role="work">
+              <PropertyRef Name="genreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work__work_Statu__4AB81AF0">
+          <End Role="work_Status" Type="Self.work_Status" Multiplicity="0..1" />
+          <End Role="work" Type="Self.work" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Status">
+              <PropertyRef Name="work_StatusId" />
+            </Principal>
+            <Dependent Role="work">
+              <PropertyRef Name="work_StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Arc__work_I__52593CB8">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Arc" Type="Self.work_Arc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Arc">
+              <PropertyRef Name="work_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Chap__work___160F4887">
+          <End Role="work_Chapter" Type="Self.work_Chapter" Multiplicity="0..1" />
+          <End Role="work_ChapterImage" Type="Self.work_ChapterImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Chapter">
+              <PropertyRef Name="work_ChapterId" />
+            </Principal>
+            <Dependent Role="work_ChapterImage">
+              <PropertyRef Name="work_ChapterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Chap__work___5629CD9C">
+          <End Role="work_Arc" Type="Self.work_Arc" Multiplicity="0..1" />
+          <End Role="work_Chapter" Type="Self.work_Chapter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Arc">
+              <PropertyRef Name="work_ArcId" />
+            </Principal>
+            <Dependent Role="work_Chapter">
+              <PropertyRef Name="work_ArcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Comm__arcId__6754599E">
+          <End Role="work_Arc" Type="Self.work_Arc" Multiplicity="0..1" />
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Arc">
+              <PropertyRef Name="work_ArcId" />
+            </Principal>
+            <Dependent Role="work_Comment">
+              <PropertyRef Name="arcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Comm__chapt__68487DD7">
+          <End Role="work_Chapter" Type="Self.work_Chapter" Multiplicity="0..1" />
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Chapter">
+              <PropertyRef Name="work_ChapterId" />
+            </Principal>
+            <Dependent Role="work_Comment">
+              <PropertyRef Name="chapterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Comm__userI__66603565">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work_Comment">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Comm__workI__656C112C">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Comment">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Favo__userI__2CF2ADDF">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="work_Favorite" Type="Self.work_Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work_Favorite">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Favo__workI__2DE6D218">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Favorite" Type="Self.work_Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Favorite">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Hear__userI__5EBF139D">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="work_Heart" Type="Self.work_Heart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work_Heart">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Hear__workI__5FB337D6">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Heart" Type="Self.work_Heart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Heart">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Tag__tagId__4F7CD00D">
+          <End Role="tag" Type="Self.tag" Multiplicity="0..1" />
+          <End Role="work_Tag" Type="Self.work_Tag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tag">
+              <PropertyRef Name="tagId" />
+            </Principal>
+            <Dependent Role="work_Tag">
+              <PropertyRef Name="tagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Tag__workId__4E88ABD4">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Tag" Type="Self.work_Tag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Tag">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_View__users__5AEE82B9">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="work_View" Type="Self.work_View" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work_View">
+              <PropertyRef Name="usersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_View__workI__59FA5E80">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_View" Type="Self.work_View" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_View">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="web_comModelStoreContainer">
+          <EntitySet Name="admins" EntityType="Self.admins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="author_Follow" EntityType="Self.author_Follow" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="author_Warning" EntityType="Self.author_Warning" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="badge" EntityType="Self.badge" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="comment_Heart" EntityType="Self.comment_Heart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="genre" EntityType="Self.genre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role_Admin" EntityType="Self.role_Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tag" EntityType="Self.tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_Badge" EntityType="Self.user_Badge" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_History" EntityType="Self.user_History" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_Warning" EntityType="Self.user_Warning" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work" EntityType="Self.work" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work_Arc" EntityType="Self.work_Arc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work_Chapter" EntityType="Self.work_Chapter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work_ChapterImage" EntityType="Self.work_ChapterImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work_Comment" EntityType="Self.work_Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work_Favorite" EntityType="Self.work_Favorite" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work_Heart" EntityType="Self.work_Heart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work_Status" EntityType="Self.work_Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work_Tag" EntityType="Self.work_Tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="work_View" EntityType="Self.work_View" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__admins__role_Adm__398D8EEE" Association="Self.FK__admins__role_Adm__398D8EEE">
+            <End Role="role_Admin" EntitySet="role_Admin" />
+            <End Role="admins" EntitySet="admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK__author_Fo__autho__71D1E811" Association="Self.FK__author_Fo__autho__71D1E811">
+            <End Role="users" EntitySet="users" />
+            <End Role="author_Follow" EntitySet="author_Follow" />
+          </AssociationSet>
+          <AssociationSet Name="FK__author_Fo__follo__70DDC3D8" Association="Self.FK__author_Fo__follo__70DDC3D8">
+            <End Role="users" EntitySet="users" />
+            <End Role="author_Follow" EntitySet="author_Follow" />
+          </AssociationSet>
+          <AssociationSet Name="FK__author_Wa__autho__07C12930" Association="Self.FK__author_Wa__autho__07C12930">
+            <End Role="work" EntitySet="work" />
+            <End Role="author_Warning" EntitySet="author_Warning" />
+          </AssociationSet>
+          <AssociationSet Name="FK__author_Wa__autho__09A971A2" Association="Self.FK__author_Wa__autho__09A971A2">
+            <End Role="users" EntitySet="users" />
+            <End Role="author_Warning" EntitySet="author_Warning" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comment_H__users__6C190EBB" Association="Self.FK__comment_H__users__6C190EBB">
+            <End Role="users" EntitySet="users" />
+            <End Role="comment_Heart" EntitySet="comment_Heart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comment_H__work___6D0D32F4" Association="Self.FK__comment_H__work___6D0D32F4">
+            <End Role="work_Comment" EntitySet="work_Comment" />
+            <End Role="comment_Heart" EntitySet="comment_Heart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Badg__badge__797309D9" Association="Self.FK__user_Badg__badge__797309D9">
+            <End Role="badge" EntitySet="badge" />
+            <End Role="user_Badge" EntitySet="user_Badge" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Badg__userI__787EE5A0" Association="Self.FK__user_Badg__userI__787EE5A0">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_Badge" EntitySet="user_Badge" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Hist__arcId__02FC7413" Association="Self.FK__user_Hist__arcId__02FC7413">
+            <End Role="work_Arc" EntitySet="work_Arc" />
+            <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Hist__chapt__03F0984C" Association="Self.FK__user_Hist__chapt__03F0984C">
+            <End Role="work_Chapter" EntitySet="work_Chapter" />
+            <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Hist__userI__01142BA1" Association="Self.FK__user_Hist__userI__01142BA1">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Hist__workI__02084FDA" Association="Self.FK__user_Hist__workI__02084FDA">
+            <End Role="work" EntitySet="work" />
+            <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Warn__userI__7E37BEF6" Association="Self.FK__user_Warn__userI__7E37BEF6">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_Warning" EntitySet="user_Warning" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work__authorId__49C3F6B7" Association="Self.FK__work__authorId__49C3F6B7">
+            <End Role="users" EntitySet="users" />
+            <End Role="work" EntitySet="work" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work__genreId__48CFD27E" Association="Self.FK__work__genreId__48CFD27E">
+            <End Role="genre" EntitySet="genre" />
+            <End Role="work" EntitySet="work" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work__work_Statu__4AB81AF0" Association="Self.FK__work__work_Statu__4AB81AF0">
+            <End Role="work_Status" EntitySet="work_Status" />
+            <End Role="work" EntitySet="work" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Arc__work_I__52593CB8" Association="Self.FK__work_Arc__work_I__52593CB8">
+            <End Role="work" EntitySet="work" />
+            <End Role="work_Arc" EntitySet="work_Arc" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Chap__work___160F4887" Association="Self.FK__work_Chap__work___160F4887">
+            <End Role="work_Chapter" EntitySet="work_Chapter" />
+            <End Role="work_ChapterImage" EntitySet="work_ChapterImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Chap__work___5629CD9C" Association="Self.FK__work_Chap__work___5629CD9C">
+            <End Role="work_Arc" EntitySet="work_Arc" />
+            <End Role="work_Chapter" EntitySet="work_Chapter" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Comm__arcId__6754599E" Association="Self.FK__work_Comm__arcId__6754599E">
+            <End Role="work_Arc" EntitySet="work_Arc" />
+            <End Role="work_Comment" EntitySet="work_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Comm__chapt__68487DD7" Association="Self.FK__work_Comm__chapt__68487DD7">
+            <End Role="work_Chapter" EntitySet="work_Chapter" />
+            <End Role="work_Comment" EntitySet="work_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Comm__userI__66603565" Association="Self.FK__work_Comm__userI__66603565">
+            <End Role="users" EntitySet="users" />
+            <End Role="work_Comment" EntitySet="work_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Comm__workI__656C112C" Association="Self.FK__work_Comm__workI__656C112C">
+            <End Role="work" EntitySet="work" />
+            <End Role="work_Comment" EntitySet="work_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Favo__userI__2CF2ADDF" Association="Self.FK__work_Favo__userI__2CF2ADDF">
+            <End Role="users" EntitySet="users" />
+            <End Role="work_Favorite" EntitySet="work_Favorite" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Favo__workI__2DE6D218" Association="Self.FK__work_Favo__workI__2DE6D218">
+            <End Role="work" EntitySet="work" />
+            <End Role="work_Favorite" EntitySet="work_Favorite" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Hear__userI__5EBF139D" Association="Self.FK__work_Hear__userI__5EBF139D">
+            <End Role="users" EntitySet="users" />
+            <End Role="work_Heart" EntitySet="work_Heart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Hear__workI__5FB337D6" Association="Self.FK__work_Hear__workI__5FB337D6">
+            <End Role="work" EntitySet="work" />
+            <End Role="work_Heart" EntitySet="work_Heart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Tag__tagId__4F7CD00D" Association="Self.FK__work_Tag__tagId__4F7CD00D">
+            <End Role="tag" EntitySet="tag" />
+            <End Role="work_Tag" EntitySet="work_Tag" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Tag__workId__4E88ABD4" Association="Self.FK__work_Tag__workId__4E88ABD4">
+            <End Role="work" EntitySet="work" />
+            <End Role="work_Tag" EntitySet="work_Tag" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_View__users__5AEE82B9" Association="Self.FK__work_View__users__5AEE82B9">
+            <End Role="users" EntitySet="users" />
+            <End Role="work_View" EntitySet="work_View" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_View__workI__59FA5E80" Association="Self.FK__work_View__workI__59FA5E80">
+            <End Role="work" EntitySet="work" />
+            <End Role="work_View" EntitySet="work_View" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="web_comModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="admin">
+          <Key>
+            <PropertyRef Name="adminsId" />
+          </Key>
+          <Property Name="adminsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="adminsName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="adminsEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="adminsPass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="role_AdminId" Type="Int32" />
+          <NavigationProperty Name="role_Admin" Relationship="Self.FK__admins__role_Adm__398D8EEE" FromRole="admins" ToRole="role_Admin" />
+        </EntityType>
+        <EntityType Name="author_Follow">
+          <Key>
+            <PropertyRef Name="author_FollowId" />
+          </Key>
+          <Property Name="author_FollowId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="followerId" Type="Int32" />
+          <Property Name="authorId" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="Self.FK__author_Fo__autho__71D1E811" FromRole="author_Follow" ToRole="users" />
+          <NavigationProperty Name="user1" Relationship="Self.FK__author_Fo__follo__70DDC3D8" FromRole="author_Follow" ToRole="users" />
+        </EntityType>
+        <EntityType Name="author_Warning">
+          <Key>
+            <PropertyRef Name="author_WarningId" />
+          </Key>
+          <Property Name="author_WarningId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="author_WarningReason" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="author_WarningWorkId" Type="Int32" />
+          <Property Name="author_WarningDate" Type="DateTime" Precision="3" />
+          <Property Name="authorId" Type="Int32" />
+          <NavigationProperty Name="work" Relationship="Self.FK__author_Wa__autho__07C12930" FromRole="author_Warning" ToRole="work" />
+          <NavigationProperty Name="user" Relationship="Self.FK__author_Wa__autho__09A971A2" FromRole="author_Warning" ToRole="users" />
+        </EntityType>
+        <EntityType Name="badge">
+          <Key>
+            <PropertyRef Name="badgeId" />
+          </Key>
+          <Property Name="badgeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="badgeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="badgeDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="isForAuthor" Type="Boolean" />
+          <NavigationProperty Name="user_Badge" Relationship="Self.FK__user_Badg__badge__797309D9" FromRole="badge" ToRole="user_Badge" />
+        </EntityType>
+        <EntityType Name="comment_Heart">
+          <Key>
+            <PropertyRef Name="comment_HeartId" />
+          </Key>
+          <Property Name="comment_HeartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="usersId" Type="Int32" />
+          <Property Name="work_CommentId" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="Self.FK__comment_H__users__6C190EBB" FromRole="comment_Heart" ToRole="users" />
+          <NavigationProperty Name="work_Comment" Relationship="Self.FK__comment_H__work___6D0D32F4" FromRole="comment_Heart" ToRole="work_Comment" />
+        </EntityType>
+        <EntityType Name="genre">
+          <Key>
+            <PropertyRef Name="genreId" />
+          </Key>
+          <Property Name="genreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="genreName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="works" Relationship="Self.FK__work__genreId__48CFD27E" FromRole="genre" ToRole="work" />
+        </EntityType>
+        <EntityType Name="role_Admin">
+          <Key>
+            <PropertyRef Name="role_AdminId" />
+          </Key>
+          <Property Name="role_AdminId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role_AdminName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="admins" Relationship="Self.FK__admins__role_Adm__398D8EEE" FromRole="role_Admin" ToRole="admins" />
+        </EntityType>
+        <EntityType Name="tag">
+          <Key>
+            <PropertyRef Name="tagId" />
+          </Key>
+          <Property Name="tagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tagName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="work_Tag" Relationship="Self.FK__work_Tag__tagId__4F7CD00D" FromRole="tag" ToRole="work_Tag" />
+        </EntityType>
+        <EntityType Name="user_Badge">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="badgeId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="badgeId" Type="Int32" Nullable="false" />
+          <Property Name="user_BadgeObtained" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="badge" Relationship="Self.FK__user_Badg__badge__797309D9" FromRole="user_Badge" ToRole="badge" />
+          <NavigationProperty Name="user" Relationship="Self.FK__user_Badg__userI__787EE5A0" FromRole="user_Badge" ToRole="users" />
+        </EntityType>
+        <EntityType Name="user_History">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="chapterId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="workId" Type="Int32" />
+          <Property Name="arcId" Type="Int32" />
+          <Property Name="chapterId" Type="Int32" Nullable="false" />
+          <Property Name="user_HistoryReadTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="work_Arc" Relationship="Self.FK__user_Hist__arcId__02FC7413" FromRole="user_History" ToRole="work_Arc" />
+          <NavigationProperty Name="work_Chapter" Relationship="Self.FK__user_Hist__chapt__03F0984C" FromRole="user_History" ToRole="work_Chapter" />
+          <NavigationProperty Name="user" Relationship="Self.FK__user_Hist__userI__01142BA1" FromRole="user_History" ToRole="users" />
+          <NavigationProperty Name="work" Relationship="Self.FK__user_Hist__workI__02084FDA" FromRole="user_History" ToRole="work" />
+        </EntityType>
+        <EntityType Name="user_Warning">
+          <Key>
+            <PropertyRef Name="user_WarningId" />
+          </Key>
+          <Property Name="user_WarningId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_WarningType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="user_WarningReason" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="user_WarningLevel" Type="Int32" />
+          <Property Name="user_WarningDate" Type="DateTime" Precision="3" />
+          <Property Name="userId" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="Self.FK__user_Warn__userI__7E37BEF6" FromRole="user_Warning" ToRole="users" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="usersId" />
+          </Key>
+          <Property Name="usersId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="usersName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usersEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usersPass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usersCreated" Type="DateTime" Precision="3" />
+          <Property Name="isAuthor" Type="Boolean" />
+          <Property Name="isDisabled" Type="Boolean" />
+          <Property Name="usersAvatar" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="usersCover" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="author_Follow" Relationship="Self.FK__author_Fo__autho__71D1E811" FromRole="users" ToRole="author_Follow" />
+          <NavigationProperty Name="author_Follow1" Relationship="Self.FK__author_Fo__follo__70DDC3D8" FromRole="users" ToRole="author_Follow" />
+          <NavigationProperty Name="author_Warning" Relationship="Self.FK__author_Wa__autho__09A971A2" FromRole="users" ToRole="author_Warning" />
+          <NavigationProperty Name="comment_Heart" Relationship="Self.FK__comment_H__users__6C190EBB" FromRole="users" ToRole="comment_Heart" />
+          <NavigationProperty Name="user_Badge" Relationship="Self.FK__user_Badg__userI__787EE5A0" FromRole="users" ToRole="user_Badge" />
+          <NavigationProperty Name="user_History" Relationship="Self.FK__user_Hist__userI__01142BA1" FromRole="users" ToRole="user_History" />
+          <NavigationProperty Name="user_Warning" Relationship="Self.FK__user_Warn__userI__7E37BEF6" FromRole="users" ToRole="user_Warning" />
+          <NavigationProperty Name="works" Relationship="Self.FK__work__authorId__49C3F6B7" FromRole="users" ToRole="work" />
+          <NavigationProperty Name="work_Comment" Relationship="Self.FK__work_Comm__userI__66603565" FromRole="users" ToRole="work_Comment" />
+          <NavigationProperty Name="work_Favorite" Relationship="Self.FK__work_Favo__userI__2CF2ADDF" FromRole="users" ToRole="work_Favorite" />
+          <NavigationProperty Name="work_Heart" Relationship="Self.FK__work_Hear__userI__5EBF139D" FromRole="users" ToRole="work_Heart" />
+          <NavigationProperty Name="work_View" Relationship="Self.FK__work_View__users__5AEE82B9" FromRole="users" ToRole="work_View" />
+        </EntityType>
+        <EntityType Name="work">
+          <Key>
+            <PropertyRef Name="workId" />
+          </Key>
+          <Property Name="workId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="workName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="workCreated" Type="DateTime" Precision="3" />
+          <Property Name="workImage" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="genreId" Type="Int32" />
+          <Property Name="authorId" Type="Int32" />
+          <Property Name="work_StatusId" Type="Int32" />
+          <Property Name="workOverview" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="isDisabled" Type="Boolean" />
+          <NavigationProperty Name="author_Warning" Relationship="Self.FK__author_Wa__autho__07C12930" FromRole="work" ToRole="author_Warning" />
+          <NavigationProperty Name="genre" Relationship="Self.FK__work__genreId__48CFD27E" FromRole="work" ToRole="genre" />
+          <NavigationProperty Name="user_History" Relationship="Self.FK__user_Hist__workI__02084FDA" FromRole="work" ToRole="user_History" />
+          <NavigationProperty Name="user" Relationship="Self.FK__work__authorId__49C3F6B7" FromRole="work" ToRole="users" />
+          <NavigationProperty Name="work_Status" Relationship="Self.FK__work__work_Statu__4AB81AF0" FromRole="work" ToRole="work_Status" />
+          <NavigationProperty Name="work_Arc" Relationship="Self.FK__work_Arc__work_I__52593CB8" FromRole="work" ToRole="work_Arc" />
+          <NavigationProperty Name="work_Comment" Relationship="Self.FK__work_Comm__workI__656C112C" FromRole="work" ToRole="work_Comment" />
+          <NavigationProperty Name="work_Favorite" Relationship="Self.FK__work_Favo__workI__2DE6D218" FromRole="work" ToRole="work_Favorite" />
+          <NavigationProperty Name="work_Heart" Relationship="Self.FK__work_Hear__workI__5FB337D6" FromRole="work" ToRole="work_Heart" />
+          <NavigationProperty Name="work_Tag" Relationship="Self.FK__work_Tag__workId__4E88ABD4" FromRole="work" ToRole="work_Tag" />
+          <NavigationProperty Name="work_View" Relationship="Self.FK__work_View__workI__59FA5E80" FromRole="work" ToRole="work_View" />
+        </EntityType>
+        <EntityType Name="work_Arc">
+          <Key>
+            <PropertyRef Name="work_ArcId" />
+          </Key>
+          <Property Name="work_ArcId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="work_ArcTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="work_ArcOrder" Type="Int32" />
+          <Property Name="work_Id" Type="Int32" />
+          <NavigationProperty Name="user_History" Relationship="Self.FK__user_Hist__arcId__02FC7413" FromRole="work_Arc" ToRole="user_History" />
+          <NavigationProperty Name="work" Relationship="Self.FK__work_Arc__work_I__52593CB8" FromRole="work_Arc" ToRole="work" />
+          <NavigationProperty Name="work_Chapter" Relationship="Self.FK__work_Chap__work___5629CD9C" FromRole="work_Arc" ToRole="work_Chapter" />
+          <NavigationProperty Name="work_Comment" Relationship="Self.FK__work_Comm__arcId__6754599E" FromRole="work_Arc" ToRole="work_Comment" />
+        </EntityType>
+        <EntityType Name="work_Chapter">
+          <Key>
+            <PropertyRef Name="work_ChapterId" />
+          </Key>
+          <Property Name="work_ChapterId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="work_ChapterTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="work_ChapterContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="work_ChapterOrder" Type="Int32" />
+          <Property Name="work_ChapterIsImage" Type="Boolean" />
+          <Property Name="work_ArcId" Type="Int32" />
+          <NavigationProperty Name="user_History" Relationship="Self.FK__user_Hist__chapt__03F0984C" FromRole="work_Chapter" ToRole="user_History" />
+          <NavigationProperty Name="work_Arc" Relationship="Self.FK__work_Chap__work___5629CD9C" FromRole="work_Chapter" ToRole="work_Arc" />
+          <NavigationProperty Name="work_ChapterImage" Relationship="Self.FK__work_Chap__work___160F4887" FromRole="work_Chapter" ToRole="work_ChapterImage" />
+          <NavigationProperty Name="work_Comment" Relationship="Self.FK__work_Comm__chapt__68487DD7" FromRole="work_Chapter" ToRole="work_Comment" />
+        </EntityType>
+        <EntityType Name="work_ChapterImage">
+          <Key>
+            <PropertyRef Name="work_ChapterImageId" />
+          </Key>
+          <Property Name="work_ChapterImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="work_ChapterImageName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="work_ChapterImageOrder" Type="Int32" />
+          <Property Name="work_ChapterId" Type="Int32" />
+          <NavigationProperty Name="work_Chapter" Relationship="Self.FK__work_Chap__work___160F4887" FromRole="work_ChapterImage" ToRole="work_Chapter" />
+        </EntityType>
+        <EntityType Name="work_Comment">
+          <Key>
+            <PropertyRef Name="work_CommentId" />
+          </Key>
+          <Property Name="work_CommentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="work_CommentContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="work_CommentCreated" Type="DateTime" Precision="3" />
+          <Property Name="work_CommentIsApproved" Type="Boolean" />
+          <Property Name="work_CommentIsDeleted" Type="Boolean" />
+          <Property Name="workId" Type="Int32" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="arcId" Type="Int32" />
+          <Property Name="chapterId" Type="Int32" />
+          <NavigationProperty Name="comment_Heart" Relationship="Self.FK__comment_H__work___6D0D32F4" FromRole="work_Comment" ToRole="comment_Heart" />
+          <NavigationProperty Name="user" Relationship="Self.FK__work_Comm__userI__66603565" FromRole="work_Comment" ToRole="users" />
+          <NavigationProperty Name="work" Relationship="Self.FK__work_Comm__workI__656C112C" FromRole="work_Comment" ToRole="work" />
+          <NavigationProperty Name="work_Arc" Relationship="Self.FK__work_Comm__arcId__6754599E" FromRole="work_Comment" ToRole="work_Arc" />
+          <NavigationProperty Name="work_Chapter" Relationship="Self.FK__work_Comm__chapt__68487DD7" FromRole="work_Comment" ToRole="work_Chapter" />
+        </EntityType>
+        <EntityType Name="work_Favorite">
+          <Key>
+            <PropertyRef Name="work_FavoriteId" />
+          </Key>
+          <Property Name="work_FavoriteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="workId" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="Self.FK__work_Favo__userI__2CF2ADDF" FromRole="work_Favorite" ToRole="users" />
+          <NavigationProperty Name="work" Relationship="Self.FK__work_Favo__workI__2DE6D218" FromRole="work_Favorite" ToRole="work" />
+        </EntityType>
+        <EntityType Name="work_Heart">
+          <Key>
+            <PropertyRef Name="work_HeartId" />
+          </Key>
+          <Property Name="work_HeartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="workId" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="Self.FK__work_Hear__userI__5EBF139D" FromRole="work_Heart" ToRole="users" />
+          <NavigationProperty Name="work" Relationship="Self.FK__work_Hear__workI__5FB337D6" FromRole="work_Heart" ToRole="work" />
+        </EntityType>
+        <EntityType Name="work_Status">
+          <Key>
+            <PropertyRef Name="work_StatusId" />
+          </Key>
+          <Property Name="work_StatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="work_StatusName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="works" Relationship="Self.FK__work__work_Statu__4AB81AF0" FromRole="work_Status" ToRole="work" />
+        </EntityType>
+        <EntityType Name="work_Tag">
+          <Key>
+            <PropertyRef Name="work_TagId" />
+          </Key>
+          <Property Name="work_TagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="workId" Type="Int32" />
+          <Property Name="tagId" Type="Int32" />
+          <NavigationProperty Name="tag" Relationship="Self.FK__work_Tag__tagId__4F7CD00D" FromRole="work_Tag" ToRole="tag" />
+          <NavigationProperty Name="work" Relationship="Self.FK__work_Tag__workId__4E88ABD4" FromRole="work_Tag" ToRole="work" />
+        </EntityType>
+        <EntityType Name="work_View">
+          <Key>
+            <PropertyRef Name="work_ViewId" />
+          </Key>
+          <Property Name="work_ViewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="work_ViewDate" Type="DateTime" Precision="3" />
+          <Property Name="workId" Type="Int32" />
+          <Property Name="usersId" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="Self.FK__work_View__users__5AEE82B9" FromRole="work_View" ToRole="users" />
+          <NavigationProperty Name="work" Relationship="Self.FK__work_View__workI__59FA5E80" FromRole="work_View" ToRole="work" />
+        </EntityType>
+        <Association Name="FK__admins__role_Adm__398D8EEE">
+          <End Role="role_Admin" Type="Self.role_Admin" Multiplicity="0..1" />
+          <End Role="admins" Type="Self.admin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role_Admin">
+              <PropertyRef Name="role_AdminId" />
+            </Principal>
+            <Dependent Role="admins">
+              <PropertyRef Name="role_AdminId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__author_Fo__autho__71D1E811">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="author_Follow" Type="Self.author_Follow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="author_Follow">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__author_Fo__follo__70DDC3D8">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="author_Follow" Type="Self.author_Follow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="author_Follow">
+              <PropertyRef Name="followerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__author_Wa__autho__07C12930">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="author_Warning" Type="Self.author_Warning" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="author_Warning">
+              <PropertyRef Name="author_WarningWorkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__author_Wa__autho__09A971A2">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="author_Warning" Type="Self.author_Warning" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="author_Warning">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Badg__badge__797309D9">
+          <End Role="badge" Type="Self.badge" Multiplicity="1" />
+          <End Role="user_Badge" Type="Self.user_Badge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="badge">
+              <PropertyRef Name="badgeId" />
+            </Principal>
+            <Dependent Role="user_Badge">
+              <PropertyRef Name="badgeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comment_H__users__6C190EBB">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="comment_Heart" Type="Self.comment_Heart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="comment_Heart">
+              <PropertyRef Name="usersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comment_H__work___6D0D32F4">
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="0..1" />
+          <End Role="comment_Heart" Type="Self.comment_Heart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Comment">
+              <PropertyRef Name="work_CommentId" />
+            </Principal>
+            <Dependent Role="comment_Heart">
+              <PropertyRef Name="work_CommentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work__genreId__48CFD27E">
+          <End Role="genre" Type="Self.genre" Multiplicity="0..1" />
+          <End Role="work" Type="Self.work" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genre">
+              <PropertyRef Name="genreId" />
+            </Principal>
+            <Dependent Role="work">
+              <PropertyRef Name="genreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Tag__tagId__4F7CD00D">
+          <End Role="tag" Type="Self.tag" Multiplicity="0..1" />
+          <End Role="work_Tag" Type="Self.work_Tag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tag">
+              <PropertyRef Name="tagId" />
+            </Principal>
+            <Dependent Role="work_Tag">
+              <PropertyRef Name="tagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Badg__userI__787EE5A0">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="user_Badge" Type="Self.user_Badge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_Badge">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Hist__arcId__02FC7413">
+          <End Role="work_Arc" Type="Self.work_Arc" Multiplicity="0..1" />
+          <End Role="user_History" Type="Self.user_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Arc">
+              <PropertyRef Name="work_ArcId" />
+            </Principal>
+            <Dependent Role="user_History">
+              <PropertyRef Name="arcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Hist__chapt__03F0984C">
+          <End Role="work_Chapter" Type="Self.work_Chapter" Multiplicity="1" />
+          <End Role="user_History" Type="Self.user_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Chapter">
+              <PropertyRef Name="work_ChapterId" />
+            </Principal>
+            <Dependent Role="user_History">
+              <PropertyRef Name="chapterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Hist__userI__01142BA1">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="user_History" Type="Self.user_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_History">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Hist__workI__02084FDA">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="user_History" Type="Self.user_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="user_History">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Warn__userI__7E37BEF6">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="user_Warning" Type="Self.user_Warning" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_Warning">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work__authorId__49C3F6B7">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="work" Type="Self.work" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Comm__userI__66603565">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work_Comment">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Favo__userI__2CF2ADDF">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="work_Favorite" Type="Self.work_Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work_Favorite">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Hear__userI__5EBF139D">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="work_Heart" Type="Self.work_Heart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work_Heart">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_View__users__5AEE82B9">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="work_View" Type="Self.work_View" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="work_View">
+              <PropertyRef Name="usersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work__work_Statu__4AB81AF0">
+          <End Role="work_Status" Type="Self.work_Status" Multiplicity="0..1" />
+          <End Role="work" Type="Self.work" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Status">
+              <PropertyRef Name="work_StatusId" />
+            </Principal>
+            <Dependent Role="work">
+              <PropertyRef Name="work_StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Arc__work_I__52593CB8">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Arc" Type="Self.work_Arc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Arc">
+              <PropertyRef Name="work_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Comm__workI__656C112C">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Comment">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Favo__workI__2DE6D218">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Favorite" Type="Self.work_Favorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Favorite">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Hear__workI__5FB337D6">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Heart" Type="Self.work_Heart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Heart">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Tag__workId__4E88ABD4">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_Tag" Type="Self.work_Tag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_Tag">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_View__workI__59FA5E80">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="work_View" Type="Self.work_View" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="work_View">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Chap__work___5629CD9C">
+          <End Role="work_Arc" Type="Self.work_Arc" Multiplicity="0..1" />
+          <End Role="work_Chapter" Type="Self.work_Chapter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Arc">
+              <PropertyRef Name="work_ArcId" />
+            </Principal>
+            <Dependent Role="work_Chapter">
+              <PropertyRef Name="work_ArcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Comm__arcId__6754599E">
+          <End Role="work_Arc" Type="Self.work_Arc" Multiplicity="0..1" />
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Arc">
+              <PropertyRef Name="work_ArcId" />
+            </Principal>
+            <Dependent Role="work_Comment">
+              <PropertyRef Name="arcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Chap__work___160F4887">
+          <End Role="work_Chapter" Type="Self.work_Chapter" Multiplicity="0..1" />
+          <End Role="work_ChapterImage" Type="Self.work_ChapterImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Chapter">
+              <PropertyRef Name="work_ChapterId" />
+            </Principal>
+            <Dependent Role="work_ChapterImage">
+              <PropertyRef Name="work_ChapterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__work_Comm__chapt__68487DD7">
+          <End Role="work_Chapter" Type="Self.work_Chapter" Multiplicity="0..1" />
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Chapter">
+              <PropertyRef Name="work_ChapterId" />
+            </Principal>
+            <Dependent Role="work_Comment">
+              <PropertyRef Name="chapterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="web_comEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="admins" EntityType="Self.admin" />
+          <EntitySet Name="author_Follow" EntityType="Self.author_Follow" />
+          <EntitySet Name="author_Warning" EntityType="Self.author_Warning" />
+          <EntitySet Name="badges" EntityType="Self.badge" />
+          <EntitySet Name="comment_Heart" EntityType="Self.comment_Heart" />
+          <EntitySet Name="genres" EntityType="Self.genre" />
+          <EntitySet Name="role_Admin" EntityType="Self.role_Admin" />
+          <EntitySet Name="tags" EntityType="Self.tag" />
+          <EntitySet Name="user_Badge" EntityType="Self.user_Badge" />
+          <EntitySet Name="user_History" EntityType="Self.user_History" />
+          <EntitySet Name="user_Warning" EntityType="Self.user_Warning" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <EntitySet Name="works" EntityType="Self.work" />
+          <EntitySet Name="work_Arc" EntityType="Self.work_Arc" />
+          <EntitySet Name="work_Chapter" EntityType="Self.work_Chapter" />
+          <EntitySet Name="work_ChapterImage" EntityType="Self.work_ChapterImage" />
+          <EntitySet Name="work_Comment" EntityType="Self.work_Comment" />
+          <EntitySet Name="work_Favorite" EntityType="Self.work_Favorite" />
+          <EntitySet Name="work_Heart" EntityType="Self.work_Heart" />
+          <EntitySet Name="work_Status" EntityType="Self.work_Status" />
+          <EntitySet Name="work_Tag" EntityType="Self.work_Tag" />
+          <EntitySet Name="work_View" EntityType="Self.work_View" />
+          <AssociationSet Name="FK__admins__role_Adm__398D8EEE" Association="Self.FK__admins__role_Adm__398D8EEE">
+            <End Role="role_Admin" EntitySet="role_Admin" />
+            <End Role="admins" EntitySet="admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK__author_Fo__autho__71D1E811" Association="Self.FK__author_Fo__autho__71D1E811">
+            <End Role="users" EntitySet="users" />
+            <End Role="author_Follow" EntitySet="author_Follow" />
+          </AssociationSet>
+          <AssociationSet Name="FK__author_Fo__follo__70DDC3D8" Association="Self.FK__author_Fo__follo__70DDC3D8">
+            <End Role="users" EntitySet="users" />
+            <End Role="author_Follow" EntitySet="author_Follow" />
+          </AssociationSet>
+          <AssociationSet Name="FK__author_Wa__autho__07C12930" Association="Self.FK__author_Wa__autho__07C12930">
+            <End Role="work" EntitySet="works" />
+            <End Role="author_Warning" EntitySet="author_Warning" />
+          </AssociationSet>
+          <AssociationSet Name="FK__author_Wa__autho__09A971A2" Association="Self.FK__author_Wa__autho__09A971A2">
+            <End Role="users" EntitySet="users" />
+            <End Role="author_Warning" EntitySet="author_Warning" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Badg__badge__797309D9" Association="Self.FK__user_Badg__badge__797309D9">
+            <End Role="badge" EntitySet="badges" />
+            <End Role="user_Badge" EntitySet="user_Badge" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comment_H__users__6C190EBB" Association="Self.FK__comment_H__users__6C190EBB">
+            <End Role="users" EntitySet="users" />
+            <End Role="comment_Heart" EntitySet="comment_Heart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comment_H__work___6D0D32F4" Association="Self.FK__comment_H__work___6D0D32F4">
+            <End Role="work_Comment" EntitySet="work_Comment" />
+            <End Role="comment_Heart" EntitySet="comment_Heart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work__genreId__48CFD27E" Association="Self.FK__work__genreId__48CFD27E">
+            <End Role="genre" EntitySet="genres" />
+            <End Role="work" EntitySet="works" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Tag__tagId__4F7CD00D" Association="Self.FK__work_Tag__tagId__4F7CD00D">
+            <End Role="tag" EntitySet="tags" />
+            <End Role="work_Tag" EntitySet="work_Tag" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Badg__userI__787EE5A0" Association="Self.FK__user_Badg__userI__787EE5A0">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_Badge" EntitySet="user_Badge" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Hist__arcId__02FC7413" Association="Self.FK__user_Hist__arcId__02FC7413">
+            <End Role="work_Arc" EntitySet="work_Arc" />
+            <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Hist__chapt__03F0984C" Association="Self.FK__user_Hist__chapt__03F0984C">
+            <End Role="work_Chapter" EntitySet="work_Chapter" />
+            <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Hist__userI__01142BA1" Association="Self.FK__user_Hist__userI__01142BA1">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Hist__workI__02084FDA" Association="Self.FK__user_Hist__workI__02084FDA">
+            <End Role="work" EntitySet="works" />
+            <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Warn__userI__7E37BEF6" Association="Self.FK__user_Warn__userI__7E37BEF6">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_Warning" EntitySet="user_Warning" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work__authorId__49C3F6B7" Association="Self.FK__work__authorId__49C3F6B7">
+            <End Role="users" EntitySet="users" />
+            <End Role="work" EntitySet="works" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Comm__userI__66603565" Association="Self.FK__work_Comm__userI__66603565">
+            <End Role="users" EntitySet="users" />
+            <End Role="work_Comment" EntitySet="work_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Favo__userI__2CF2ADDF" Association="Self.FK__work_Favo__userI__2CF2ADDF">
+            <End Role="users" EntitySet="users" />
+            <End Role="work_Favorite" EntitySet="work_Favorite" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Hear__userI__5EBF139D" Association="Self.FK__work_Hear__userI__5EBF139D">
+            <End Role="users" EntitySet="users" />
+            <End Role="work_Heart" EntitySet="work_Heart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_View__users__5AEE82B9" Association="Self.FK__work_View__users__5AEE82B9">
+            <End Role="users" EntitySet="users" />
+            <End Role="work_View" EntitySet="work_View" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work__work_Statu__4AB81AF0" Association="Self.FK__work__work_Statu__4AB81AF0">
+            <End Role="work_Status" EntitySet="work_Status" />
+            <End Role="work" EntitySet="works" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Arc__work_I__52593CB8" Association="Self.FK__work_Arc__work_I__52593CB8">
+            <End Role="work" EntitySet="works" />
+            <End Role="work_Arc" EntitySet="work_Arc" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Comm__workI__656C112C" Association="Self.FK__work_Comm__workI__656C112C">
+            <End Role="work" EntitySet="works" />
+            <End Role="work_Comment" EntitySet="work_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Favo__workI__2DE6D218" Association="Self.FK__work_Favo__workI__2DE6D218">
+            <End Role="work" EntitySet="works" />
+            <End Role="work_Favorite" EntitySet="work_Favorite" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Hear__workI__5FB337D6" Association="Self.FK__work_Hear__workI__5FB337D6">
+            <End Role="work" EntitySet="works" />
+            <End Role="work_Heart" EntitySet="work_Heart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Tag__workId__4E88ABD4" Association="Self.FK__work_Tag__workId__4E88ABD4">
+            <End Role="work" EntitySet="works" />
+            <End Role="work_Tag" EntitySet="work_Tag" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_View__workI__59FA5E80" Association="Self.FK__work_View__workI__59FA5E80">
+            <End Role="work" EntitySet="works" />
+            <End Role="work_View" EntitySet="work_View" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Chap__work___5629CD9C" Association="Self.FK__work_Chap__work___5629CD9C">
+            <End Role="work_Arc" EntitySet="work_Arc" />
+            <End Role="work_Chapter" EntitySet="work_Chapter" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Comm__arcId__6754599E" Association="Self.FK__work_Comm__arcId__6754599E">
+            <End Role="work_Arc" EntitySet="work_Arc" />
+            <End Role="work_Comment" EntitySet="work_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Chap__work___160F4887" Association="Self.FK__work_Chap__work___160F4887">
+            <End Role="work_Chapter" EntitySet="work_Chapter" />
+            <End Role="work_ChapterImage" EntitySet="work_ChapterImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK__work_Comm__chapt__68487DD7" Association="Self.FK__work_Comm__chapt__68487DD7">
+            <End Role="work_Chapter" EntitySet="work_Chapter" />
+            <End Role="work_Comment" EntitySet="work_Comment" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="web_comModelStoreContainer" CdmEntityContainer="web_comEntities">
+          <EntitySetMapping Name="admins">
+            <EntityTypeMapping TypeName="web_comModel.admin">
+              <MappingFragment StoreEntitySet="admins">
+                <ScalarProperty Name="adminsId" ColumnName="adminsId" />
+                <ScalarProperty Name="adminsName" ColumnName="adminsName" />
+                <ScalarProperty Name="adminsEmail" ColumnName="adminsEmail" />
+                <ScalarProperty Name="adminsPass" ColumnName="adminsPass" />
+                <ScalarProperty Name="role_AdminId" ColumnName="role_AdminId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="author_Follow">
+            <EntityTypeMapping TypeName="web_comModel.author_Follow">
+              <MappingFragment StoreEntitySet="author_Follow">
+                <ScalarProperty Name="author_FollowId" ColumnName="author_FollowId" />
+                <ScalarProperty Name="followerId" ColumnName="followerId" />
+                <ScalarProperty Name="authorId" ColumnName="authorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="author_Warning">
+            <EntityTypeMapping TypeName="web_comModel.author_Warning">
+              <MappingFragment StoreEntitySet="author_Warning">
+                <ScalarProperty Name="author_WarningId" ColumnName="author_WarningId" />
+                <ScalarProperty Name="author_WarningReason" ColumnName="author_WarningReason" />
+                <ScalarProperty Name="author_WarningWorkId" ColumnName="author_WarningWorkId" />
+                <ScalarProperty Name="author_WarningDate" ColumnName="author_WarningDate" />
+                <ScalarProperty Name="authorId" ColumnName="authorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="badges">
+            <EntityTypeMapping TypeName="web_comModel.badge">
+              <MappingFragment StoreEntitySet="badge">
+                <ScalarProperty Name="badgeId" ColumnName="badgeId" />
+                <ScalarProperty Name="badgeName" ColumnName="badgeName" />
+                <ScalarProperty Name="badgeDescription" ColumnName="badgeDescription" />
+                <ScalarProperty Name="isForAuthor" ColumnName="isForAuthor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="comment_Heart">
+            <EntityTypeMapping TypeName="web_comModel.comment_Heart">
+              <MappingFragment StoreEntitySet="comment_Heart">
+                <ScalarProperty Name="comment_HeartId" ColumnName="comment_HeartId" />
+                <ScalarProperty Name="usersId" ColumnName="usersId" />
+                <ScalarProperty Name="work_CommentId" ColumnName="work_CommentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="genres">
+            <EntityTypeMapping TypeName="web_comModel.genre">
+              <MappingFragment StoreEntitySet="genre">
+                <ScalarProperty Name="genreId" ColumnName="genreId" />
+                <ScalarProperty Name="genreName" ColumnName="genreName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="role_Admin">
+            <EntityTypeMapping TypeName="web_comModel.role_Admin">
+              <MappingFragment StoreEntitySet="role_Admin">
+                <ScalarProperty Name="role_AdminId" ColumnName="role_AdminId" />
+                <ScalarProperty Name="role_AdminName" ColumnName="role_AdminName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tags">
+            <EntityTypeMapping TypeName="web_comModel.tag">
+              <MappingFragment StoreEntitySet="tag">
+                <ScalarProperty Name="tagId" ColumnName="tagId" />
+                <ScalarProperty Name="tagName" ColumnName="tagName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_Badge">
+            <EntityTypeMapping TypeName="web_comModel.user_Badge">
+              <MappingFragment StoreEntitySet="user_Badge">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="badgeId" ColumnName="badgeId" />
+                <ScalarProperty Name="user_BadgeObtained" ColumnName="user_BadgeObtained" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_History">
+            <EntityTypeMapping TypeName="web_comModel.user_History">
+              <MappingFragment StoreEntitySet="user_History">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="workId" ColumnName="workId" />
+                <ScalarProperty Name="arcId" ColumnName="arcId" />
+                <ScalarProperty Name="chapterId" ColumnName="chapterId" />
+                <ScalarProperty Name="user_HistoryReadTime" ColumnName="user_HistoryReadTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_Warning">
+            <EntityTypeMapping TypeName="web_comModel.user_Warning">
+              <MappingFragment StoreEntitySet="user_Warning">
+                <ScalarProperty Name="user_WarningId" ColumnName="user_WarningId" />
+                <ScalarProperty Name="user_WarningType" ColumnName="user_WarningType" />
+                <ScalarProperty Name="user_WarningReason" ColumnName="user_WarningReason" />
+                <ScalarProperty Name="user_WarningLevel" ColumnName="user_WarningLevel" />
+                <ScalarProperty Name="user_WarningDate" ColumnName="user_WarningDate" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="web_comModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="usersId" ColumnName="usersId" />
+                <ScalarProperty Name="usersName" ColumnName="usersName" />
+                <ScalarProperty Name="usersEmail" ColumnName="usersEmail" />
+                <ScalarProperty Name="usersPass" ColumnName="usersPass" />
+                <ScalarProperty Name="usersCreated" ColumnName="usersCreated" />
+                <ScalarProperty Name="isAuthor" ColumnName="isAuthor" />
+                <ScalarProperty Name="isDisabled" ColumnName="isDisabled" />
+                <ScalarProperty Name="usersAvatar" ColumnName="usersAvatar" />
+                <ScalarProperty Name="usersCover" ColumnName="usersCover" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="works">
+            <EntityTypeMapping TypeName="web_comModel.work">
+              <MappingFragment StoreEntitySet="work">
+                <ScalarProperty Name="workId" ColumnName="workId" />
+                <ScalarProperty Name="workName" ColumnName="workName" />
+                <ScalarProperty Name="workCreated" ColumnName="workCreated" />
+                <ScalarProperty Name="workImage" ColumnName="workImage" />
+                <ScalarProperty Name="genreId" ColumnName="genreId" />
+                <ScalarProperty Name="authorId" ColumnName="authorId" />
+                <ScalarProperty Name="work_StatusId" ColumnName="work_StatusId" />
+                <ScalarProperty Name="workOverview" ColumnName="workOverview" />
+                <ScalarProperty Name="isDisabled" ColumnName="isDisabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="work_Arc">
+            <EntityTypeMapping TypeName="web_comModel.work_Arc">
+              <MappingFragment StoreEntitySet="work_Arc">
+                <ScalarProperty Name="work_ArcId" ColumnName="work_ArcId" />
+                <ScalarProperty Name="work_ArcTitle" ColumnName="work_ArcTitle" />
+                <ScalarProperty Name="work_ArcOrder" ColumnName="work_ArcOrder" />
+                <ScalarProperty Name="work_Id" ColumnName="work_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="work_Chapter">
+            <EntityTypeMapping TypeName="web_comModel.work_Chapter">
+              <MappingFragment StoreEntitySet="work_Chapter">
+                <ScalarProperty Name="work_ChapterId" ColumnName="work_ChapterId" />
+                <ScalarProperty Name="work_ChapterTitle" ColumnName="work_ChapterTitle" />
+                <ScalarProperty Name="work_ChapterContent" ColumnName="work_ChapterContent" />
+                <ScalarProperty Name="work_ChapterOrder" ColumnName="work_ChapterOrder" />
+                <ScalarProperty Name="work_ChapterIsImage" ColumnName="work_ChapterIsImage" />
+                <ScalarProperty Name="work_ArcId" ColumnName="work_ArcId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="work_ChapterImage">
+            <EntityTypeMapping TypeName="web_comModel.work_ChapterImage">
+              <MappingFragment StoreEntitySet="work_ChapterImage">
+                <ScalarProperty Name="work_ChapterImageId" ColumnName="work_ChapterImageId" />
+                <ScalarProperty Name="work_ChapterImageName" ColumnName="work_ChapterImageName" />
+                <ScalarProperty Name="work_ChapterImageOrder" ColumnName="work_ChapterImageOrder" />
+                <ScalarProperty Name="work_ChapterId" ColumnName="work_ChapterId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="work_Comment">
+            <EntityTypeMapping TypeName="web_comModel.work_Comment">
+              <MappingFragment StoreEntitySet="work_Comment">
+                <ScalarProperty Name="work_CommentId" ColumnName="work_CommentId" />
+                <ScalarProperty Name="work_CommentContent" ColumnName="work_CommentContent" />
+                <ScalarProperty Name="work_CommentCreated" ColumnName="work_CommentCreated" />
+                <ScalarProperty Name="work_CommentIsApproved" ColumnName="work_CommentIsApproved" />
+                <ScalarProperty Name="work_CommentIsDeleted" ColumnName="work_CommentIsDeleted" />
+                <ScalarProperty Name="workId" ColumnName="workId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="arcId" ColumnName="arcId" />
+                <ScalarProperty Name="chapterId" ColumnName="chapterId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="work_Favorite">
+            <EntityTypeMapping TypeName="web_comModel.work_Favorite">
+              <MappingFragment StoreEntitySet="work_Favorite">
+                <ScalarProperty Name="work_FavoriteId" ColumnName="work_FavoriteId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="workId" ColumnName="workId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="work_Heart">
+            <EntityTypeMapping TypeName="web_comModel.work_Heart">
+              <MappingFragment StoreEntitySet="work_Heart">
+                <ScalarProperty Name="work_HeartId" ColumnName="work_HeartId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="workId" ColumnName="workId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="work_Status">
+            <EntityTypeMapping TypeName="web_comModel.work_Status">
+              <MappingFragment StoreEntitySet="work_Status">
+                <ScalarProperty Name="work_StatusId" ColumnName="work_StatusId" />
+                <ScalarProperty Name="work_StatusName" ColumnName="work_StatusName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="work_Tag">
+            <EntityTypeMapping TypeName="web_comModel.work_Tag">
+              <MappingFragment StoreEntitySet="work_Tag">
+                <ScalarProperty Name="work_TagId" ColumnName="work_TagId" />
+                <ScalarProperty Name="workId" ColumnName="workId" />
+                <ScalarProperty Name="tagId" ColumnName="tagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="work_View">
+            <EntityTypeMapping TypeName="web_comModel.work_View">
+              <MappingFragment StoreEntitySet="work_View">
+                <ScalarProperty Name="work_ViewId" ColumnName="work_ViewId" />
+                <ScalarProperty Name="work_ViewDate" ColumnName="work_ViewDate" />
+                <ScalarProperty Name="workId" ColumnName="workId" />
+                <ScalarProperty Name="usersId" ColumnName="usersId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

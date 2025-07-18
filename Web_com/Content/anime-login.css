@@ -1,0 +1,464 @@
+﻿/* anime-login.css */
+/* Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    height: 100%;
+    background: transparent;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Enhanced background effects */
+.anime-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,107,107,0.1) 0%, rgba(107,107,255,0.1) 100%), url('/Content/Images/anime-bg.png') no-repeat center center / cover;
+    z-index: -2;
+    animation: moveParallax 30s ease-in-out infinite, colorPulse 20s ease infinite alternate;
+    overflow: hidden;
+}
+
+    /* Dynamic gradient overlay */
+    .anime-background::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 20% 30%, rgba(255,107,107,0.15) 0%, transparent 30%), radial-gradient(circle at 80% 70%, rgba(107,107,255,0.15) 0%, transparent 30%);
+        animation: gradientShift 25s ease infinite alternate;
+        z-index: -1;
+    }
+
+    /* Moving sakura petals effect */
+    .anime-background::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="rgba(255,192,203,0.6)" d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18c-4.42 0-8-3.58-8-8 0-1.85.63-3.55 1.69-4.9L10 14.83l6.31-6.31C17.37 6.45 18 8.15 18 10c0 4.42-3.58 8-8 8z"/></svg>');
+        background-size: 30px 30px;
+        opacity: 0.4;
+        animation: sakuraFall 20s linear infinite, sakuraDrift 15s ease-in-out infinite alternate;
+        z-index: -1;
+    }
+
+/* Enhanced overlay with particle effect */
+.anime-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+    pointer-events: none;
+}
+
+    .anime-overlay::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC41Ii8+PC9zdmc+') repeat, url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHBhdGggZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjMpIiBkPSJNMTAgMEw1IDIwTDE1IDEwTDAgMTV6Ii8+PC9zdmc+') repeat;
+        opacity: 0.3;
+        animation: particleMove 100s linear infinite, particleMoveReverse 120s linear infinite;
+    }
+
+/* New animations */
+@keyframes colorPulse {
+    0% {
+        filter: hue-rotate(0deg) brightness(0.9);
+    }
+
+    50% {
+        filter: hue-rotate(10deg) brightness(1.1);
+    }
+
+    100% {
+        filter: hue-rotate(-10deg) brightness(0.9);
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+@keyframes sakuraFall {
+    0% {
+        background-position: 0px 0px;
+    }
+
+    100% {
+        background-position: 500px 1000px;
+    }
+}
+
+@keyframes sakuraDrift {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(50px);
+    }
+}
+
+@keyframes particleMoveReverse {
+    0% {
+        background-position: 1000px 1000px;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
+
+@keyframes moveParallax {
+    0% {
+        transform: scale(1.1) translate(0, 0);
+    }
+
+    50% {
+        transform: scale(1.1) translate(-20px, -10px);
+    }
+
+    100% {
+        transform: scale(1.1) translate(10px, 10px);
+    }
+}
+
+@keyframes particleMove {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 1000px 1000px;
+    }
+}
+
+/* Login container - adjusted for three boxes */
+.anime-login-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(50vh - 100px); /* trừ khoảng header và footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 1;
+    background: transparent;
+    flex-wrap: wrap; /* Cho phép box tự xuống dòng nếu hẹp */
+}
+
+/* Login box base styles */
+.anime-login-box {
+    background: rgba(255, 255, 255, 0.95); /* Removed the common background image */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    animation: floatLogin 6s ease-in-out infinite;
+    transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.5s ease, border 0.5s ease;
+    opacity: 0;
+    max-width: 320px; /* nhỏ lại một chút */
+    min-height: 350px; /* bớt cao để không che footer */
+    flex: 1 1 300px; /* cho phép co giãn hợp lý */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Specific background for Register */
+.anime-login-box-register {
+    background: url('/Content/Images/register-bg.png') no-repeat center center / cover, rgba(255, 255, 255, 0.95);
+}
+
+/* Specific background for Login */
+.anime-login-box-login {
+    background: url('/Content/Images/login-bg.png') no-repeat center center / cover, rgba(255, 255, 255, 0.95);
+}
+
+/* Specific background for Guest Access */
+.anime-login-box-guest {
+    background: url('/Content/Images/guest-bg.png') no-repeat center center / cover, rgba(255, 255, 255, 0.95);
+}
+
+/* Ensure content is centered */
+.anime-login-box-register, .anime-login-box-login, .anime-login-box-guest {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Adjust Register two-column layout to fit within height */
+.anime-form-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.anime-form-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.anime-login-box:hover {
+    transform: translateY(-30px) scale(1.1);
+    opacity: 1;
+    box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+    border: 4px solid whitesmoke;
+}
+
+/* Staggered fade-in animations */
+.anime-login-box-login {
+    animation: fadeIn 1s ease-in-out forwards, floatLogin 6s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.anime-login-box-register {
+    animation: fadeIn 1s ease-in-out forwards, floatLogin 6s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.anime-login-box-guest {
+    animation: fadeIn 1s ease-in-out forwards, floatLogin 6s ease-in-out infinite;
+    animation-delay: 2s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0.95;
+    }
+}
+
+@keyframes floatLogin {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.anime-login-box h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Form elements */
+.anime-form-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.anime-input-group {
+    position: relative;
+}
+
+    .anime-input-group i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ff6b6b;
+        transition: all 0.3s;
+        font-size: 18px;
+    }
+
+.anime-input {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.9);
+    box-sizing: border-box;
+    height: 50px;
+}
+
+    .anime-input:focus {
+        border-color: #ff6b6b;
+        outline: none;
+        box-shadow: 0 0 15px rgba(255, 107, 107, 0.2);
+    }
+
+        .anime-input:focus + i {
+            color: #ff4757;
+            transform: translateY(-50%) scale(1.2);
+        }
+
+/* Dropdown styling for Gender */
+.anime-input-group select.anime-input {
+    padding: 12px 40px;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.9) url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSIjZmY2YjZiIiBkPSJNMTIgNEw4IDhsNCA0SDRhMSAxIDAgMCAxLTEtMWwtNC00IDQtNHoiLz48L3N2Zz4=') no-repeat right 15px center;
+    background-size: 12px;
+    height: 50px;
+}
+
+/* Checkbox */
+.anime-form-group label {
+    color: white;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.anime-form-group input[type="checkbox"] {
+    margin-right: 10px;
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+/* Buttons */
+.anime-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 15px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    height: 50px;
+}
+
+    .anime-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(255, 107, 107, 0.4);
+        background: linear-gradient(45deg, #ff4757, #ff6b6b);
+    }
+
+    /* Guest Access button style */
+    .anime-btn.guest-btn {
+        background: linear-gradient(45deg, #00c4b4, #00e4d4);
+    }
+
+        .anime-btn.guest-btn:hover {
+            background: linear-gradient(45deg, #00a49a, #00c4b4);
+        }
+
+/* Ensure other layout elements are transparent */
+.anime-header, .anime-footer, .anime-container {
+    z-index: 1;
+    background: transparent;
+}
+
+/* Ensure all boxes fade in on load */
+.anime-login-container {
+    animation: containerFadeIn 1s ease-in-out forwards;
+}
+
+@keyframes containerFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 1000px) {
+    .anime-login-container {
+        flex-direction: column;
+        height: auto;
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+    .anime-login-box {
+        max-width: 90%;
+        margin-bottom: 30px;
+    }
+}
+
+@keyframes sakuraColorCycle {
+    0% {
+        color: #FFB7C5;
+    }
+    /* Sakura Pink */
+    25% {
+        color: #FFCEDF;
+    }
+    /* Cherry Blossom Pink */
+    50% {
+        color: #FFDDDD;
+    }
+    /* Light Pink */
+    75% {
+        color: #FFE4E1;
+    }
+    /* Misty Rose */
+    100% {
+        color: #DB7093;
+    }
+    /* Pale Violet Red */
+}
+
+/*Admin Logout Button*/
+.admin-logout-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.anime-btn-logout {
+    background-color: #ff4757;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+    .anime-btn-logout:hover {
+        background-color: #ff6b81;
+        color: white;
+    }

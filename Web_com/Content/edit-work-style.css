@@ -1,0 +1,325 @@
+﻿/* ========== FORM CƠ BẢN ========== */
+.container h2 {
+    font-size: 40px;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    color: whitesmoke;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.chapter-name-input {
+    font-size: 16px;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #ff99cc;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+/* ========== TAG SELECTION ========== */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tag-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #ffccdd;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+    .tag-button:hover {
+        background-color: #ffb3cc;
+    }
+
+    .tag-button.selected {
+        background-color: #ff66b2;
+        color: white;
+    }
+
+/* ========== MODAL CHAPTER ========== */
+#chapterEditModal .modal-content {
+    background-color: #1f1f1f;
+    color: white;
+    border-radius: 10px;
+}
+
+#chapterEditModal .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#chapterEditModal .form-control,
+#chapterEditModal textarea.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ff99cc;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+#chapterEditModal textarea.form-control {
+    min-height: 400px;
+    resize: vertical;
+}
+
+#chapterEditModal label {
+    color: #ff99cc;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* ========== BẢNG CHAPTER ========== */
+.chapter-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    box-shadow: 0 0 8px rgba(255, 153, 204, 0.2);
+}
+
+    .chapter-table th,
+    .chapter-table td {
+        padding: 12px 16px;
+        text-align: left;
+        color: white;
+        font-family: 'M PLUS Rounded 1c', sans-serif;
+        border-bottom: 1px solid #ff99cc66;
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .chapter-table th {
+        background-color: #ff99cc33;
+        font-weight: bold;
+    }
+
+    .chapter-table tr:hover td {
+        background-color: #ff99cc22;
+    }
+
+/* ========== NÚT ========== */
+.edit-chapter-btn {
+    background-color: #ff66b2;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+    .edit-chapter-btn:hover {
+        background-color: #ff3385;
+    }
+
+/* ========== ẢNH MANGA PREVIEW ========== */
+.image-preview-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.image-preview-item img.img-thumbnail {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+/* ========== KHU VỰC GÓI NHÓM ========== */
+.section-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid #ff99cc33;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+#btnSaveChapterContent {
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* Đảm bảo modal không bị các phần tử khác che khuất */
+.modal {
+    z-index: 1050 !important;
+}
+
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #1f1f1f;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    z-index: 1001;
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Disable HTML5 validation styling */
+input:invalid, textarea:invalid {
+    box-shadow: none;
+}
+
+/* Creation Sections */
+.creation-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid #ff99cc33;
+}
+
+.section-title {
+    color: #ff99cc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0;
+}
+
+.btn-add {
+    background: #ff66b2;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .btn-add:hover {
+        background: #ff3385;
+    }
+
+.creation-form {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px dashed #ff99cc66;
+}
+
+.items-list {
+    margin-top: 20px;
+}
+
+.item-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid #ff99cc33;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+    .item-card h4 {
+        margin-top: 0;
+        color: #ffccdd;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .item-card .item-meta {
+        color: #aaa;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+/* Form controls */
+.form-control[readonly] {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #888;
+    cursor: not-allowed;
+}
+
+.form-text {
+    color: #aaa;
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
+}
+
+/* Image preview */
+.image-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.image-preview-item {
+    border: 1px solid #444;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+    .image-preview-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }

@@ -1,0 +1,66 @@
+﻿@model Web_com.Models.Entities.work_Chapter
+
+@{
+    Layout = null;
+    bool isImage = Convert.ToBoolean(Model.work_ChapterIsImage);
+    var chapterId = Model.work_ChapterId;
+}
+
+<div id="chapterEditForm" data-chapter-id="@Model.work_ChapterId" data-is-image="@isImage">
+    @Html.AntiForgeryToken()
+
+    @if (!isImage)
+    {
+        <!-- Light Novel -->
+        <div class="form-group">
+            <label>Chapter Title</label>
+            <input type="text" name="chapterTitle" value="@Model.work_ChapterTitle" class="form-control">
+        </div>
+
+        <label>Chapter Content</label>
+        <textarea id="chapterContent" name="content">@Model.work_ChapterContent</textarea>
+    }
+    else
+    {
+        <!-- Manga -->
+        <div class="form-group">
+            <label>Chapter Title</label>
+            <input type="text" name="chapterTitle" value="@Model.work_ChapterTitle" class="form-control">
+        </div>
+        <label class="form-label text-light">Image List</label>
+        <div class="row" id="imagePreviewList">
+            @foreach (var img in ((List<Web_com.Models.Entities.work_ChapterImage>)ViewBag.Images).OrderBy(i => i.work_ChapterImageOrder))
+            {
+                <div class="col-md-4 mb-2 position-relative chapter-image-item">
+                    <input type="checkbox" class="form-check-input position-absolute top-0 start-0 m-1 delete-checkbox"
+                           data-image-id="@img.work_ChapterImageId" />
+
+                    <img src="@Url.Content("~/Content/Images/Manga/" + img.work_ChapterImageName)"
+                         class="img-fluid replaceable-image border rounded"
+                         alt="Manga Image"
+                         data-image-id="@img.work_ChapterImageId" />
+
+                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 delete-image-btn"
+                            data-image-id="@img.work_ChapterImageId">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            }
+            <button type="button" id="btnDeleteSelectedImages" class="btn btn-outline-danger mt-2">
+                🗑️ Delete Selected Image
+            </button>
+            <button type="button" id="btnDeleteAllImages" class="btn btn-outline-warning mt-2">
+                🧨 Delete All Image
+            </button>
+        </div>
+
+        <label for="chapterImageUpload" class="form-label text-light mt-3">Add New Image (optional)</label>
+        <input type="file" name="images" id="chapterImageUpload" multiple accept="image/*" class="form-control" />
+    }
+
+    <div class="text-end mt-3">
+        <button type="button" id="btnSaveChapterContent" class="btn btn-primary">Save Changes</button>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/Content/edit-work-style.css" />

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d896ce43d41341d1a9faf23865a6628b" Name="Diagram1">
+        <EntityTypeShape EntityType="web_comModel.admin" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.author_Follow" Width="1.5" PointX="3" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.author_Warning" Width="1.5" PointX="3" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.badge" Width="1.5" PointX="3.75" PointY="24.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.comment_Heart" Width="1.5" PointX="6" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.genre" Width="1.5" PointX="0.75" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.role_Admin" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.tag" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.user_Badge" Width="1.5" PointX="6" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.user_History" Width="1.5" PointX="6" PointY="23" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.user_Warning" Width="1.5" PointX="3" PointY="32.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.user" Width="1.5" PointX="0.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work" Width="1.5" PointX="3" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work_Arc" Width="1.5" PointX="5.25" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work_Chapter" Width="1.5" PointX="7.5" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work_ChapterImage" Width="1.5" PointX="9.75" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work_Comment" Width="1.5" PointX="9.75" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work_Favorite" Width="1.5" PointX="8.25" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work_Heart" Width="1.5" PointX="11.25" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work_Status" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work_Tag" Width="1.5" PointX="5.25" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="web_comModel.work_View" Width="1.5" PointX="8.25" PointY="23.25" IsExpanded="true" />
+        <AssociationConnector Association="web_comModel.FK__admins__role_Adm__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__author_Fo__autho__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__author_Fo__follo__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__author_Wa__autho__07C12930" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__author_Wa__autho__09A971A2" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__user_Badg__badge__797309D9" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__comment_H__users__6C190EBB" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__comment_H__work___6D0D32F4" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work__genreId__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Tag__tagId__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__user_Badg__userI__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__user_Hist__arcId__02FC7413" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__user_Hist__chapt__03F0984C" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__user_Hist__userI__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__user_Hist__workI__02084FDA" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__user_Warn__userI__7E37BEF6" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work__authorId__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Comm__userI__66603565" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Favo__userI__2CF2ADDF" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Hear__userI__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_View__users__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work__work_Statu__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Arc__work_I__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Comm__workI__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Favo__workI__2DE6D218" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Hear__workI__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Tag__workId__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_View__workI__59FA5E80" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Chap__work___5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Comm__arcId__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Chap__work___160F4887" ManuallyRouted="false" />
+        <AssociationConnector Association="web_comModel.FK__work_Comm__chapt__68487DD7" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

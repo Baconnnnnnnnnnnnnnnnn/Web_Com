@@ -1,0 +1,229 @@
+﻿@model IEnumerable<Web_com.Models.Entities.work_Arc>
+
+@{
+    ViewBag.Title = @ViewBag.Genre;
+    Layout = null;
+    var arcs = Model;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-p1yLg98qQ0NHepA...==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <link href="~/Content/anime-login.css" rel="stylesheet" />
+    <link href="~/Content/arc-details.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Background and overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <header class="reader-header">
+        <div class="site-name" style="text-decoration: none; color: inherit;">
+            <b>Web_Com</b>
+        </div>
+        <p class="reader-slogan">Your destiny hinges on your decisions seize every opportunity without hesitation</p>
+    </header>
+    <!-- Hiển thị thông tin tác phẩm -->
+    <div class="arc-container">
+        <div class="header-section">
+            <div class="image-block">
+                <img src="/Content/Images/@ViewBag.WorkImage"
+                     alt="@ViewBag.WorkName"
+                     style="cursor: zoom-in;"
+                     onclick="zoomImage(this.src)" />
+                <p class="created-date">Created on: @ViewBag.WorkCreated</p>
+            </div>
+            <div class="info-block">
+                <h1>@ViewBag.WorkName</h1>
+                <div class="info-item"><strong>Genre:</strong> @ViewBag.Genre</div>
+                <div class="info-item"><strong>Status:</strong> @ViewBag.Status</div>
+                <div class="info-item"><strong>Tags:</strong> @ViewBag.Tags</div>
+                <div class="info-item">
+                    <strong>Author:</strong>
+                    <a href="/Profile/Index/@ViewBag.AuthorId"
+                       style="color: #4a90e2; text-decoration: none;">
+                        @ViewBag.Author
+                    </a>
+                </div>
+                <div class="info-item"><strong>Overview:</strong> @ViewBag.WorkOverview</div>
+                <div class="button-group-inline">
+                    <button id="heart-btn"
+                            class="heart-button @(ViewBag.HasHearted ? "hearted" : "")"
+                            data-workid="@ViewBag.WorkId"
+                            data-hearted="@ViewBag.HasHearted">
+                        <i class="@(ViewBag.HasHearted ? "fas" : "far") fa-heart"></i>
+                        <span id="heart-count">@ViewBag.HeartCount</span>
+                    </button>
+                    <button id="favorite-btn"
+                            class="favorite-button @(ViewBag.IsFavorited ? "favorited" : "")"
+                            data-workid="@ViewBag.WorkId"
+                            data-favorited="@ViewBag.IsFavorited">
+                        <i class="@(ViewBag.IsFavorited ? "fas" : "far") fa-bookmark"></i>
+                        <span id="favorite-count">@ViewBag.FavoriteCount</span>
+                    </button>
+                    <a href="/Web_Com/Login/User@(Session["UserId"])" class="button-back">Back to Web_Com</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <h4>Arc List</h4>
+            <p style="font-style: italic; color: ghostwhite; font-size: 14px; margin-top: 5px;">*Click on an arc to view its chapters</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Arc</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var arc in Model.OrderBy(a => a.work_ArcOrder))
+                    {
+                        <tr onclick="toggleChapters(@arc.work_ArcId)" style="cursor:pointer;">
+                            <td>@arc.work_ArcOrder</td>
+                            <td>@arc.work_ArcTitle</td>
+                        </tr>
+                        <tr id="chapters-@arc.work_ArcId" style="display:none;">
+                            <td colspan="2">
+                                <table class="chapter-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Chapter</th>
+                                            <th>Title</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            var chapters = (ViewBag.Chapters as List<Web_com.Models.Entities.work_Chapter>)
+                                                            .Where(c => c.work_ArcId == arc.work_ArcId)
+                                                            .OrderBy(c => c.work_ChapterOrder)
+                                                            .ToList();
+                                        }
+
+                                        @if (chapters.Any())
+                                        {
+                                            foreach (var chap in chapters)
+                                            {
+                                                var isImage = chap.work_ChapterIsImage == true;
+                                                var rawContent = (chap.work_ChapterContent ?? "")
+                                                    .Replace("\"", "&quot;")
+                                                    .Replace("\n", "&#10;");
+
+                                                <tr class="chapter-row"
+                                                    onclick="showChapterContent('@chap.work_ChapterId')"
+                                                    data-title="@chap.work_ChapterTitle"
+                                                    data-isimage="@chap.work_ChapterIsImage"
+                                                    data-content="@Html.Raw((chap.work_ChapterContent ?? "").Replace("\"", "&quot;").Replace("\n", "&#10;"))"
+                                                    data-arcid="@arc.work_ArcId"
+                                                    data-order="@chap.work_ChapterOrder"
+                                                    data-chapterid="@chap.work_ChapterId"
+                                                    style="cursor: pointer;">
+                                                    <td>@chap.work_ChapterOrder</td>
+                                                    <td>@chap.work_ChapterTitle</td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr><td colspan="2">No chapters available.</td></tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="2">No arcs available</td></tr>
+                }
+            </tbody>
+        </table>
+        <!-- Chapter content -->
+        <div id="chapter-content-box" class="chapter-content-box">
+            <p style="color:#ccc;">Click a chapter title to read.</p>
+        </div>
+        <!-- Comment area -->
+        <div class="comment-section">
+            <div class="section-title">
+                <b>Leave a Comment</b>
+            </div>
+            @if (Session["UserId"] != null)
+            {
+                <textarea id="comment-box" class="comment-box" placeholder="Write your comment here..." rows="4"></textarea>
+                <button id="comment-submit" class="comment-submit" data-workid="@ViewBag.WorkId">Submit</button>
+            }
+            else
+            {
+                <div class="login-overlay" id="login-overlay">
+                    <div class="login-popup">
+                        <p>You need to log in to comment.</p>
+                        <div class="login-buttons">
+                            <button onclick="window.location.href='/Account/Login'">Log In</button>
+                            <button onclick="document.getElementById('login-overlay').style.display='none'">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="section-title">
+                <b>Comments</b>
+            </div>
+            <div id="comment-list">
+                @if (ViewBag.Comments != null && ViewBag.Comments.Count > 0)
+                {
+                    foreach (var comment in ViewBag.Comments)
+                    {
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <img src="/Content/Images/Avatar/@comment.UserAvatar" alt="Avatar" class="comment-avatar">
+                                <span class="comment-username">
+                                    @comment.UserName
+                                    @if (comment.IsApproved)
+                                    {
+                                        <i class="fas fa-check-circle" style="color: green; margin-left: 5 membership; margin-right: 5px;" title="Đã được phê duyệt"></i>
+                                    }
+                                    <span class="comment-heart" data-commentid="@comment.Work_CommentId" data-hearted="@comment.HasHearted.ToString()">
+                                        <i class="@(comment.HasHearted ? "fas fa-heart" : "far fa-heart")" style="color: @(comment.HasHearted ? "red" : "gray"); cursor: pointer;"></i>
+                                        <span class="heart-count">@comment.HeartCount</span>
+                                    </span>
+                                </span>
+                                <span class="comment-date">@comment.Work_CommentCreated.ToString("dd/MM/yyyy HH:mm")</span>
+                            </div>
+                            <div class="comment-content">@comment.Work_CommentContent</div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No comments yet.</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="anime-footer">
+        <p>© @DateTime.Now.Year Web_Com. All rights reserved. Content and artwork belong to their respective authors</p>
+    </div>
+    <!-- Zoom image -->
+    <div id="imageOverlay" class="image-overlay" onclick="closeImagePopup()">
+        <img id="popupImage" class="popup-image" src="#" alt="Zoomed" />
+    </div>
+    <div class="anime-footer">
+        <p>© @DateTime.Now.Year Web_Com. All rights reserved. Content and artwork belong to their respective authors</p>
+    </div>
+    <!-- Top button -->
+    <button id="btnTop" title="Back to Top">↑</button>
+
+    <script src="~/Scripts/comment-handler.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,35 @@
+﻿.chapter-list-container {
+    max-width: 800px;
+    margin: 30px auto;
+    color: white;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+.chapter-list {
+    list-style: none;
+    padding: 0;
+}
+
+.chapter-item {
+    padding: 12px 20px;
+    background-color: rgba(255,255,255,0.05);
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .chapter-item:hover {
+        background-color: rgba(255,153,204,0.2);
+    }
+
+.chapter-content-box {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.05);
+    box-shadow: 0 0 10px rgba(255,153,204,0.2);
+    font-size: 18px;
+    line-height: 1.8;
+}
