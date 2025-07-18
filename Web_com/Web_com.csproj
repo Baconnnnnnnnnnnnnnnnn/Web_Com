@@ -262,7 +262,13 @@
     <Content Include="Content\Images\Manga\Chapter 1-4.png" />
     <Content Include="Content\Images\Manga\Chapter 1-5.png" />
     <Content Include="Content\Images\Manga\Chapter 1-6.png" />
+    <Content Include="Content\Images\Preview\Choose.png" />
+    <Content Include="Content\Images\Preview\Comment.png" />
+    <Content Include="Content\Images\Preview\Content.png" />
+    <Content Include="Content\Images\Preview\Details.png" />
+    <Content Include="Content\Images\Preview\List.png" />
     <Content Include="Content\Images\Preview\MainPage.png" />
+    <Content Include="Content\Images\Preview\Profile.png" />
     <Content Include="Content\Images\register-bg.png" />
     <Content Include="Content\Images\Tonikaku-bg.png" />
     <Content Include="Content\profile-content.css" />
