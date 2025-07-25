@@ -10,7 +10,7 @@
     function applyRoleFilter(role) {
         currentFilter = role === currentFilter ? null : role;
 
-        $('.user-row').each(function () {
+        $('.account-row').each(function () {
             const isAuthor = $(this).data('is-author') === "True";
             const match =
                 !currentFilter ||
@@ -36,14 +36,32 @@
     function filterUsers() {
         const nameFilter = $('#search-name').val().toLowerCase();
         const emailFilter = $('#search-email').val().toLowerCase();
+        let hasResults = false;
 
-        $('.user-row').each(function () {
+        $('.account-row').each(function () {
             const name = $(this).find('td:eq(0)').text().toLowerCase();
             const email = $(this).find('td:eq(1)').text().toLowerCase();
-
             const match = name.includes(nameFilter) && email.includes(emailFilter);
+
             $(this).toggleClass('filtered-out', !match);
+
+            if (match) {
+                hasResults = true;
+            }
         });
+
+        const noResultsRow = $('#no-results-row');
+        if (!hasResults) {
+            if (noResultsRow.length === 0) {
+                $('table tbody').append(
+                    '<tr id="no-results-row"><td colspan="7" style="text-align: center; color: red;">No account found matching your criteria</td></tr>'
+                );
+            }
+        } else {
+            noResultsRow.remove();
+        }
+
+        refreshPaginationAfterFilter();
     }
 
     $('#search-name, #search-email').on('input', function () {

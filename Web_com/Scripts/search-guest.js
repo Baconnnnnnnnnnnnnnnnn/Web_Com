@@ -12,7 +12,7 @@
 
         // Kiểm tra nếu dữ liệu không hợp lệ
         if (!Array.isArray(works)) {
-            worksList.innerHTML = '<p class="error">Invalid data format from server.</p>';
+            worksList.innerHTML = '<p class="error">Invalid data format from server</p>';
             console.error('renderWorks: Expected array, got:', works);
             return;
         }
@@ -21,7 +21,7 @@
         worksList.innerHTML = '';
 
         if (works.length === 0) {
-            worksList.innerHTML = '<p class="no-results">No works found matching your criteria.</p>';
+            worksList.innerHTML = '<p class="no-results">No works found matching your criteria</p>';
             return;
         }
 
