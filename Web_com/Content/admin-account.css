@@ -347,3 +347,24 @@ tr:hover {
         transform: scale(1.25);
         box-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
     }
+
+.avatar-overlay {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-avatar {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 153, 204, 0.5);
+    animation: fadeIn 0.4s ease;
+}

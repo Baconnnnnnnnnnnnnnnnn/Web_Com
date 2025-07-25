@@ -312,3 +312,18 @@
         });
     }
 });
+
+// Zoom ảnh
+function zoomImage(src) {
+    const popup = document.getElementById("avatarOverlay");
+    const img = document.getElementById("popupAvatar");
+    if (img && popup) {
+        img.src = src;
+        popup.style.display = "flex";
+    }
+}
+
+function closeImagePopup() {
+    const popup = document.getElementById("avatarOverlay");
+    if (popup) popup.style.display = "none";
+}

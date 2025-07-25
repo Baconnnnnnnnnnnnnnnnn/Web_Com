@@ -88,7 +88,8 @@
                             </button>
                         </td>
                         <td>
-                            <img src="/Content/Images/Avatar/@user.UsersAvatar" class="profile-avatar" />
+                            <img src="/Content/Images/Avatar/@user.UsersAvatar" class="profile-avatar"
+                                 style="cursor: zoom-in;" onclick="zoomImage(this.src)" />
                         </td>
                         <td>@(user.UsersCreated.HasValue ? user.UsersCreated.Value.ToString("dd/MM/yyyy") : "N/A")</td>
                         <td>@(user.IsAuthor.HasValue && user.IsAuthor.Value ? "Author" : "Reader")</td>
@@ -126,6 +127,11 @@
                 <option value="20">20</option>
             </select>
             users per page
+        </div>
+
+        <!-- Zoom image -->
+        <div id="avatarOverlay" class="avatar-overlay" onclick="closeImagePopup()">
+            <img id="popupAvatar" class="popup-avatar" src="#" alt="Zoomed" />
         </div>
     </div>
 
