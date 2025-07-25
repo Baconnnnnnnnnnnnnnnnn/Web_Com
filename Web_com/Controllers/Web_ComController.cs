@@ -16,6 +16,21 @@ namespace Web_com.Controllers
         private web_comEntities db = new web_comEntities();
         public ActionResult Register(int? id)
         {
+            if (Session["UserId"] != null)
+            {
+                int userId;
+                if (int.TryParse(Session["UserId"].ToString(), out userId)) // Xử lý ép kiểu an toàn
+                {
+                    var user = db.users.FirstOrDefault(u => u.usersId == userId);
+
+                    if (user != null)
+                    {
+                        ViewBag.UserName = user.usersName;
+                        ViewBag.IsLoggedIn = true;
+                    }
+                }
+            }
+
             var works = db.works
                 .Where(w => w.isDisabled == false || w.isDisabled == null) // Xử lý cả trường hợp null
                 .OrderBy(w => w.workName)
