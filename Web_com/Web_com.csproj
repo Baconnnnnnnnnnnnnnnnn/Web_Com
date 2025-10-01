@@ -148,6 +148,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModelView\CommentAdminViewModel.cs" />
+    <Compile Include="Models\ModelView\CommentViewModel.cs" />
     <Compile Include="Models\Entities\admin.cs">
       <DependentUpon>web_com.tt</DependentUpon>
     </Compile>
@@ -179,6 +181,9 @@
       <DependentUpon>web_com.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\user_History.cs">
+      <DependentUpon>web_com.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\user_Notification.cs">
       <DependentUpon>web_com.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\user_Warning.cs">
@@ -229,8 +234,6 @@
     <Compile Include="Models\Entities\work_View.cs">
       <DependentUpon>web_com.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModelView\CommentAdminViewModel.cs" />
-    <Compile Include="Models\ModelView\CommentViewModel.cs" />
     <Compile Include="Models\ModelView\UserSummaryViewModel.cs" />
     <Compile Include="Models\ModelView\UserUpdateViewModel.cs" />
     <Compile Include="Models\ModelView\WorkSummaryViewModel.cs" />

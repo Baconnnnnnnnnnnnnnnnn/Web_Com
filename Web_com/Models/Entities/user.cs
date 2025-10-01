@@ -23,6 +23,8 @@ namespace Web_com.Models.Entities
             this.comment_Heart = new HashSet<comment_Heart>();
             this.user_Badge = new HashSet<user_Badge>();
             this.user_History = new HashSet<user_History>();
+            this.user_Notification = new HashSet<user_Notification>();
+            this.user_Notification1 = new HashSet<user_Notification>();
             this.user_Warning = new HashSet<user_Warning>();
             this.works = new HashSet<work>();
             this.work_Comment = new HashSet<work_Comment>();
@@ -53,6 +55,10 @@ namespace Web_com.Models.Entities
         public virtual ICollection<user_Badge> user_Badge { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<user_History> user_History { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_Notification> user_Notification { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_Notification> user_Notification1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<user_Warning> user_Warning { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -13,10 +13,10 @@ namespace Web_com.Models.Entities
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class web_comEntities : DbContext
+    public partial class web_comEntities1 : DbContext
     {
-        public web_comEntities()
-            : base("name=web_comEntities")
+        public web_comEntities1()
+            : base("name=web_comEntities1")
         {
         }
     
@@ -35,6 +35,7 @@ namespace Web_com.Models.Entities
         public virtual DbSet<tag> tags { get; set; }
         public virtual DbSet<user_Badge> user_Badge { get; set; }
         public virtual DbSet<user_History> user_History { get; set; }
+        public virtual DbSet<user_Notification> user_Notification { get; set; }
         public virtual DbSet<user_Warning> user_Warning { get; set; }
         public virtual DbSet<user> users { get; set; }
         public virtual DbSet<work> works { get; set; }

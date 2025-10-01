@@ -18,6 +18,7 @@ namespace Web_com.Models.Entities
         public work_Comment()
         {
             this.comment_Heart = new HashSet<comment_Heart>();
+            this.user_Notification = new HashSet<user_Notification>();
         }
     
         public int work_CommentId { get; set; }
@@ -32,6 +33,8 @@ namespace Web_com.Models.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<comment_Heart> comment_Heart { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_Notification> user_Notification { get; set; }
         public virtual user user { get; set; }
         public virtual work work { get; set; }
         public virtual work_Arc work_Arc { get; set; }

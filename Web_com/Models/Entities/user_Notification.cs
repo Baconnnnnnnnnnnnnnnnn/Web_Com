@@ -12,13 +12,20 @@ namespace Web_com.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class comment_Heart
+    public partial class user_Notification
     {
-        public int comment_HeartId { get; set; }
-        public Nullable<int> usersId { get; set; }
-        public Nullable<int> work_CommentId { get; set; }
+        public int user_NotificationId { get; set; }
+        public Nullable<int> userId { get; set; }
+        public Nullable<int> actorId { get; set; }
+        public Nullable<int> workId { get; set; }
+        public Nullable<int> commentId { get; set; }
+        public string user_NotificationType { get; set; }
+        public Nullable<bool> isRead { get; set; }
+        public Nullable<System.DateTime> user_NotificationCreated { get; set; }
     
         public virtual user user { get; set; }
         public virtual work_Comment work_Comment { get; set; }
+        public virtual user user1 { get; set; }
+        public virtual work work { get; set; }
     }
 }

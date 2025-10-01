@@ -91,6 +91,19 @@
           <Property Name="chapterId" Type="int" Nullable="false" />
           <Property Name="user_HistoryReadTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="user_Notification">
+          <Key>
+            <PropertyRef Name="user_NotificationId" />
+          </Key>
+          <Property Name="user_NotificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="int" />
+          <Property Name="actorId" Type="int" />
+          <Property Name="workId" Type="int" />
+          <Property Name="commentId" Type="int" />
+          <Property Name="user_NotificationType" Type="varchar" MaxLength="50" />
+          <Property Name="isRead" Type="bit" />
+          <Property Name="user_NotificationCreated" Type="datetime" />
+        </EntityType>
         <EntityType Name="user_Warning">
           <Key>
             <PropertyRef Name="user_WarningId" />
@@ -369,6 +382,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__user_Noti__actor__503BEA1C">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_Notification">
+              <PropertyRef Name="actorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Noti__comme__5224328E">
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="0..1" />
+          <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Comment">
+              <PropertyRef Name="work_CommentId" />
+            </Principal>
+            <Dependent Role="user_Notification">
+              <PropertyRef Name="commentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Noti__userI__4F47C5E3">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_Notification">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Noti__workI__51300E55">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="user_Notification">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__user_Warn__userI__7E37BEF6">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="user_Warning" Type="Self.user_Warning" Multiplicity="*" />
@@ -608,6 +669,7 @@
           <EntitySet Name="tag" EntityType="Self.tag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_Badge" EntityType="Self.user_Badge" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_History" EntityType="Self.user_History" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_Notification" EntityType="Self.user_Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_Warning" EntityType="Self.user_Warning" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="work" EntityType="Self.work" Schema="dbo" store:Type="Tables" />
@@ -671,6 +733,22 @@
           <AssociationSet Name="FK__user_Hist__workI__02084FDA" Association="Self.FK__user_Hist__workI__02084FDA">
             <End Role="work" EntitySet="work" />
             <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Noti__actor__503BEA1C" Association="Self.FK__user_Noti__actor__503BEA1C">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_Notification" EntitySet="user_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Noti__comme__5224328E" Association="Self.FK__user_Noti__comme__5224328E">
+            <End Role="work_Comment" EntitySet="work_Comment" />
+            <End Role="user_Notification" EntitySet="user_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Noti__userI__4F47C5E3" Association="Self.FK__user_Noti__userI__4F47C5E3">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_Notification" EntitySet="user_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Noti__workI__51300E55" Association="Self.FK__user_Noti__workI__51300E55">
+            <End Role="work" EntitySet="work" />
+            <End Role="user_Notification" EntitySet="user_Notification" />
           </AssociationSet>
           <AssociationSet Name="FK__user_Warn__userI__7E37BEF6" Association="Self.FK__user_Warn__userI__7E37BEF6">
             <End Role="users" EntitySet="users" />
@@ -857,6 +935,23 @@
           <NavigationProperty Name="user" Relationship="Self.FK__user_Hist__userI__01142BA1" FromRole="user_History" ToRole="users" />
           <NavigationProperty Name="work" Relationship="Self.FK__user_Hist__workI__02084FDA" FromRole="user_History" ToRole="work" />
         </EntityType>
+        <EntityType Name="user_Notification">
+          <Key>
+            <PropertyRef Name="user_NotificationId" />
+          </Key>
+          <Property Name="user_NotificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="actorId" Type="Int32" />
+          <Property Name="workId" Type="Int32" />
+          <Property Name="commentId" Type="Int32" />
+          <Property Name="user_NotificationType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isRead" Type="Boolean" />
+          <Property Name="user_NotificationCreated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="user" Relationship="Self.FK__user_Noti__actor__503BEA1C" FromRole="user_Notification" ToRole="users" />
+          <NavigationProperty Name="work_Comment" Relationship="Self.FK__user_Noti__comme__5224328E" FromRole="user_Notification" ToRole="work_Comment" />
+          <NavigationProperty Name="user1" Relationship="Self.FK__user_Noti__userI__4F47C5E3" FromRole="user_Notification" ToRole="users" />
+          <NavigationProperty Name="work" Relationship="Self.FK__user_Noti__workI__51300E55" FromRole="user_Notification" ToRole="work" />
+        </EntityType>
         <EntityType Name="user_Warning">
           <Key>
             <PropertyRef Name="user_WarningId" />
@@ -888,6 +983,8 @@
           <NavigationProperty Name="comment_Heart" Relationship="Self.FK__comment_H__users__6C190EBB" FromRole="users" ToRole="comment_Heart" />
           <NavigationProperty Name="user_Badge" Relationship="Self.FK__user_Badg__userI__787EE5A0" FromRole="users" ToRole="user_Badge" />
           <NavigationProperty Name="user_History" Relationship="Self.FK__user_Hist__userI__01142BA1" FromRole="users" ToRole="user_History" />
+          <NavigationProperty Name="user_Notification" Relationship="Self.FK__user_Noti__actor__503BEA1C" FromRole="users" ToRole="user_Notification" />
+          <NavigationProperty Name="user_Notification1" Relationship="Self.FK__user_Noti__userI__4F47C5E3" FromRole="users" ToRole="user_Notification" />
           <NavigationProperty Name="user_Warning" Relationship="Self.FK__user_Warn__userI__7E37BEF6" FromRole="users" ToRole="user_Warning" />
           <NavigationProperty Name="works" Relationship="Self.FK__work__authorId__49C3F6B7" FromRole="users" ToRole="work" />
           <NavigationProperty Name="work_Comment" Relationship="Self.FK__work_Comm__userI__66603565" FromRole="users" ToRole="work_Comment" />
@@ -911,6 +1008,7 @@
           <NavigationProperty Name="author_Warning" Relationship="Self.FK__author_Wa__autho__07C12930" FromRole="work" ToRole="author_Warning" />
           <NavigationProperty Name="genre" Relationship="Self.FK__work__genreId__48CFD27E" FromRole="work" ToRole="genre" />
           <NavigationProperty Name="user_History" Relationship="Self.FK__user_Hist__workI__02084FDA" FromRole="work" ToRole="user_History" />
+          <NavigationProperty Name="user_Notification" Relationship="Self.FK__user_Noti__workI__51300E55" FromRole="work" ToRole="user_Notification" />
           <NavigationProperty Name="user" Relationship="Self.FK__work__authorId__49C3F6B7" FromRole="work" ToRole="users" />
           <NavigationProperty Name="work_Status" Relationship="Self.FK__work__work_Statu__4AB81AF0" FromRole="work" ToRole="work_Status" />
           <NavigationProperty Name="work_Arc" Relationship="Self.FK__work_Arc__work_I__52593CB8" FromRole="work" ToRole="work_Arc" />
@@ -972,6 +1070,7 @@
           <Property Name="arcId" Type="Int32" />
           <Property Name="chapterId" Type="Int32" />
           <NavigationProperty Name="comment_Heart" Relationship="Self.FK__comment_H__work___6D0D32F4" FromRole="work_Comment" ToRole="comment_Heart" />
+          <NavigationProperty Name="user_Notification" Relationship="Self.FK__user_Noti__comme__5224328E" FromRole="work_Comment" ToRole="user_Notification" />
           <NavigationProperty Name="user" Relationship="Self.FK__work_Comm__userI__66603565" FromRole="work_Comment" ToRole="users" />
           <NavigationProperty Name="work" Relationship="Self.FK__work_Comm__workI__656C112C" FromRole="work_Comment" ToRole="work" />
           <NavigationProperty Name="work_Arc" Relationship="Self.FK__work_Comm__arcId__6754599E" FromRole="work_Comment" ToRole="work_Arc" />
@@ -1206,6 +1305,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__user_Noti__actor__503BEA1C">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_Notification">
+              <PropertyRef Name="actorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Noti__comme__5224328E">
+          <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="0..1" />
+          <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work_Comment">
+              <PropertyRef Name="work_CommentId" />
+            </Principal>
+            <Dependent Role="user_Notification">
+              <PropertyRef Name="commentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Noti__userI__4F47C5E3">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="usersId" />
+            </Principal>
+            <Dependent Role="user_Notification">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_Noti__workI__51300E55">
+          <End Role="work" Type="Self.work" Multiplicity="0..1" />
+          <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="work">
+              <PropertyRef Name="workId" />
+            </Principal>
+            <Dependent Role="user_Notification">
+              <PropertyRef Name="workId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__user_Warn__userI__7E37BEF6">
           <End Role="users" Type="Self.user" Multiplicity="0..1" />
           <End Role="user_Warning" Type="Self.user_Warning" Multiplicity="*" />
@@ -1410,7 +1557,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="web_comEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="web_comEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="admins" EntityType="Self.admin" />
           <EntitySet Name="author_Follow" EntityType="Self.author_Follow" />
           <EntitySet Name="author_Warning" EntityType="Self.author_Warning" />
@@ -1421,6 +1568,7 @@
           <EntitySet Name="tags" EntityType="Self.tag" />
           <EntitySet Name="user_Badge" EntityType="Self.user_Badge" />
           <EntitySet Name="user_History" EntityType="Self.user_History" />
+          <EntitySet Name="user_Notification" EntityType="Self.user_Notification" />
           <EntitySet Name="user_Warning" EntityType="Self.user_Warning" />
           <EntitySet Name="users" EntityType="Self.user" />
           <EntitySet Name="works" EntityType="Self.work" />
@@ -1492,6 +1640,22 @@
           <AssociationSet Name="FK__user_Hist__workI__02084FDA" Association="Self.FK__user_Hist__workI__02084FDA">
             <End Role="work" EntitySet="works" />
             <End Role="user_History" EntitySet="user_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Noti__actor__503BEA1C" Association="Self.FK__user_Noti__actor__503BEA1C">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_Notification" EntitySet="user_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Noti__comme__5224328E" Association="Self.FK__user_Noti__comme__5224328E">
+            <End Role="work_Comment" EntitySet="work_Comment" />
+            <End Role="user_Notification" EntitySet="user_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Noti__userI__4F47C5E3" Association="Self.FK__user_Noti__userI__4F47C5E3">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_Notification" EntitySet="user_Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_Noti__workI__51300E55" Association="Self.FK__user_Noti__workI__51300E55">
+            <End Role="work" EntitySet="works" />
+            <End Role="user_Notification" EntitySet="user_Notification" />
           </AssociationSet>
           <AssociationSet Name="FK__user_Warn__userI__7E37BEF6" Association="Self.FK__user_Warn__userI__7E37BEF6">
             <End Role="users" EntitySet="users" />
@@ -1567,7 +1731,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="web_comModelStoreContainer" CdmEntityContainer="web_comEntities">
+        <EntityContainerMapping StorageEntityContainer="web_comModelStoreContainer" CdmEntityContainer="web_comEntities1">
           <EntitySetMapping Name="admins">
             <EntityTypeMapping TypeName="web_comModel.admin">
               <MappingFragment StoreEntitySet="admins">
@@ -1659,6 +1823,20 @@
                 <ScalarProperty Name="arcId" ColumnName="arcId" />
                 <ScalarProperty Name="chapterId" ColumnName="chapterId" />
                 <ScalarProperty Name="user_HistoryReadTime" ColumnName="user_HistoryReadTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_Notification">
+            <EntityTypeMapping TypeName="web_comModel.user_Notification">
+              <MappingFragment StoreEntitySet="user_Notification">
+                <ScalarProperty Name="user_NotificationId" ColumnName="user_NotificationId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="actorId" ColumnName="actorId" />
+                <ScalarProperty Name="workId" ColumnName="workId" />
+                <ScalarProperty Name="commentId" ColumnName="commentId" />
+                <ScalarProperty Name="user_NotificationType" ColumnName="user_NotificationType" />
+                <ScalarProperty Name="isRead" ColumnName="isRead" />
+                <ScalarProperty Name="user_NotificationCreated" ColumnName="user_NotificationCreated" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

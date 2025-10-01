@@ -16,8 +16,8 @@ namespace Web_com.Models.Entities
     {
         public int work_ChapterImageId { get; set; }
         public string work_ChapterImageName { get; set; }
-        public int work_ChapterImageOrder { get; set; }
-        public int work_ChapterId { get; set; }
+        public Nullable<int> work_ChapterImageOrder { get; set; }
+        public Nullable<int> work_ChapterId { get; set; }
     
         public virtual work_Chapter work_Chapter { get; set; }
     }

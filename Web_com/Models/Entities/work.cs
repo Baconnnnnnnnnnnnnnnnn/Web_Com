@@ -19,6 +19,7 @@ namespace Web_com.Models.Entities
         {
             this.author_Warning = new HashSet<author_Warning>();
             this.user_History = new HashSet<user_History>();
+            this.user_Notification = new HashSet<user_Notification>();
             this.work_Arc = new HashSet<work_Arc>();
             this.work_Comment = new HashSet<work_Comment>();
             this.work_Favorite = new HashSet<work_Favorite>();
@@ -42,6 +43,8 @@ namespace Web_com.Models.Entities
         public virtual genre genre { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<user_History> user_History { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_Notification> user_Notification { get; set; }
         public virtual user user { get; set; }
         public virtual work_Status work_Status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

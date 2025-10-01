@@ -280,6 +280,21 @@ create table author_Follow
 )
 go
 
+--Thông báo (cho người đọc lẫn tác giả)
+drop table if exists user_Notification
+create table user_Notification
+(
+	user_NotificationId int primary key identity,
+	userId int foreign key references users(usersId), -- người nhận
+    actorId int foreign key references users(usersId) null, -- người tạo hành động
+    workId int null foreign key references work(workId),
+    commentId int null foreign key references work_Comment(work_CommentId),
+    user_NotificationType varchar(50), -- phân loại: heart_work, favorite_work, follow, comment, heart_comment, admin_remove...
+    isRead bit default 0,
+    user_NotificationCreated datetime default getDate()
+)
+go
+
 --Nội dung thành tựu (khi đạt mốc nhất định, cho người đọc lẫn tác giả)
 drop table if exists badge
 create table badge
