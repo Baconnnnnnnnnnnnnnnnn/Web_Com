@@ -13,10 +13,10 @@ namespace Web_com.Models.Entities
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class web_comEntities1 : DbContext
+    public partial class web_comEntities : DbContext
     {
-        public web_comEntities1()
-            : base("name=web_comEntities1")
+        public web_comEntities()
+            : base("name=web_comEntities")
         {
         }
     

@@ -1557,7 +1557,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="web_comEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="web_comEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="admins" EntityType="Self.admin" />
           <EntitySet Name="author_Follow" EntityType="Self.author_Follow" />
           <EntitySet Name="author_Warning" EntityType="Self.author_Warning" />
@@ -1731,7 +1731,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="web_comModelStoreContainer" CdmEntityContainer="web_comEntities1">
+        <EntityContainerMapping StorageEntityContainer="web_comModelStoreContainer" CdmEntityContainer="web_comEntities">
           <EntitySetMapping Name="admins">
             <EntityTypeMapping TypeName="web_comModel.admin">
               <MappingFragment StoreEntitySet="admins">
