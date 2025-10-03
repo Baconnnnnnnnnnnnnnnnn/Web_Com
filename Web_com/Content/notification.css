@@ -37,7 +37,7 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     padding: 15px;
     min-width: 350px;
-    max-width: 400px;
+    max-width: 500px;
     max-height: 400px; 
     overflow-y: auto; 
     z-index: 1000;
@@ -194,7 +194,7 @@
 }
 
 .notification-item[data-type="favorite_work"] {
-    border-left-color: #9966ff;
+    border-left-color: #ffcc00;
 }
 
 .notification-item[data-type="heart_comment"] {
@@ -318,7 +318,7 @@
 }
 
 .notification-item[data-type="favorite_work"] .notification-type-icon {
-    color: #9966ff;
+    color: #ffcc00;
 }
 
 .notification-item[data-type="heart_comment"] .notification-type-icon {

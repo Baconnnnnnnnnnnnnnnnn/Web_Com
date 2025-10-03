@@ -33,7 +33,9 @@
 
     <div class="profile-wrapper">
         <div class="profile-container">
-            <div class="profile-cover-internal" style="background-image: url('@Url.Content("~/Content/Images/Cover/{Model.usersCover}")')" id="coverImageContainer">
+            <div class="profile-cover-internal"
+                 style="background-image: url('@Url.Content("~/Content/Images/Cover/" + (Model.usersCover ?? "DefaultCover.jpg"))')"
+                 id="coverImageContainer">
                 @if (ViewBag.IsOwner != null && ViewBag.IsOwner)
                 {
                     <input type="file" id="coverImageUpload" accept="image/*" style="display: none;">
@@ -41,7 +43,8 @@
                 }
             </div>
             <div class="profile-header">
-                <div class="profile-avatar" id="avatarContainer" style="background-image: url('@Url.Content("~/Content/Images/Avatar/{Model.usersAvatar}")')">
+                <div class="profile-avatar" id="avatarContainer"
+                     style="background-image: url('@Url.Content("~/Content/Images/Avatar/" + (Model.usersAvatar ?? "Default.png"))')">
                     @if (ViewBag.IsOwner != null && ViewBag.IsOwner)
                     {
 
@@ -125,7 +128,10 @@
                     @foreach (var work in (Model.works ?? Enumerable.Empty<Web_com.Models.Entities.work>()).Where(w => !(w.isDisabled ?? false)))
                     {
                         <div class="work-card" data-work-id="@work.workId">
-                            <div class="work-image" style="background-image: url('@Url.Content(!string.IsNullOrEmpty(work.workImage) ? "~/Content/Images/{work.workImage}" : "~/Content/Images/default-image.jpg")')">
+                            <div class="work-image"
+                                 style="background-image: url('@Url.Content(!string.IsNullOrEmpty(work.workImage)
+                                    ? "~/Content/Images/" + work.workImage
+                                    : "~/Content/Images/default-image.jpg")')">
                                 @if (ViewBag.IsOwner)
                                 {
                                     <div class="work-actions">
