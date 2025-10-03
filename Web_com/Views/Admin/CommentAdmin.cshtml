@@ -68,8 +68,8 @@
                 {
                     <tr class="comment-row"
                         data-comment-id="@comment.Work_CommentId"
-                        data-username="@(comment.UserName?.ToLower() ?? "")"
-                        data-work="@(comment.WorkName?.ToLower() ?? "")" 
+                        data-username="@(comment.UserName != null ? comment.UserName.ToLower() : "")"
+                        data-work="@(comment.WorkName != null ? comment.WorkName.ToLower() : "")"
                         data-is-approved="@(comment.IsApproved.ToString().ToLower())">
                         <td>@(comment.UserName ?? "Unknown")</td>
                         <td>

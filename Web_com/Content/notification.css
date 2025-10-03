@@ -1,0 +1,331 @@
+﻿/* Notification Styles */
+.notification-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: 50px;
+    cursor: pointer;
+    color: #ff99cc;
+    font-size: 30px;
+    transition: 0.3s ease;
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff3366;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    pointer-events: none;
+    min-width: 18px;
+    text-align: center;
+    display: inline-block;
+}
+
+.notification-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 35px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 15px;
+    min-width: 350px;
+    max-width: 400px;
+    max-height: 400px; 
+    overflow-y: auto; 
+    z-index: 1000;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    border: 2px solid #ff99cc;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ffe6f0;
+}
+
+.notification-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff66b2;
+    margin: 0;
+}
+
+.mark-all-read {
+    background: none;
+    border: none;
+    color: #ff66b2;
+    cursor: pointer;
+    font-size: 12px;
+    text-decoration: underline;
+    transition: 0.3s ease;
+}
+
+    .mark-all-read:hover {
+        color: #ff3385;
+    }
+
+.notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    transition: 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+    .notification-item.unread {
+        background: rgba(255, 230, 240, 0.6);
+        border-left-color: #ff66b2;
+    }
+
+    .notification-item:hover {
+        background: rgba(255, 230, 240, 0.8);
+        transform: translateX(-2px);
+    }
+
+.notification-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ff99cc;
+    flex-shrink: 0;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-text {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+}
+
+    .notification-text strong {
+        color: #ff66b2;
+        font-weight: bold;
+    }
+
+.notification-work {
+    color: #ff3385;
+    font-weight: bold;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: #999;
+    display: block;
+}
+
+.notification-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.notification-action {
+    background: rgba(255, 102, 178, 0.1);
+    border: 1px solid #ff66b2;
+    color: #ff66b2;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+    .notification-action:hover {
+        background: #ff66b2;
+        color: white;
+    }
+
+.no-notifications {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-style: italic;
+}
+
+.notification-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+/* Notification type specific styles */
+.notification-item[data-type="heart_work"] {
+    border-left-color: #ff3366;
+}
+
+.notification-item[data-type="follow"] {
+    border-left-color: #3399ff;
+}
+
+.notification-item[data-type="comment"] {
+    border-left-color: #33cc66;
+}
+
+.notification-item[data-type="reply"] {
+    border-left-color: #ff9933;
+}
+
+.notification-item[data-type="favorite_work"] {
+    border-left-color: #9966ff;
+}
+
+.notification-item[data-type="heart_comment"] {
+    border-left-color: #ff66b2;
+}
+
+.notification-item[data-type="comment_removed"] {
+    border-left-color: #cc3333;
+}
+
+/* Hover effects */
+.notification-dropdown:hover {
+    color: #ff66b2;
+}
+
+    .notification-dropdown:hover .fa-bell {
+        animation: shakeBell 0.6s ease;
+    }
+
+    .notification-dropdown:hover .notification-menu {
+        display: block;
+        animation: slideDown 0.3s ease;
+    }
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shakeBell {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    20% {
+        transform: rotate(-15deg);
+    }
+
+    40% {
+        transform: rotate(15deg);
+    }
+
+    60% {
+        transform: rotate(-10deg);
+    }
+
+    80% {
+        transform: rotate(10deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/* Scrollbar styling */
+.notification-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notification-menu::-webkit-scrollbar-track {
+    background: rgba(255, 230, 240, 0.5);
+    border-radius: 3px;
+}
+
+.notification-menu::-webkit-scrollbar-thumb {
+    background: #ff99cc;
+    border-radius: 3px;
+}
+
+    .notification-menu::-webkit-scrollbar-thumb:hover {
+        background: #ff66b2;
+    }
+
+/* Admin notification specific styles */
+.notification-item[data-type="comment_removed"],
+.notification-item[data-type="work_removed"] {
+    border-left-color: #cc3333;
+    background: rgba(204, 51, 51, 0.05);
+}
+
+.notification-admin {
+    color: #cc3333;
+    font-weight: bold;
+}
+
+.notification-warning {
+    background: rgba(255, 153, 0, 0.1);
+    border-left-color: #ff9900;
+}
+
+/* Icon for different notification types */
+.notification-type-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.notification-item[data-type="heart_work"] .notification-type-icon {
+    color: #ff3366;
+}
+
+.notification-item[data-type="follow"] .notification-type-icon {
+    color: #3399ff;
+}
+
+.notification-item[data-type="comment"] .notification-type-icon {
+    color: #33cc66;
+}
+
+.notification-item[data-type="reply"] .notification-type-icon {
+    color: #ff9933;
+}
+
+.notification-item[data-type="favorite_work"] .notification-type-icon {
+    color: #9966ff;
+}
+
+.notification-item[data-type="heart_comment"] .notification-type-icon {
+    color: #ff66b2;
+}
+
+.notification-item[data-type="comment_removed"] .notification-type-icon,
+.notification-item[data-type="work_removed"] .notification-type-icon {
+    color: #cc3333;
+}

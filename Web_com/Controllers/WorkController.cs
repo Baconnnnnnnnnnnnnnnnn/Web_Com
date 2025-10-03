@@ -135,8 +135,10 @@ namespace Web_com.Controllers
                     .ToList()
                 : new List<work_Chapter>();
 
+            // Fix for CS1503: Argument 1: cannot convert from 'int?' to 'int'
+            // In the Chapter action, change this line:
             var chapterImages = db.work_ChapterImage
-                .Where(i => arcIds.Contains(i.work_ChapterId))
+                .Where(i => arcIds.Contains(i.work_ChapterId ?? 0))
                 .ToList();
 
             ViewBag.Chapters = chapters;

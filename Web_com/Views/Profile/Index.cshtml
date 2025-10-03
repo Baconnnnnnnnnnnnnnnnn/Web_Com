@@ -5,8 +5,8 @@
     ViewBag.Title = "User - " + @Model.usersName;
     Layout = null;
 
-    int worksCount = Model.works?.Count ?? 0;
-    int followerCount = Model.author_Follow?.Count ?? 0;
+    int worksCount = (Model.works != null) ? Model.works.Count : 0;
+    int followerCount = (Model.author_Follow != null) ? Model.author_Follow.Count : 0;
     var isCurrentUserAuthor = (Session["UserId"] != null && (int)Session["UserId"] == ViewBag.AuthorId);
     var isGuestString = (ViewBag.IsGuest != null && (bool)ViewBag.IsGuest) ? "true" : "false";
 }
@@ -33,7 +33,7 @@
 
     <div class="profile-wrapper">
         <div class="profile-container">
-            <div class="profile-cover-internal" style="background-image: url('@Url.Content($"~/Content/Images/Cover/{Model.usersCover}")')" id="coverImageContainer">
+            <div class="profile-cover-internal" style="background-image: url('@Url.Content("~/Content/Images/Cover/{Model.usersCover}")')" id="coverImageContainer">
                 @if (ViewBag.IsOwner != null && ViewBag.IsOwner)
                 {
                     <input type="file" id="coverImageUpload" accept="image/*" style="display: none;">
@@ -41,7 +41,7 @@
                 }
             </div>
             <div class="profile-header">
-                <div class="profile-avatar" id="avatarContainer" style="background-image: url('@Url.Content($"~/Content/Images/Avatar/{Model.usersAvatar}")')">
+                <div class="profile-avatar" id="avatarContainer" style="background-image: url('@Url.Content("~/Content/Images/Avatar/{Model.usersAvatar}")')">
                     @if (ViewBag.IsOwner != null && ViewBag.IsOwner)
                     {
 
@@ -52,7 +52,7 @@
                 </div>
                 <div class="profile-info">
                     <h1>@Model.usersName</h1>
-                    <p>Member since: @(Model.usersCreated?.ToString("MMM dd, yyyy") ?? "Unknown")</p>
+                    <p>Member since:@(Model.usersCreated != null? Model.usersCreated.Value.ToString("MMM dd, yyyy") : "Unknown")</p>
 
                     <div class="profile-stats">
                         <div class="stat-item">
@@ -125,7 +125,7 @@
                     @foreach (var work in (Model.works ?? Enumerable.Empty<Web_com.Models.Entities.work>()).Where(w => !(w.isDisabled ?? false)))
                     {
                         <div class="work-card" data-work-id="@work.workId">
-                            <div class="work-image" style="background-image: url('@Url.Content(!string.IsNullOrEmpty(work.workImage) ? $"~/Content/Images/{work.workImage}" : "~/Content/Images/default-image.jpg")')">
+                            <div class="work-image" style="background-image: url('@Url.Content(!string.IsNullOrEmpty(work.workImage) ? "~/Content/Images/{work.workImage}" : "~/Content/Images/default-image.jpg")')">
                                 @if (ViewBag.IsOwner)
                                 {
                                     <div class="work-actions">
@@ -145,14 +145,33 @@
                             <div class="work-info">
                                 <div class="work-title">@work.workName</div>
                                 <div class="work-meta">
-                                    <span class="work-genre">@(work.genre?.genreName ?? "Unknown")</span>
-                                    <span class="work-status">@(work.work_Status?.work_StatusName ?? "Unknown")</span>
+                                    <span class="work-genre">
+                                        @(work.genre != null ? work.genre.genreName : "Unknown")
+                                    </span>
+                                    <span class="work-status">
+                                        @(work.work_Status != null ? work.work_Status.work_StatusName : "Unknown")
+                                    </span>
                                 </div>
                                 <div class="work-stats">
-                                    <span><i class="fas fa-heart"></i> @(work.work_Heart?.Count ?? 0)</span>
-                                    <span><i class="fas fa-eye"></i> @(work.work_View?.Count ?? 0)</span>
-                                    <span><i class="fas fa-book"></i> @(work.work_Arc?.Count ?? 0) Arcs</span>
-                                    <span><i class="fas fa-file-alt"></i> @(work.work_Arc?.Sum(a => a.work_Chapter?.Count ?? 0) ?? 0) Chaps</span>
+                                    <span>
+                                        <i class="fas fa-heart"></i>
+                                        @(work.work_Heart != null ? work.work_Heart.Count : 0)
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-eye"></i>
+                                        @(work.work_View != null ? work.work_View.Count : 0)
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-book"></i>
+                                        @(work.work_Arc != null ? work.work_Arc.Count : 0) Arcs
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-file-alt"></i>
+                                        @(work.work_Arc != null
+                                            ? work.work_Arc.Sum(a => a.work_Chapter != null ? a.work_Chapter.Count : 0)
+                                            : 0
+                                        ) Chaps
+                                    </span>
                                 </div>
                             </div>
                         </div>

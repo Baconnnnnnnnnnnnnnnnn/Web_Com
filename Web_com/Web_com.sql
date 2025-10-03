@@ -295,6 +295,120 @@ create table user_Notification
 )
 go
 
+-- Thêm trigger cho các sự kiện tạo thông báo
+-- Trigger khi có tim truyện
+CREATE TRIGGER trg_WorkHeart_Notification
+ON work_Heart
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO user_Notification (userId, actorId, workId, user_NotificationType)
+    SELECT 
+        w.authorId,
+        i.userId,
+        i.workId,
+        'heart_work'
+    FROM inserted i
+    INNER JOIN work w ON i.workId = w.workId
+    WHERE w.authorId IS NOT NULL AND w.authorId != i.userId;
+END
+GO
+
+-- Trigger khi có follow tác giả
+CREATE TRIGGER trg_AuthorFollow_Notification
+ON author_Follow
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO user_Notification (userId, actorId, user_NotificationType)
+    SELECT 
+        i.authorId,
+        i.followerId,
+        'follow'
+    FROM inserted i
+    WHERE i.authorId != i.followerId;
+END
+GO
+
+-- Trigger khi có comment
+CREATE TRIGGER trg_WorkComment_Notification
+ON work_Comment
+AFTER INSERT
+AS
+BEGIN
+    -- Thông báo cho tác giả truyện
+    INSERT INTO user_Notification (userId, actorId, workId, commentId, user_NotificationType)
+    SELECT 
+        w.authorId,
+        i.userId,
+        i.workId,
+        i.work_CommentId,
+        'comment'
+    FROM inserted i
+    INNER JOIN work w ON i.workId = w.workId
+    WHERE w.authorId IS NOT NULL AND w.authorId != i.userId;
+END
+GO
+
+-- Trigger khi người dùng thêm truyện vào yêu thích
+CREATE TRIGGER trg_WorkFavorite_Notification
+ON work_Favorite
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO user_Notification (userId, actorId, workId, user_NotificationType)
+    SELECT 
+        w.authorId,    -- tác giả nhận thông báo
+        i.userId,      -- người tạo hành động
+        i.workId,
+        'favorite_work'
+    FROM inserted i
+    INNER JOIN work w ON i.workId = w.workId
+    WHERE w.authorId IS NOT NULL AND w.authorId != i.userId;
+END
+GO
+
+-- Trigger khi có người tim comment
+CREATE TRIGGER trg_CommentHeart_Notification
+ON comment_Heart
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO user_Notification (userId, actorId, workId, commentId, user_NotificationType)
+    SELECT 
+        c.userId,        -- chủ comment nhận thông báo
+        i.usersId,        -- người thả tim
+        c.workId,
+        c.work_CommentId,
+        'heart_comment'
+    FROM inserted i
+    INNER JOIN work_Comment c ON i.work_CommentId = c.work_CommentId
+    WHERE c.userId IS NOT NULL AND c.userId != i.usersId;
+END
+GO
+
+-- Trigger khi admin gỡ comment
+CREATE TRIGGER trg_CommentRemoved_Notification
+ON work_Comment
+AFTER UPDATE
+AS
+BEGIN
+    IF UPDATE(work_CommentIsDeleted)
+    BEGIN
+        INSERT INTO user_Notification (userId, actorId, workId, commentId, user_NotificationType)
+        SELECT 
+            i.userId,
+            NULL, -- admin action
+            i.workId,
+            i.work_CommentId,
+            'comment_removed'
+        FROM inserted i
+        INNER JOIN deleted d ON i.work_CommentId = d.work_CommentId
+        WHERE i.work_CommentIsDeleted = 1 AND d.work_CommentIsDeleted = 0;
+    END
+END
+GO
+
 --Nội dung thành tựu (khi đạt mốc nhất định, cho người đọc lẫn tác giả)
 drop table if exists badge
 create table badge
