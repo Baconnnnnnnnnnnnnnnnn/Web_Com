@@ -3,24 +3,29 @@
     let currentPage = 1;
     let rowsPerPage = parseInt($('#page-size-select').val()) || 5;
     const token = $('input[name="__RequestVerificationToken"]').val();
+    let isManuallyChangingPage = false;
 
     // -----------------------------
-    // LỌC THEO ROLE (Author / Reader)
+    // LỌC THEO ROLE (Author / Reader) VÀ TRẠNG THÁI (Enable/Disable)
     // -----------------------------
     function applyRoleFilter(role) {
         currentFilter = role === currentFilter ? null : role;
 
         $('.account-row').each(function () {
             const isAuthor = $(this).data('is-author') === "True";
+            const isDisabled = $(this).find('.btn-status').hasClass('btn-enable');
+
             const match =
                 !currentFilter ||
                 (currentFilter === "author" && isAuthor) ||
-                (currentFilter === "reader" && !isAuthor);
+                (currentFilter === "reader" && !isAuthor) ||
+                (currentFilter === "disabled" && isDisabled) ||
+                (currentFilter === "enabled" && !isDisabled);
 
             $(this).toggleClass('filtered-out', !match);
         });
 
-        $('.filter-btn').removeClass('active');
+        $('.filter-left .filter-btn').removeClass('active');
         $(`#filter-${currentFilter || 'all'}`).addClass('active');
 
         refreshPaginationAfterFilter();
@@ -29,6 +34,36 @@
     $('#filter-all').on('click', () => applyRoleFilter(null));
     $('#filter-author').on('click', () => applyRoleFilter('author'));
     $('#filter-reader').on('click', () => applyRoleFilter('reader'));
+    $('#filter-enabled').on('click', () => applyRoleFilter('enabled'));
+    $('#filter-disabled').on('click', () => applyRoleFilter('disabled'));
+
+    // -----------------------------
+    // SẮP XẾP NEWEST / OLDEST
+    // -----------------------------
+    function applySort(order) {
+        const $rows = $('.account-row').not('.filtered-out');
+
+        $rows.sort(function (a, b) {
+            const dateA = new Date($(a).data('registration-date'));
+            const dateB = new Date($(b).data('registration-date'));
+            return order === 'newest' ? dateB - dateA : dateA - dateB;
+        });
+
+        const $tbody = $('table tbody');
+        $rows.detach().appendTo($tbody);
+
+
+        $('.filter-right .filter-btn').removeClass('active');
+        $(`#sort-${order}`).addClass('active');
+
+        refreshPaginationAfterFilter();
+    }
+
+    $('#sort-newest').on('click', () => applySort('newest'));
+    $('#sort-oldest').on('click', () => applySort('oldest'));
+
+    // Set mặc định khi load
+    applySort('newest');
 
     // -----------------------------
     // Tìm kiếm theo tên hoặc email
@@ -103,8 +138,6 @@
             paginateAccounts();
         }
     });
-
-    let isManuallyChangingPage = false;
 
     $('#page-number-input').on('input', function () {
         isManuallyChangingPage = true;
@@ -204,7 +237,7 @@
     // -----------------------------
     // Xóa người dùng
     // -----------------------------
-    $('.btn-delete').on('click', function (e) {
+    $(document).on('click', '.btn-delete', function (e) {
         e.preventDefault();
         const usersId = $(this).data('users-id');
         const usersName = $(this).data('users-name');

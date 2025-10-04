@@ -368,3 +368,59 @@ tr:hover {
     box-shadow: 0 0 20px rgba(255, 153, 204, 0.5);
     animation: fadeIn 0.4s ease;
 }
+
+#filter-enabled.active {
+    background-color: #66cc66; /* Màu xanh cho enabled */
+}
+
+#filter-disabled.active {
+    background-color: #ff9966; /* Màu cam cho disabled */
+}
+
+/* Thêm style cho các nút sắp xếp */
+.filter-btn i {
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+}
+
+#sort-newest.active i {
+    color: #66cc66; /* Màu xanh cho mũi tên lên */
+    transform: translateY(-2px);
+}
+
+#sort-oldest.active i {
+    color: #ff9966; /* Màu cam cho mũi tên xuống */
+    transform: translateY(2px);
+}
+
+/* Hiệu ứng hover cho biểu tượng */
+.filter-btn:hover i {
+    transform: scale(1.1);
+}
+
+#sort-newest:hover i {
+    color: #66cc66;
+}
+
+#sort-oldest:hover i {
+    color: #ff9966;
+}
+
+.role-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-left,
+.filter-right {
+    display: flex;
+    gap: 10px;
+}
+
+    .filter-right .filter-btn.active {
+        background-color: #ffccff; /* nhạt hơn cho nhóm sort */
+        box-shadow: 0 0 10px rgba(255, 204, 255, 0.6);
+    }

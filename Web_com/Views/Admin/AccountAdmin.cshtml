@@ -47,14 +47,20 @@
                 <input type="text" id="search-email" class="search-bar" placeholder="Enter user email..." />
             </div>
         </div>
+        <label>
+            <b>User's Status</b>
+        </label>
         <div class="role-filter">
-            <label>
-                <b>User's Status</b>
-            </label>
-            <div>
+            <div class="filter-left">
                 <button id="filter-all" class="filter-btn active">All</button>
                 <button id="filter-author" class="filter-btn">Author</button>
                 <button id="filter-reader" class="filter-btn">Reader</button>
+                <button id="filter-enabled" class="filter-btn">Enabled</button>
+                <button id="filter-disabled" class="filter-btn">Disabled</button>
+            </div>
+            <div class="filter-right">
+                <button id="sort-newest" class="filter-btn active"><i class="fa fa-arrow-up"></i> Newest</button>
+                <button id="sort-oldest" class="filter-btn"><i class="fa fa-arrow-down"></i> Oldest</button>
             </div>
         </div>
         @Html.AntiForgeryToken()
@@ -76,8 +82,8 @@
                     <tr class="account-row"
                         data-name="@user.UsersName"
                         data-email="@user.UsersEmail"
-                        data-is-author="@(user.IsAuthor.HasValue && user.IsAuthor.Value ? "True" : "False")">
-
+                        data-is-author="@(user.IsAuthor.HasValue && user.IsAuthor.Value ? "True" : "False")"
+                        data-registration-date="@(user.UsersCreated.Value.ToString("yyyy-MM-ddTHH:mm:ss"))">
 
                         <td>@user.UsersName</td>
                         <td>@user.UsersEmail</td>
