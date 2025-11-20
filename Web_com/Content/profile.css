@@ -550,84 +550,6 @@
     animation: fadeIn 0.6s ease forwards;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .profile-header {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
-        gap: 15px;
-    }
-
-    .profile-avatar {
-        margin-top: -60px;
-        width: 80px;
-        height: 80px;
-    }
-
-    .profile-info {
-        text-align: center;
-    }
-
-    .profile-stats {
-        justify-content: center;
-        gap: 20px;
-    }
-
-    .stat-item {
-        text-align: center;
-    }
-
-    .profile-actions {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .profile-tabs {
-        padding: 0 20px;
-        overflow-x: auto;
-    }
-
-    .works-section {
-        padding: 20px;
-    }
-
-    .works-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 15px;
-    }
-
-    .work-image {
-        height: 150px;
-    }
-}
-
-@media (max-width: 480px) {
-    .profile-header {
-        padding: 15px;
-    }
-
-    .profile-avatar {
-        width: 70px;
-        height: 70px;
-        margin-top: -50px;
-    }
-
-    .profile-info h1 {
-        font-size: 1.5rem;
-    }
-
-    .works-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 10px;
-    }
-
-    .work-image {
-        height: 120px;
-    }
-}
-
 /* Loại bỏ các kiểu cũ cho overlay */
 .profile-cover-internal:hover::after, .profile-avatar:hover::after {
     content: none;
@@ -714,4 +636,82 @@
 
 .error {
     color: #ff6b6b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .profile-avatar {
+        margin-top: -60px;
+        width: 80px;
+        height: 80px;
+    }
+
+    .profile-info {
+        text-align: center;
+    }
+
+    .profile-stats {
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .profile-actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .profile-tabs {
+        padding: 0 20px;
+        overflow-x: auto;
+    }
+
+    .works-section {
+        padding: 20px;
+    }
+
+    .works-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .work-image {
+        height: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-header {
+        padding: 15px;
+    }
+
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        margin-top: -50px;
+    }
+
+    .profile-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .works-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .work-image {
+        height: 120px;
+    }
 }

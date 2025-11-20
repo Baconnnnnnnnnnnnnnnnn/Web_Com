@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const commentContent = commentBox.value.trim();
 
             if (!commentContent) {
-                Swal.fire("Lỗi", "Nội dung bình luận không được để trống.", "warning");
+                Swal.fire("Error", "Comment content cannot be empty", "warning");
                 return;
             }
 
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         const commentDiv = document.createElement("div");
                         commentDiv.className = "comment-item";
 
-                        let formattedDate = "Vừa xong";
+                        let formattedDate = "Now";
                         try {
                             const createdDate = new Date(data.comment.Work_CommentCreated);
                             if (!isNaN(createdDate.getTime())) {
