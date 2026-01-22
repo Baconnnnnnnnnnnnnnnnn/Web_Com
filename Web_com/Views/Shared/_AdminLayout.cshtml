@@ -1,0 +1,178 @@
+﻿@{
+    var adminName = Session["AdminName"] as string;
+    var adminRole = Session["AdminRoleName"] as string;
+    var adminRoleId = Session["AdminRoleId"] as int?;
+    var isAdmin = Session["IsAdmin"] as bool?;
+
+    // Kiểm tra nếu không phải admin thì redirect
+    if (isAdmin == null || !isAdmin.Value)
+    {
+        Response.Redirect("~/Web_Com/Index");
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Web_Com Admin</title>
+
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="/Content/anime-login.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <!-- Loading overlay -->
+    <div id="adminLoading" class="admin-loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Background và overlay -->
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <!-- Main Content -->
+    <div class="admin-content">
+        @if (ViewBag.AccessDenied != null && (bool)ViewBag.AccessDenied)
+        {
+            <div class="admin-access-denied">
+                <h2><i class="fa fa-ban"></i> Access Denied</h2>
+                <p>You don't have permission to access this page.</p>
+                <a href="@Url.Action("Index", "Admin")" class="admin-nav-btn">
+                    <i class="fa fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        }
+        else
+        {
+            @RenderBody()
+        }
+    </div>
+
+    <!-- Session timeout warning -->
+    <div id="sessionWarning" style="display: none; position: fixed; bottom: 20px; right: 20px; background: #ff6b6b; color: white; padding: 15px; border-radius: 10px; z-index: 1001;">
+        <p>Your session will expire in <span id="countdown">5:00</span> minutes</p>
+        <button onclick="extendSession()" style="background: white; color: #ff6b6b; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Stay Logged In</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Kiểm tra session khi trang load
+        $(document).ready(function() {
+            var isAdmin = '@(isAdmin ?? false)';
+            var adminRoleId = '@adminRoleId';
+
+            if (isAdmin !== 'True') {
+                window.location.href = '@Url.Action("Home", "Web_Com")';
+                return;
+            }
+
+            // Kiểm tra role với trang hiện tại
+            var currentUrl = window.location.pathname.toLowerCase();
+            var hasAccess = true;
+
+            if (currentUrl.includes('superadmin') && adminRoleId !== '1') hasAccess = false;
+            if (currentUrl.includes('accountadmin') && adminRoleId !== '2') hasAccess = false;
+            if (currentUrl.includes('contentadmin') && adminRoleId !== '3') hasAccess = false;
+            if (currentUrl.includes('commentadmin') && adminRoleId !== '4') hasAccess = false;
+            if (currentUrl.includes('complainadmin') && adminRoleId !== '5') hasAccess = false;
+
+            if (!hasAccess) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Access Denied',
+                    text: 'You do not have permission to access this page.',
+                    confirmButtonText: 'Go to Dashboard'
+                }).then(() => {
+                    window.location.href = '@Url.Action("Home", "Admin")';
+                });
+            }
+
+            // Session timeout management
+            startSessionTimer();
+        });
+
+        // Hiệu ứng loading cho các action
+        function showLoading() {
+            $('#adminLoading').addClass('active');
+        }
+
+        function hideLoading() {
+            $('#adminLoading').removeClass('active');
+        }
+
+        // Quản lý session timeout
+        var sessionTimer;
+        var sessionTime = 30 * 60; // 30 phút (tính bằng giây)
+
+        function startSessionTimer() {
+            clearInterval(sessionTimer);
+            sessionTime = 30 * 60;
+            $('#sessionWarning').hide();
+
+            sessionTimer = setInterval(function() {
+                sessionTime--;
+
+                // Hiển thị cảnh báo 5 phút trước khi hết session
+                if (sessionTime === 5 * 60) {
+                    $('#sessionWarning').show();
+                    updateCountdown();
+                }
+
+                // Tự động logout khi hết session
+                if (sessionTime <= 0) {
+                    clearInterval(sessionTimer);
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Session Expired',
+                        text: 'Your session has expired. Please login again.',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = '@Url.Action("Logout", "Admin")';
+                    });
+                }
+
+                if (sessionTime <= 5 * 60) {
+                    updateCountdown();
+                }
+            }, 1000);
+        }
+
+        function updateCountdown() {
+            var minutes = Math.floor(sessionTime / 60);
+            var seconds = sessionTime % 60;
+            $('#countdown').text(minutes + ':' + (seconds < 10 ? '0' : '') + seconds);
+        }
+
+        function extendSession() {
+            // Gửi request để extend session
+            $.ajax({
+                url: '@Url.Action("ExtendSession", "Admin")',
+                type: 'POST',
+                success: function() {
+                    startSessionTimer();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Session Extended',
+                        text: 'Your session has been extended.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        }
+
+        // Reset timer khi có hoạt động
+        $(document).on('mousemove keypress click', function() {
+            startSessionTimer();
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

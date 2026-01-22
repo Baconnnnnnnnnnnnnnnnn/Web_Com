@@ -2,7 +2,14 @@
 
 @{
     ViewBag.Title = "Comment Admin - Web_Com";
-    Layout = null;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    // Kiểm tra role
+    var adminRoleId = Session["AdminRoleId"] as int?;
+    if (adminRoleId != 4)
+    {
+        ViewBag.AccessDenied = true;
+    }
 }
 
 <!DOCTYPE html>
@@ -43,12 +50,12 @@
         </div>
 
         <div class="status-filter">
-        <label><b>Comment Status</b></label>
-        <div>
-            <button id="filter-all" class="filter-btn active">All</button>
-            <button id="filter-approved" class="filter-btn">Approved</button>
-            <button id="filter-unapproved" class="filter-btn">Unapproved</button>
-        </div>
+            <label><b>Comment Status</b></label>
+            <div>
+                <button id="filter-all" class="filter-btn active">All</button>
+                <button id="filter-approved" class="filter-btn">Approved</button>
+                <button id="filter-unapproved" class="filter-btn">Unapproved</button>
+            </div>
         </div>
         @Html.AntiForgeryToken()
         <table>

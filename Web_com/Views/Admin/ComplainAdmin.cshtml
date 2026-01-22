@@ -1,6 +1,13 @@
-﻿
-@{
-    ViewBag.Title = "ComplainAdmin";
+﻿@{
+    ViewBag.Title = "Complain Admin";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    // Kiểm tra role
+    var adminRoleId = Session["AdminRoleId"] as int?;
+    if (adminRoleId != 5)
+    {
+        ViewBag.AccessDenied = true;
+    }
 }
 
 <h2>ComplainAdmin</h2>

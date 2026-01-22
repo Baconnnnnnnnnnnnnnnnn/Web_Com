@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using Web_com.Models.Entities;
 
 namespace Web_com.Controllers
@@ -18,11 +19,35 @@ namespace Web_com.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(string usersEmail, string usersPass)
         {
+            // Kiểm tra admin trước
+            var admin = db.admins
+                .Include("role_Admin")
+                .FirstOrDefault(a => a.adminsEmail == usersEmail && a.adminsPass == usersPass);
+
+            if (admin != null)
+            {
+                // Lưu session cho admin
+                Session["AdminId"] = admin.adminsId;
+                Session["AdminName"] = admin.adminsName;
+                Session["AdminEmail"] = admin.adminsEmail;
+                Session["AdminRoleId"] = admin.role_AdminId;
+                Session["AdminRoleName"] = admin.role_Admin.role_AdminName;
+                Session["IsAdmin"] = true;
+                Session["IsLoggedIn"] = true;
+
+                // Redirect đến controller admin tương ứng
+                string controllerName = GetControllerByRole((int)admin.role_AdminId);
+                return RedirectToAction(controllerName, "Admin");
+            }
+
+            // Nếu không phải admin, kiểm tra user
             var user = db.users.FirstOrDefault(u => u.usersEmail == usersEmail && u.usersPass == usersPass);
             if (user != null)
             {
                 Session["UserId"] = user.usersId;
                 Session["UserName"] = user.usersName;
+                Session["IsAdmin"] = false;
+                Session["IsLoggedIn"] = true;
                 return RedirectToAction("Login", "Web_Com");
             }
             ViewBag.ErrorMessage = "Invalid email or password!";
@@ -35,6 +60,35 @@ namespace Web_com.Controllers
             try
             {
                 System.Diagnostics.Debug.WriteLine($"LoginAjax: Email={usersEmail}");
+
+                // Kiểm tra admin trước
+                var admin = db.admins
+                    .Include("role_Admin")
+                    .FirstOrDefault(a => a.adminsEmail == usersEmail && a.adminsPass == usersPass);
+
+                if (admin != null)
+                {
+                    // Lưu session cho admin
+                    Session["AdminId"] = admin.adminsId;
+                    Session["AdminName"] = admin.adminsName;
+                    Session["AdminEmail"] = admin.adminsEmail;
+                    Session["AdminRoleId"] = admin.role_AdminId;
+                    Session["AdminRoleName"] = admin.role_Admin.role_AdminName;
+                    Session["IsAdmin"] = true;
+                    Session["IsLoggedIn"] = true;
+
+                    return Json(new
+                    {
+                        success = true,
+                        isAdmin = true,
+                        name = admin.adminsName,
+                        role = admin.role_Admin.role_AdminName,
+                        controller = GetControllerByRole((int)admin.role_AdminId),
+                        message = $"Admin {admin.adminsName} has logged in"
+                    });
+                }
+
+                // Nếu không phải admin, kiểm tra user
                 var user = db.users.FirstOrDefault(u => u.usersEmail == usersEmail && u.usersPass == usersPass);
 
                 if (user != null)
@@ -47,11 +101,15 @@ namespace Web_com.Controllers
 
                     Session["UserId"] = user.usersId;
                     Session["UserName"] = user.usersName;
+                    Session["IsAdmin"] = false;
+                    Session["IsLoggedIn"] = true;
+
                     return Json(new
                     {
                         success = true,
+                        isAdmin = false,
                         message = "Login successful!",
-                        userId = user.usersId 
+                        userId = user.usersId
                     });
                 }
 
@@ -69,12 +127,14 @@ namespace Web_com.Controllers
             Session["IsGuest"] = true;
             Session["UserName"] = null;
             Session["UserId"] = null;
+            Session["IsAdmin"] = false;
             return RedirectToAction("Guest", "Web_Com");
         }
 
         public ActionResult Logout()
         {
             Session.Clear();
+            FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Web_Com");
         }
 
@@ -90,6 +150,7 @@ namespace Web_com.Controllers
             try
             {
                 System.Diagnostics.Debug.WriteLine($"RegisterAjax: usersName={usersName}, usersEmail={usersEmail}");
+
                 // Kiểm tra trống
                 if (string.IsNullOrEmpty(usersName))
                     return Json(new { success = false, message = "Username cannot be empty!" });
@@ -98,12 +159,14 @@ namespace Web_com.Controllers
                 if (string.IsNullOrEmpty(usersPass))
                     return Json(new { success = false, message = "Password cannot be empty!" });
 
-                // Kiểm tra trùng tên
-                if (db.users.Any(u => u.usersName == usersName))
+                // Kiểm tra trùng tên (cả trong users và admins)
+                if (db.users.Any(u => u.usersName == usersName) ||
+                    db.admins.Any(a => a.adminsName == usersName))
                     return Json(new { success = false, message = "Username already exists!" });
 
-                // Kiểm tra trùng email
-                if (db.users.Any(u => u.usersEmail == usersEmail))
+                // Kiểm tra trùng email (cả trong users và admins)
+                if (db.users.Any(u => u.usersEmail == usersEmail) ||
+                    db.admins.Any(a => a.adminsEmail == usersEmail))
                     return Json(new { success = false, message = "Email already registered!" });
 
                 // Tạo user mới
@@ -113,8 +176,8 @@ namespace Web_com.Controllers
                     usersEmail = usersEmail,
                     usersPass = usersPass,
                     usersCreated = DateTime.Now,
-                    usersAvatar = "DefaultAvatar.png", 
-                    usersCover = "DefaultCover.png", 
+                    usersAvatar = "DefaultAvatar.png",
+                    usersCover = "DefaultCover.png",
                     isAuthor = false,
                     isDisabled = false
                 };
@@ -126,13 +189,15 @@ namespace Web_com.Controllers
                 // Set session
                 Session["UserId"] = newUser.usersId;
                 Session["UserName"] = newUser.usersName;
+                Session["IsAdmin"] = false;
+                Session["IsLoggedIn"] = true;
 
                 return Json(new
                 {
                     success = true,
                     message = "Registration successful!",
                     userName = newUser.usersName,
-                    userId = newUser.usersId // Thêm dòng này
+                    userId = newUser.usersId
                 });
             }
             catch (Exception ex)
@@ -143,6 +208,19 @@ namespace Web_com.Controllers
                     success = false,
                     message = "Registration failed. Please try again later. Error: " + ex.Message
                 });
+            }
+        }
+
+        private string GetControllerByRole(int roleId)
+        {
+            switch (roleId)
+            {
+                case 1: return "SuperAdmin";    // Super
+                case 2: return "AccountAdmin";  // Account
+                case 3: return "ContentAdmin";  // Content
+                case 4: return "CommentAdmin";  // Comment
+                case 5: return "ComplainAdmin"; // Complain
+                default: return "Index";
             }
         }
 

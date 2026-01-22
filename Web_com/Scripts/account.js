@@ -18,35 +18,6 @@
         timerProgressBar: true
     });
 
-    // Admin configuration
-    const adminConfig = {
-        'SuperAdmin@gmail.com': {
-            name: 'SuperAdmin',
-            controller: 'SuperAdmin',
-            password: '123'
-        },
-        'AccountAdmin@gmail.com': {
-            name: 'AccountAdmin',
-            controller: 'AccountAdmin',
-            password: '123'
-        },
-        'ContentAdmin@gmail.com': {
-            name: 'ContentAdmin',
-            controller: 'ContentAdmin',
-            password: '123'
-        },
-        'CommentAdmin@gmail.com': {
-            name: 'CommentAdmin',
-            controller: 'CommentAdmin',
-            password: '123'
-        },
-        'ComplainAdmin@gmail.com': {
-            name: 'ComplainAdmin',
-            controller: 'ComplainAdmin',
-            password: '123'
-        }
-    };
-
     // Login Form Handler
     const loginForm = $("#loginForm");
     if (loginForm.length === 0) {
@@ -78,33 +49,14 @@
             return;
         }
 
-        // Check if it's an admin login
-        if (adminConfig[email] && password === adminConfig[email].password) {
-            const admin = adminConfig[email];
-            Toast.fire({
-                icon: 'success',
-                title: `✅ Admin ${admin.name} has logged in`
-            });
-
-            // Redirect to the corresponding admin controller
-            setTimeout(function () {
-                let targetUrl = `/Admin/${admin.controller}`;
-                if (admin.controller === 'ContentAdmin') {
-                    targetUrl = `/ContentAdmin/ContentAdmin`;
-                }
-                window.location.href = targetUrl;
-            }, 1500);
-            return;
-        }
-
-
-        // Regular user login
+        // Gửi AJAX request đến server để kiểm tra
         $.ajax({
             url: '/Account/LoginAjax',
             type: 'POST',
             data: {
                 usersEmail: email,
-                usersPass: password
+                usersPass: password,
+                __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
             },
             success: function (response) {
                 console.log('Login response:', response);
@@ -114,8 +66,20 @@
                             icon: 'success',
                             title: '✅ ' + (response.message || 'Login successful!')
                         });
+
+                        // Xử lý redirect dựa trên loại tài khoản
                         setTimeout(function () {
-                            window.location.href = '/Web_Com/Login/User' + (response.userId || '');
+                            if (response.isAdmin) {
+                                // Admin redirect
+                                let targetUrl = '/Admin/' + response.controller;
+                                if (response.controller === 'ContentAdmin') {
+                                    targetUrl = '/ContentAdmin/ContentAdmin';
+                                }
+                                window.location.href = targetUrl;
+                            } else {
+                                // User redirect
+                                window.location.href = '/Web_Com/Login/User' + (response.userId || '');
+                            }
                         }, 1500);
                     } else {
                         if (response.message === 'Account is disabled') {
@@ -172,25 +136,17 @@
         // Get form values
         const username = form.find('[name="usersName"]').val();
         const email = form.find('[name="usersEmail"]').val();
-        const formData = form.serialize();
+        const password = form.find('[name="usersPass"]').val();
+
+        // Bỏ waifu field không gửi lên server
+        const formData = {
+            usersName: username,
+            usersEmail: email,
+            usersPass: password,
+            __RequestVerificationToken: form.find('input[name="__RequestVerificationToken"]').val()
+        };
 
         console.log('Form data:', formData);
-
-        // Check if username or email is reserved for admin
-        const isAdminEmail = Object.keys(adminConfig).some(adminEmail =>
-            adminEmail.toLowerCase() === email.toLowerCase());
-
-        const isAdminName = Object.values(adminConfig).some(admin =>
-            admin.name.toLowerCase() === username.toLowerCase());
-
-        if (isAdminEmail || isAdminName) {
-            Toast.fire({
-                icon: 'error',
-                title: '❌ This username or email is reserved for admin use'
-            });
-            submitBtn.prop('disabled', false).text(originalBtnText);
-            return;
-        }
 
         // Check required fields
         const $requiredFields = form.find('input[required]');
@@ -201,6 +157,7 @@
                 return false;
             }
         });
+
         if (!isValid) {
             console.error('Required fields are empty');
             Toast.fire({
@@ -211,7 +168,7 @@
             return;
         }
 
-        // Send AJAX
+        // Gửi AJAX đăng ký
         $.ajax({
             url: '/Account/RegisterAjax',
             type: 'POST',

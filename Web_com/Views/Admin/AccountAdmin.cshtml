@@ -2,7 +2,14 @@
 
 @{
     ViewBag.Title = "Account Admin - Web_Com";
-    Layout = null;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    // Kiểm tra role
+    var adminRoleId = Session["AdminRoleId"] as int?;
+    if (adminRoleId != 2)
+    {
+        ViewBag.AccessDenied = true;
+    }
 }
 
 <!DOCTYPE html>

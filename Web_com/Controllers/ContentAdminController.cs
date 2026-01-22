@@ -14,6 +14,13 @@ namespace Web_com.Controllers
     {
         private web_comEntities db = new web_comEntities();
 
+        private bool IsContentAdmin()
+        {
+            return Session["IsAdmin"] != null &&
+                   (bool)Session["IsAdmin"] == true &&
+                   (Session["AdminRoleId"] as int?) == 3;
+        }
+
         public ActionResult ContentAdmin()
         {
             var works = db.works

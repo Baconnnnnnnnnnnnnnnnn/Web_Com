@@ -16,6 +16,13 @@ namespace Web_com.Controllers
         private web_comEntities db = new web_comEntities();
         public ActionResult Register(int? id)
         {
+            // Redirect admin to admin dashboard
+            if (Session["IsAdmin"] != null && (bool)Session["IsAdmin"] == true)
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+
+            // Check if user is already logged in
             if (Session["UserId"] != null)
             {
                 int userId;
@@ -40,6 +47,12 @@ namespace Web_com.Controllers
 
         public ActionResult Login(int? id)
         {
+            // Redirect admin to admin dashboard
+            if (Session["IsAdmin"] != null && (bool)Session["IsAdmin"] == true)
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+
             // Check if user is already logged in
             if (Session["UserId"] != null)
             {

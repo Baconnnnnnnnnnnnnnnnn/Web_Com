@@ -1,8 +1,14 @@
 ﻿@model IEnumerable<Web_com.Models.ModelView.WorkSummaryViewModel>
 
 @{
-    ViewBag.Title = "Content Admin";
-    Layout = null;
+    ViewBag.Title = "Content Admin - Web_Com";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    // Kiểm tra role
+    var adminRoleId = Session["AdminRoleId"] as int?;
+    if (adminRoleId != 3)
+    {
+        ViewBag.AccessDenied = true;
+    }
 }
 
 <!DOCTYPE html>
@@ -105,7 +111,7 @@
                 </div>
             </div>
         </div>
-        
+
         @Html.AntiForgeryToken()
         <table id="worksTable">
             <thead>
@@ -151,7 +157,7 @@
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                     <a href="@Url.Action("WorkDetails", "ContentAdmin", new { workId = work.WorkId })" class="btn btn-details">Details</a>
                                     <a href="@Url.Action("EditWork", "ContentAdmin", new { workId = work.WorkId })" class="btn btn-edit">Edit</a>
-                                    
+
                                     @if (work.IsDisabled == true)
                                     {
                                         <button class="btn btn-enable" data-work-id="@work.WorkId" data-work-name="@work.WorkName">Enable</button>
@@ -160,7 +166,7 @@
                                     {
                                         <button class="btn btn-disable" data-work-id="@work.WorkId" data-work-name="@work.WorkName">Disable</button>
                                     }
-                                    
+
                                     <button class="btn btn-delete" data-work-id="@work.WorkId">Delete</button>
                                 </div>
                             </td>

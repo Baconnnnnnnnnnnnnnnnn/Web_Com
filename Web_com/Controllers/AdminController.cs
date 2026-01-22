@@ -13,6 +13,32 @@ namespace Web_com.Controllers
     public class AdminController : Controller
     {
         private web_comEntities db = new web_comEntities();
+
+        // Kiểm tra xem có phải admin không
+        private bool IsAdmin()
+        {
+            return Session["IsAdmin"] != null && (bool)Session["IsAdmin"] == true;
+        }
+
+        // Kiểm tra xem có phải role cụ thể không
+        private bool IsAdminRole(int roleId)
+        {
+            return IsAdmin() && (Session["AdminRoleId"] as int?) == roleId;
+        }
+
+        public ActionResult Index()
+        {
+            if (!IsAdmin())
+            {
+                return RedirectToAction("Index", "Web_Com");
+            }
+
+            // Hiển thị dashboard admin chung
+            ViewBag.AdminName = Session["AdminName"];
+            ViewBag.AdminRole = Session["AdminRoleName"];
+            return View();
+        }
+
         // GET: Admin
         public ActionResult SuperAdmin()
         {
