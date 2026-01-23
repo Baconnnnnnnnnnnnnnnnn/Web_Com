@@ -30,13 +30,38 @@ namespace Web_com.Controllers
         {
             if (!IsAdmin())
             {
-                return RedirectToAction("Index", "Web_Com");
+                return RedirectToAction("Home", "Web_Com");
             }
 
             // Hiển thị dashboard admin chung
             ViewBag.AdminName = Session["AdminName"];
             ViewBag.AdminRole = Session["AdminRoleName"];
             return View();
+        }
+
+        // POST: Admin/ExtendSession - Handle session extension (AJAX)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult ExtendSession()
+        {
+            // Reset session timeout
+            Session["LastActivity"] = DateTime.Now;
+            return Json(new { success = true });
+        }
+
+        // GET: Admin/CheckSession - Check if admin session is still valid (AJAX)
+        [HttpGet]
+        public JsonResult CheckSession()
+        {
+            var isAdmin = Session["IsAdmin"] as bool?;
+            var adminId = Session["AdminId"];
+
+            if (isAdmin == null || !isAdmin.Value || adminId == null)
+            {
+                return Json(new { isValid = false }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { isValid = true }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Admin

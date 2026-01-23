@@ -220,7 +220,7 @@ namespace Web_com.Controllers
                 case 3: return "ContentAdmin";  // Content
                 case 4: return "CommentAdmin";  // Comment
                 case 5: return "ComplainAdmin"; // Complain
-                default: return "Index";
+                default: return "Home";
             }
         }
 

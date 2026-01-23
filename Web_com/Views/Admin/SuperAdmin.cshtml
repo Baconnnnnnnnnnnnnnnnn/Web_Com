@@ -1,23 +1,31 @@
 ﻿@{
-    ViewBag.Title = "Super Admin";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Account Admin - Web_Com";
 
-    // Kiểm tra role
     var adminRoleId = Session["AdminRoleId"] as int?;
-    if (adminRoleId != 1)
-    {
-        ViewBag.AccessDenied = true;
-    }
+    var hasAccess = adminRoleId == 1;
+
+    Layout = hasAccess ? "~/Views/Shared/_AdminLayout.cshtml" : null;
+
+    ViewBag.AccessDenied = !hasAccess;
 }
 
-<h2>SuperAdmin</h2>
-<link href="~/Content/anime-login.css" rel="stylesheet" />
+@if (hasAccess)
+{
 
-<div class="anime-background"></div>
-<div class="anime-overlay"></div>
+    <h2>SuperAdmin</h2>
+    <link href="~/Content/anime-login.css" rel="stylesheet" />
 
-<div class="admin-logout-container">
-    <a href="/Home/Web_Com" class="anime-btn anime-btn-logout">
-        <i class="fa fa-sign-out-alt"></i> Logout
-    </a>
-</div>
+    <div class="anime-background"></div>
+    <div class="anime-overlay"></div>
+
+    <script>
+$(document).ready(function() {
+    var hasAccess = @(ViewBag.AccessDenied != null && !(bool)ViewBag.AccessDenied ? "true" : "false");
+
+    if (!hasAccess) {
+        return;
+    }
+});
+    </script>
+}
+else {}
