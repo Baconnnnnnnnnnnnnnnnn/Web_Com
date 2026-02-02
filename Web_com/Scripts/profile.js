@@ -1,21 +1,33 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    // Đảm bảo DOM đã sẵn sàng trước khi khởi tạo
     initProfilePage();
 });
 
-let currentSwalInstance = null; // Lưu instance hiện tại của SweetAlert
+/**
+ * HTML escape function to prevent XSS when inserting user data
+ * @param {string} unsafe 
+ */
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+let currentSwalInstance = null;
 
 /**
- * Khởi tạo các sự kiện cho trang Profile
+ * Initialize events for the Profile page
  */
 function initProfilePage() {
-    // Lấy userId từ URL
+    // Get userId from the URL
     const pathParts = window.location.pathname.split('/');
     const userId = pathParts[pathParts.length - 1];
 
-    // Sửa lỗi đệ quy khi click ảnh bìa
+    // Fix recursion issue when clicking the cover image
     $('#coverImageContainer').off('click').on('click', function (e) {
-        // Chỉ trigger khi click vào container, không phải input file
+        // Only trigger when clicking the container, not the file input itself
         if (e.target === this) {
             $('#coverImageUpload').trigger('click');
         }
@@ -27,9 +39,9 @@ function initProfilePage() {
         }
     });
 
-    // Sửa lỗi đệ quy khi click avatar
+    // Fix recursion issue when clicking the avatar
     $('#avatarContainer').off('click').on('click', function (e) {
-        // Chỉ trigger khi click vào container, không phải input file
+        // Only trigger when clicking the container, not the file input itself
         if (e.target === this) {
             $('#avatarUpload').trigger('click');
         }
@@ -44,16 +56,19 @@ function initProfilePage() {
     // Edit Profile button
     $('.edit-btn').off('click').on('click', showUserDetails);
 
-    // Xử lý nút Follow
+    // Handle Follow button
     $('.follow-btn').off('click').on('click', function () {
-        followAuthor(userId);
+        // Lấy ID trực tiếp từ nút bấm thay vì parse URL
+        const authorId = $(this).data('author-id');
+        // Truyền nút bấm (this) vào hàm để dễ update UI
+        followAuthor(authorId, $(this));
     });
 
-    // Xử lý click work card - sử dụng event delegation
+    // Handle work card clicks - using event delegation
     $(document).off('click', '.work-card').on('click', '.work-card', function (e) {
-        // Ngăn sự kiện nếu click vào nút Edit hoặc Delete
+        // Prevent event if clicking the Edit or Delete buttons
         if ($(e.target).closest('.work-edit-btn, .work-delete-btn').length) {
-            e.stopPropagation(); // Ngăn sự kiện lan truyền lên thẻ cha
+            e.stopPropagation(); // Stop event bubbling to the parent card
             return;
         }
 
@@ -63,9 +78,7 @@ function initProfilePage() {
         }
     });
 
-    
-
-    // Xử lý click tab - sử dụng event delegation
+    // Handle tab clicks - using event delegation
     $('.tab-btn').off('click').on('click', function () {
         const tabIndex = $(this).index();
 
@@ -99,23 +112,23 @@ function initProfilePage() {
 }
 
 /**
- * Upload ảnh lên server
- * @param {File} file - File ảnh cần upload
- * @param {string} type - Loại ảnh ('cover' hoặc 'avatar')
+ * Upload image to server
+ * @param {File} file - Image file to upload
+ * @param {string} type - Image type ('cover' or 'avatar')
  */
 function uploadImage(file, type) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('type', type);
 
-    // Hiển thị loading
+    // Show loading state
     const swalInstance = Swal.fire({
         title: 'Uploading...',
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading()
     });
 
-    // Gọi API upload
+    // Call upload API
     fetch('/Profile/UploadProfileImage', {
         method: 'POST',
         body: formData
@@ -129,7 +142,7 @@ function uploadImage(file, type) {
         .then(data => {
             swalInstance.close();
             if (data.success) {
-                // Cập nhật ảnh mà không gây đệ quy
+                // Update image without causing recursion
                 const element = type === 'cover' ? $('#coverImageContainer') : $('#avatarContainer');
                 element.css('background-image', `url(${data.filePath}?${new Date().getTime()})`);
                 Swal.fire('Success', `${type} image updated!`, 'success');
@@ -145,278 +158,215 @@ function uploadImage(file, type) {
 }
 
 /**
- * Hiển thị form chỉnh sửa thông tin user
+ * Display password verification modal before editing
  */
 function showUserDetails() {
-    fetch('/Profile/GetUserDetails')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                const user = data.data;
-
-                currentSwalInstance = Swal.fire({
-                    title: 'Edit Profile',
-                    html: createEditFormHTML(user),
-                    focusConfirm: false,
-                    showCancelButton: true,
-                    confirmButtonText: 'Save',
-                    cancelButtonText: 'Cancel',
-                    preConfirm: () => getFormData(),
-                    didOpen: () => initFormEvents()
-                }).then((result) => {
-                    if (result.isConfirmed && result.value) {
-                        updateUserDetails(result.value);
-                    }
-                    currentSwalInstance = null;
-                });
-            } else {
-                Swal.fire('Error', data.message || 'Failed to fetch user details', 'error');
-            }
-        })
-        .catch(error => {
-            Swal.fire('Error', 'Failed to fetch user details', 'error');
-            console.error('Fetch user details error:', error);
-        });
-}
-
-/**
- * Tạo HTML cho form edit
- */
-function createEditFormHTML(user) {
-    const initialPasswordDisplay = '********';
-    const realPassword = user.usersPass || '';
-    const masked = realPassword === initialPasswordDisplay;
-    return `
-        <div class="profile-edit-form">
+    Swal.fire({
+        title: 'Verify to Edit',
+        html: `
             <div class="form-group">
-                <label>Name</label>
-                <input type="text" id="editName" class="swal2-input" value="${escapeHtml(user.usersName || '')}">
-            </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="editEmail" class="swal2-input" value="${escapeHtml(user.usersEmail || '')}">
-            </div>
-            <div class="form-group password-group">
-                <label>Password</label>
+                <label>Enter current password</label>
                 <div class="password-input-container">
-                    <input type="password"
-                           id="editPassword"
-                           class="swal2-input"
-                           value="${initialPasswordDisplay}"
-                           readonly
-                           data-password="${masked ? '' : escapeHtml(realPassword)}">
-                    <i class="fas fa-eye-slash toggle-password" id="togglePassword"></i>
+                    <input type="password" id="verifyPassword" class="swal2-input" placeholder="Password">
+                    <i class="fas fa-eye-slash toggle-password" id="toggleVerifyPassword"></i>
                 </div>
             </div>
-        </div>
-    `;
-}
-
-/**
- * Hàm để tránh lỗi XSS khi hiển thị dữ liệu
- */
-function escapeHtml(text) {
-    if (!text) return '';
-    var map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    return text.toString().replace(/[&<>"']/g, function (m) { return map[m]; });
-}
-
-/**
- * Lấy dữ liệu từ form
- */
-function getFormData() {
-    const name = $('#editName').val() || '';
-    const email = $('#editEmail').val() || '';
-    const password = $('#editPassword').val() === '********' ? null : $('#editPassword').val();
-
-    if (!name.trim() || !email.trim()) {
-        Swal.showValidationMessage('Name and email are required');
-        return false;
-    }
-
-    return {
-        name: name.trim(),
-        email: email.trim(),
-        password: password
-    };
-}
-
-/**
- * Khởi tạo sự kiện cho form
- */
-function initFormEvents() {
-    $('#togglePassword').off('click').on('click', togglePasswordView);
-}
-
-/**
- * Hiển thị/ẩn mật khẩu (phiên bản tích hợp từ code mẫu)
- */
-function togglePasswordView() {
-    const passwordInput = $('#editPassword');
-    const icon = $('#togglePassword');
-    const isMasked = passwordInput.val() === '********';
-
-    if (isMasked) {
-        const realPassword = passwordInput.data('password');
-        passwordInput
-            .val(realPassword)
-            .prop('readonly', false)
-            .attr('type', 'text'); // 👈 chuyển sang type text để hiện ra
-        icon.removeClass('fa-eye-slash').addClass('fa-eye');
-        setTimeout(() => passwordInput.focus(), 100);
-    } else {
-        passwordInput
-            .val('********')
-            .prop('readonly', true)
-            .attr('type', 'password'); // 👈 chuyển lại về password
-        icon.removeClass('fa-eye').addClass('fa-eye-slash');
-    }
-}
-
-/**
- * Lấy mật khẩu thực từ server (giữ nguyên)
- */
-function fetchUserPassword() {
-    return fetch('/Profile/GetUserPassword')
-        .then(response => {
-            if (!response.ok) throw new Error('Failed to retrieve password');
-            return response.json();
-        })
-        .then(data => {
-            if (data.success && data.data?.password) {
-                return data.data.password;
-            }
-            throw new Error(data.message || 'Password not found');
-        });
-}
-
-/**
- * Cập nhật thông tin user
- */
-function updateUserDetails(data) {
-    if (!data) return;
-
-    const swalInstance = Swal.fire({
-        title: 'Updating...',
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading()
-    });
-
-    fetch('/Profile/UpdateUserDetails', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            swalInstance.close();
-            if (data.success) {
-                Swal.fire({
-                    title: 'Success',
-                    text: 'Profile updated successfully!',
-                    icon: 'success',
-                    willClose: () => {
-                        // Reload trang sau khi đóng thông báo thành công
-                        location.reload();
-                    }
-                });
-            } else {
-                Swal.fire('Error', data.message, 'error');
-            }
-        })
-        .catch(error => {
-            swalInstance.close();
-            Swal.fire('Error', 'Failed to update profile', 'error');
-            console.error('Update error:', error);
-        });
-}
-/**
- * Theo dõi/bỏ theo dõi tác giả
- */
-let isFollowProcessing = false;
-function followAuthor(authorId) {
-    console.log('Follow click triggered');
-    if (!authorId || isFollowProcessing) return;
-    isFollowProcessing = true;
-
-    // Kiểm tra nếu là Guest (sử dụng biến đã định nghĩa từ View)
-    if (typeof isGuest !== 'undefined' && isGuest === "true") {
-        Swal.fire({
-            icon: 'info',
-            title: 'Yêu cầu đăng nhập',
-            text: 'Bạn cần đăng nhập để theo dõi tác giả',
-            showCancelButton: true,
-            confirmButtonText: 'Đăng nhập',
-            cancelButtonText: 'Hủy'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = '/Web_Com/Login';
-            }
-        });
-        return;
-    }
-
-    $.ajax({
-        url: '/Profile/FollowAuthor',
-        type: 'POST',
-        data: { authorId },
-        success: function (response) {
-            if (response.success) {
-                setTimeout(() => {
-                    // Cập nhật trực tiếp nút follow trên giao diện
-                    const $btn = $('.follow-btn');
-                    const isFollowing = response.isFollowing;
-
-                    $btn.toggleClass('following', isFollowing);
-                    $btn.html(`<i class="fas fa-heart"></i> ${isFollowing ? 'Following' : 'Follow'}`);
-
-                    // Hiển thị thông báo
-                    Swal.fire({
-                        icon: 'success',
-                        title: isFollowing ? 'Followed!' : 'Unfollowed',
-                        text: response.message,
-                        timer: 1000,
-                        showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
-                    });
-                }, 100);
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: response.message
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Continue',
+        cancelButtonText: 'Cancel',
+        didOpen: () => {
+            // Add toggle event for the verification modal
+            const verifyToggle = document.querySelector('#toggleVerifyPassword');
+            const verifyInput = document.querySelector('#verifyPassword');
+            if (verifyToggle && verifyInput) {
+                verifyToggle.addEventListener('click', () => {
+                    togglePasswordVisibility(verifyInput, verifyToggle);
                 });
             }
         },
-        error: function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Could not process your request'
+        preConfirm: () => {
+            const pwd = $('#verifyPassword').val();
+            if (!pwd) {
+                Swal.showValidationMessage('Please enter your password');
+                return false;
+            }
+            return pwd;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const enteredPassword = result.value;
+
+            $.ajax({
+                url: '/Profile/VerifyPasswordForEdit',
+                type: 'POST',
+                data: { Password: enteredPassword },
+                success: function (response) {
+                    if (response.success) {
+                        // Open edit modal with actual data
+                        const user = response.data;
+                        openEditProfileModal(user);
+                    } else {
+                        Swal.fire('Error', response.message || 'Incorrect password', 'error');
+                    }
+                },
+                error: function () {
+                    Swal.fire('Error', 'Could not connect to server', 'error');
+                }
             });
         }
     });
 }
 
 /**
- * Tải danh sách người theo dõi
+ * Open profile edit modal with 3 fields: name, email, and password (shown as plain text)
+ * @param {Object} user 
+ */
+function openEditProfileModal(user) {
+    Swal.fire({
+        title: 'Edit Information',
+        html: `
+            <div class="profile-edit-form">
+                <div class="form-group">
+                    <label>Display Name</label>
+                    <input type="text" id="editName" class="swal2-input" value="${escapeHtml(user.usersName || '')}">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editEmail" class="swal2-input" value="${escapeHtml(user.usersEmail || '')}">
+                </div>
+                <div class="form-group password-group">
+                    <label>Current / New Password</label>
+                    <div class="password-input-container">
+                        <input type="text" id="editPassword" class="swal2-input" value="${escapeHtml(user.usersPass || '')}">
+                        <i class="fas fa-eye toggle-password" id="toggleEditPassword"></i> 
+                    </div>
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        This is your current password. You can keep it as is or change it to a new one.
+                    </small>
+                </div>
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Save Changes',
+        cancelButtonText: 'Cancel',
+        didOpen: () => {
+            // Add toggle event for the edit modal
+            const editToggle = document.querySelector('#toggleEditPassword');
+            const editInput = document.querySelector('#editPassword');
+            if (editToggle && editInput) {
+                editToggle.addEventListener('click', () => {
+                    togglePasswordVisibility(editInput, editToggle);
+                });
+            }
+        },
+        preConfirm: () => {
+            const name = $('#editName').val().trim();
+            const email = $('#editEmail').val().trim();
+            const password = $('#editPassword').val().trim();
+
+            if (!name || !email) {
+                Swal.showValidationMessage('Name and Email cannot be empty');
+                return false;
+            }
+
+            // If user clears the password -> show warning
+            if (password === '') {
+                Swal.showValidationMessage('If you do not want to change your password, please keep the current value');
+                return false;
+            }
+
+            return { name, email, password };
+        }
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            updateUserDetails(result.value);
+        }
+    });
+}
+
+/**
+ * Toggle password visibility (reusable for both modals)
+ * @param {HTMLElement} inputElement - Password input element
+ * @param {HTMLElement} iconElement - Toggle icon element
+ */
+function togglePasswordVisibility(inputElement, iconElement) {
+    if (inputElement.type === 'password') {
+        inputElement.type = 'text';
+        iconElement.classList.remove('fa-eye-slash');
+        iconElement.classList.add('fa-eye');
+    } else {
+        inputElement.type = 'password';
+        iconElement.classList.remove('fa-eye');
+        iconElement.classList.add('fa-eye-slash');
+    }
+}
+
+/**
+ * Update user details on the server
+ * @param {Object} data - Form data {name, email, password}
+ */
+function updateUserDetails(data) {
+    $.ajax({
+        url: '/Profile/UpdateUserDetails',
+        type: 'POST',
+        data: {
+            Name: data.name,
+            Email: data.email,
+            Password: data.password
+        },
+        success: function (response) {
+            if (response.success) {
+                Swal.fire('Success', response.message, 'success').then(() => {
+                    location.reload();
+                });
+            } else {
+                Swal.fire('Error', response.message, 'error');
+            }
+        },
+        error: function () {
+            Swal.fire('Error', 'Failed to update details', 'error');
+        }
+    });
+}
+
+/**
+ * Follow / Unfollow an author
+ * @param {number} authorId - Author's ID
+ */
+function followAuthor(authorId, $btn) {
+    if (!$btn) $btn = $('.follow-btn');
+
+    $.ajax({
+        url: '/Profile/FollowAuthor',
+        type: 'POST',
+        data: { authorId: authorId },
+        success: function (response) {
+            if (response.success) {
+                // 1. Update Button UI (Icon & Text)
+                $btn.toggleClass('following', response.isFollowing);
+                const iconClass = response.isFollowing ? 'fas' : 'far';
+                const text = response.isFollowing ? 'Following' : 'Follow';
+                $btn.html(`<i class="${iconClass} fa-heart"></i> ${text}`);
+
+                // 2. Update Follower Count smoothly (No page reload needed)
+                if (response.newFollowerCount !== undefined) {
+                    $('#followerCountDisplay').text(response.newFollowerCount);
+                }
+            } else {
+                Swal.fire('Error', response.message, 'error');
+            }
+        },
+        error: function () {
+            Swal.fire('Error', 'Could not process your request', 'error');
+        }
+    });
+}
+
+/**
+ * Load followers list
+ * @param {number} userId - User ID
  */
 function loadFollowers(userId) {
     const $container = $('.followers-grid');
@@ -448,6 +398,10 @@ function loadFollowers(userId) {
         });
 }
 
+/**
+ * Load following list
+ * @param {number} userId - User ID
+ */
 function loadFollowing(userId) {
     const $container = $('.following-grid');
     $container.html('<div class="loading">Loading following...</div>');
@@ -469,18 +423,18 @@ function loadFollowing(userId) {
                     $container.html('<div class="no-following">Not following anyone yet</div>');
                 }
             } else {
-                $container.html('<div class="error">Failed to load following</div>');
+                $container.html('<div class="error">Failed to load following list</div>');
             }
         })
         .catch(error => {
-            $container.html('<div class="error">Error loading following</div>');
+            $container.html('<div class="error">Error loading following list</div>');
             console.error('Error loading following:', error);
         });
 }
 
 /**
- * 
- * Tải danh sách các tác phẩm đã yêu thích
+ * Load favorited works list
+ * @param {number} userId - User ID
  */
 function loadFavoritedWorks(userId) {
     const $container = $('.favorited-grid');
@@ -525,16 +479,21 @@ function loadFavoritedWorks(userId) {
         });
 }
 
+/**
+ * Delete a work
+ * @param {number} workId 
+ * @param {string} workName 
+ */
 function deleteWork(workId, workName) {
     Swal.fire({
-        title: 'Bạn chắc chắn muốn xóa?',
-        text: "Bạn không thể hoàn tác lại thao tác này!",
+        title: 'Are you sure you want to delete?',
+        text: "You won't be able to revert this action!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Vâng, xóa nó!',
-        cancelButtonText: 'Hủy bỏ'
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -547,15 +506,15 @@ function deleteWork(workId, workName) {
                 success: function (response) {
                     if (response.success) {
                         Swal.fire(
-                            'Đã xóa!',
-                            `Tác phẩm "${response.workName || workName}" đã được xóa.`,
+                            'Deleted!',
+                            `The work "${response.workName || workName}" has been deleted.`,
                             'success'
                         ).then(() => {
                             location.reload();
                         });
                     } else {
                         Swal.fire(
-                            'Lỗi!',
+                            'Error!',
                             response.message,
                             'error'
                         );
@@ -563,8 +522,8 @@ function deleteWork(workId, workName) {
                 },
                 error: function () {
                     Swal.fire(
-                        'Lỗi!',
-                        'Không thể kết nối đến server',
+                        'Error!',
+                        'Could not connect to the server',
                         'error'
                     );
                 }

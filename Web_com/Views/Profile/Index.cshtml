@@ -63,7 +63,7 @@
                             <div class="stat-label">Works</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-number">@followerCount</div>
+                            <div class="stat-number" id="followerCountDisplay">@followerCount</div>
                             <div class="stat-label">Followers</div>
                         </div>
                         <div class="stat-item">
@@ -103,8 +103,9 @@
                         {
                             <!-- Người dùng khác (đã đăng nhập) -->
                             <button class="action-btn follow-btn @(ViewBag.IsFollowing ? "following" : "")"
-                                    onclick="followAuthor(@Model.usersId)">
-                                <i class="fas fa-heart"></i> @(ViewBag.IsFollowing ? "Following" : "Follow")
+                                    data-author-id="@Model.usersId">
+                                <i class="@(ViewBag.IsFollowing ? "fas" : "far") fa-heart"></i>
+                                @(ViewBag.IsFollowing ? "Following" : "Follow")
                             </button>
                             <a href="javascript:history.back()">
                                 <button class="action-btn back-btn">
@@ -194,25 +195,4 @@
 </html>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    const isGuest = "@isGuestString";
-    console.log("isGuest =", isGuest);
-    // Kiểm tra trạng thái follow khi tải trang
-    document.addEventListener('DOMContentLoaded', function() {
-        const userId = @(Session["UserId"] ?? 0);
-        const authorId = @ViewBag.AuthorId;
-
-        if (userId > 0 && userId !== authorId) {
-            fetch(`@Url.Action("IsFollowing", "Profile")?authorId=${authorId}`)
-            .then(response => response.json())
-            .then(data => {
-                const btn = document.getElementById('followBtn');
-                if (data.isFollowing) {
-                    btn.innerHTML = '<i class="fa fa-check"></i> Following';
-                    btn.classList.add('following');
-                }
-            });
-        }
-    });
-</script>
 <script src="~/Scripts/profile.js"></script>

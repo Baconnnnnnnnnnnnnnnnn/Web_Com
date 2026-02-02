@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Web_com.Models.Entities;
 using Web_com.Models.ModelView;
+using Web_com.Helpers;
 
 namespace Web_com.Controllers
 {
@@ -44,7 +44,7 @@ namespace Web_com.Controllers
 
             if (user == null)
             {
-                return HttpNotFound("Tác giả không tồn tại");
+                return HttpNotFound("Author did not exist");
             }
 
             // Thiết lập ViewBag
@@ -67,28 +67,26 @@ namespace Web_com.Controllers
         public JsonResult GetUserDetails()
         {
             if (Session["UserId"] == null)
-            {
                 return Json(new { success = false, message = "User not logged in" }, JsonRequestBehavior.AllowGet);
-            }
 
             try
             {
                 int userId = (int)Session["UserId"];
-                var user = db.users
-                    .Where(u => u.usersId == userId)
-                    .Select(u => new {
-                        u.usersName,
-                        u.usersEmail,
-                        u.usersPass // Đổi từ usersPassword thành usersPass
-                    })
-                    .FirstOrDefault();
+                var user = db.users.FirstOrDefault(u => u.usersId == userId);
 
                 if (user == null)
-                {
                     return Json(new { success = false, message = "User not found" }, JsonRequestBehavior.AllowGet);
-                }
 
-                return Json(new { success = true, data = user }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        usersName = user.usersName,
+                        usersEmail = user.usersEmail
+                        // KHÔNG trả usersPass nữa → an toàn hơn
+                    }
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -97,7 +95,48 @@ namespace Web_com.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateUserDetails(UserUpdateViewModel model)
+        public JsonResult VerifyPasswordForEdit(string Password)
+        {
+            if (Session["UserId"] == null)
+                return Json(new { success = false, message = "Not logged in" });
+
+            int userId = (int)Session["UserId"];
+            var user = db.users.FirstOrDefault(u => u.usersId == userId);
+
+            if (user == null)
+                return Json(new { success = false, message = "User not found" });
+
+            bool isValid = false;
+
+            if (PasswordHasher.IsLegacyPlainText(user.usersPass))
+            {
+                isValid = (user.usersPass == Password);
+            }
+            else
+            {
+                isValid = PasswordHasher.Verify(Password, user.usersPass);
+            }
+
+            if (isValid)
+            {
+                // Trả về thông tin user (không trả hash/pass thật, nhưng client sẽ dùng placeholder)
+                return Json(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        usersName = user.usersName,
+                        usersEmail = user.usersEmail,
+                        usersPass = "********"  // placeholder, client sẽ hiển thị thật
+                    }
+                });
+            }
+
+            return Json(new { success = false, message = "Incorrect password" });
+        }
+
+        [HttpPost]
+        public JsonResult UpdateUserDetails(string Name, string Email, string Password)
         {
             try
             {
@@ -110,33 +149,32 @@ namespace Web_com.Controllers
                 if (user == null)
                     return Json(new { success = false, message = "User not found" });
 
-                // Cập nhật tên và email (luôn cập nhật nếu có giá trị)
-                if (model.Name != null) // Có thể thêm kiểm tra string.IsNullOrEmpty nếu bạn không muốn cập nhật thành rỗng
-                {
-                    user.usersName = model.Name;
-                }
-                if (model.Email != null) // Có thể thêm kiểm tra string.IsNullOrEmpty nếu bạn không muốn cập nhật thành rỗng
-                {
-                    user.usersEmail = model.Email;
-                }
+                // Cập nhật name & email nếu có
+                if (!string.IsNullOrEmpty(Name))
+                    user.usersName = Name;
 
-                // QUAN TRỌNG: Chỉ cập nhật mật khẩu nếu có một mật khẩu MỚI được cung cấp
-                // Mật khẩu sẽ là null nếu người dùng không tương tác với trường mật khẩu
-                if (!string.IsNullOrEmpty(model.Password))
+                if (!string.IsNullOrEmpty(Email))
+                    user.usersEmail = Email;
+
+                // Nếu có Password mới (khác rỗng và khác placeholder)
+                if (!string.IsNullOrEmpty(Password) && Password != "********")
                 {
-                    // Chỉ cập nhật nếu mật khẩu không null và không rỗng
-                    user.usersPass = model.Password;
+                    user.usersPass = PasswordHasher.Hash(Password);
                 }
 
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { success = true, message = "Profile updated successfully!", name = user.usersName });
+                return Json(new
+                {
+                    success = true,
+                    message = "Save successfully",
+                    name = user.usersName
+                });
             }
             catch (Exception ex)
             {
-                // Log lỗi để debug
-                System.Diagnostics.Debug.WriteLine($"Error updating user details: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Update profile error: {ex.Message}");
                 return Json(new { success = false, message = ex.Message });
             }
         }
