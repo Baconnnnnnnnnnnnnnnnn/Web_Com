@@ -27,9 +27,9 @@ drop table if exists admins
 create table admins
 (
 	adminsId int primary key identity,
-	adminsName varchar(50),
-	adminsEmail varchar(50),
-	adminsPass varchar(50),
+	adminsName varchar(50) NOT NULL,
+	adminsEmail varchar(50) NOT NULL,
+	adminsPass varchar(255) NOT NULL,
 	role_AdminId int foreign key references role_Admin(role_AdminId),
 )
 go
@@ -48,9 +48,9 @@ drop table if exists users
 create table users
 (
 	usersId int primary key identity,
-	usersName varchar(50) unique,
-	usersEmail varchar(50),
-	usersPass varchar(50),
+	usersName varchar(50) unique NOT NULL,
+	usersEmail varchar(50) NOT NULL,
+	usersPass varchar(255) NOT NULL,
 	usersCreated datetime default getDate(),
 	usersAvatar varchar(500),
 	usersCover varchar(500),

@@ -48,5 +48,6 @@ namespace Web_com.Models.Entities
         public virtual DbSet<work_Status> work_Status { get; set; }
         public virtual DbSet<work_Tag> work_Tag { get; set; }
         public virtual DbSet<work_View> work_View { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

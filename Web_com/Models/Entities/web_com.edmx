@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="web_comModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="web_comModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="admins">
           <Key>
             <PropertyRef Name="adminsId" />
@@ -12,7 +12,7 @@
           <Property Name="adminsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="adminsName" Type="varchar" MaxLength="50" />
           <Property Name="adminsEmail" Type="varchar" MaxLength="50" />
-          <Property Name="adminsPass" Type="varchar" MaxLength="50" />
+          <Property Name="adminsPass" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="role_AdminId" Type="int" />
         </EntityType>
         <EntityType Name="author_Follow">
@@ -63,6 +63,16 @@
           </Key>
           <Property Name="role_AdminId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="role_AdminName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="tag">
           <Key>
@@ -122,7 +132,7 @@
           <Property Name="usersId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="usersName" Type="varchar" MaxLength="50" />
           <Property Name="usersEmail" Type="varchar" MaxLength="50" />
-          <Property Name="usersPass" Type="varchar" MaxLength="50" />
+          <Property Name="usersPass" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="usersCreated" Type="datetime" />
           <Property Name="isAuthor" Type="bit" />
           <Property Name="isDisabled" Type="bit" />
@@ -382,7 +392,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__user_Noti__actor__503BEA1C">
+        <Association Name="FK__user_Noti__actor__625A9A57">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
           <ReferentialConstraint>
@@ -394,7 +404,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__user_Noti__comme__5224328E">
+        <Association Name="FK__user_Noti__comme__6442E2C9">
           <End Role="work_Comment" Type="Self.work_Comment" Multiplicity="0..1" />
           <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
           <ReferentialConstraint>
@@ -406,7 +416,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__user_Noti__userI__4F47C5E3">
+        <Association Name="FK__user_Noti__userI__6166761E">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
           <ReferentialConstraint>
@@ -418,7 +428,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__user_Noti__workI__51300E55">
+        <Association Name="FK__user_Noti__workI__634EBE90">
           <End Role="work" Type="Self.work" Multiplicity="0..1" />
           <End Role="user_Notification" Type="Self.user_Notification" Multiplicity="*" />
           <ReferentialConstraint>
@@ -666,6 +676,7 @@
           <EntitySet Name="comment_Heart" EntityType="Self.comment_Heart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="genre" EntityType="Self.genre" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role_Admin" EntityType="Self.role_Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tag" EntityType="Self.tag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_Badge" EntityType="Self.user_Badge" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_History" EntityType="Self.user_History" Schema="dbo" store:Type="Tables" />
@@ -734,19 +745,19 @@
             <End Role="work" EntitySet="work" />
             <End Role="user_History" EntitySet="user_History" />
           </AssociationSet>
-          <AssociationSet Name="FK__user_Noti__actor__503BEA1C" Association="Self.FK__user_Noti__actor__503BEA1C">
+          <AssociationSet Name="FK__user_Noti__actor__625A9A57" Association="Self.FK__user_Noti__actor__625A9A57">
             <End Role="users" EntitySet="users" />
             <End Role="user_Notification" EntitySet="user_Notification" />
           </AssociationSet>
-          <AssociationSet Name="FK__user_Noti__comme__5224328E" Association="Self.FK__user_Noti__comme__5224328E">
+          <AssociationSet Name="FK__user_Noti__comme__6442E2C9" Association="Self.FK__user_Noti__comme__6442E2C9">
             <End Role="work_Comment" EntitySet="work_Comment" />
             <End Role="user_Notification" EntitySet="user_Notification" />
           </AssociationSet>
-          <AssociationSet Name="FK__user_Noti__userI__4F47C5E3" Association="Self.FK__user_Noti__userI__4F47C5E3">
+          <AssociationSet Name="FK__user_Noti__userI__6166761E" Association="Self.FK__user_Noti__userI__6166761E">
             <End Role="users" EntitySet="users" />
             <End Role="user_Notification" EntitySet="user_Notification" />
           </AssociationSet>
-          <AssociationSet Name="FK__user_Noti__workI__51300E55" Association="Self.FK__user_Noti__workI__51300E55">
+          <AssociationSet Name="FK__user_Noti__workI__634EBE90" Association="Self.FK__user_Noti__workI__634EBE90">
             <End Role="work" EntitySet="work" />
             <End Role="user_Notification" EntitySet="user_Notification" />
           </AssociationSet>
@@ -827,8 +838,7 @@
             <End Role="work_View" EntitySet="work_View" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="web_comModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -839,7 +849,7 @@
           <Property Name="adminsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="adminsName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="adminsEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="adminsPass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="adminsPass" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="role_AdminId" Type="Int32" />
           <NavigationProperty Name="role_Admin" Relationship="Self.FK__admins__role_Adm__398D8EEE" FromRole="admins" ToRole="role_Admin" />
         </EntityType>
@@ -971,7 +981,7 @@
           <Property Name="usersId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="usersName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="usersEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="usersPass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="usersPass" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="usersCreated" Type="DateTime" Precision="3" />
           <Property Name="isAuthor" Type="Boolean" />
           <Property Name="isDisabled" Type="Boolean" />
@@ -1725,7 +1735,18 @@
             <End Role="work_Chapter" EntitySet="work_Chapter" />
             <End Role="work_Comment" EntitySet="work_Comment" />
           </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="web_comModel.sysdiagram" />
         </EntityContainer>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1971,6 +1992,17 @@
                 <ScalarProperty Name="work_ViewDate" ColumnName="work_ViewDate" />
                 <ScalarProperty Name="workId" ColumnName="workId" />
                 <ScalarProperty Name="usersId" ColumnName="usersId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="web_comModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

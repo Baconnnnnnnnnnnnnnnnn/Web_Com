@@ -64,6 +64,7 @@
         <AssociationConnector Association="web_comModel.FK__work_Comm__arcId__6754599E" ManuallyRouted="false" />
         <AssociationConnector Association="web_comModel.FK__work_Chap__work___160F4887" ManuallyRouted="false" />
         <AssociationConnector Association="web_comModel.FK__work_Comm__chapt__68487DD7" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="web_comModel.sysdiagram" Width="1.5" PointX="0.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

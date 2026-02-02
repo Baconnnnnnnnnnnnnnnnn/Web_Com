@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
 using Web_com.Models.Entities;
+using Web_com.Helpers;
 
 namespace Web_com.Controllers
 {
@@ -10,46 +10,91 @@ namespace Web_com.Controllers
     {
         private web_comEntities db = new web_comEntities();
 
-        public ActionResult Login()
-        {
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(string usersEmail, string usersPass)
         {
+            if (string.IsNullOrWhiteSpace(usersEmail) || string.IsNullOrWhiteSpace(usersPass))
+            {
+                ViewBag.ErrorMessage = "Email and password are required.";
+                return View();
+            }
+
             // Kiểm tra admin trước
             var admin = db.admins
                 .Include("role_Admin")
-                .FirstOrDefault(a => a.adminsEmail == usersEmail && a.adminsPass == usersPass);
+                .FirstOrDefault(a => a.adminsEmail == usersEmail);
 
             if (admin != null)
             {
-                // Lưu session cho admin
-                Session["AdminId"] = admin.adminsId;
-                Session["AdminName"] = admin.adminsName;
-                Session["AdminEmail"] = admin.adminsEmail;
-                Session["AdminRoleId"] = admin.role_AdminId;
-                Session["AdminRoleName"] = admin.role_Admin.role_AdminName;
-                Session["IsAdmin"] = true;
-                Session["IsLoggedIn"] = true;
+                bool valid = false;
 
-                // Redirect đến controller admin tương ứng
-                string controllerName = GetControllerByRole((int)admin.role_AdminId);
-                return RedirectToAction(controllerName, "Admin");
+                if (PasswordHasher.IsLegacyPlainText(admin.adminsPass))
+                {
+                    if (admin.adminsPass == usersPass)
+                    {
+                        valid = true;
+                        admin.adminsPass = PasswordHasher.Hash(usersPass);
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    valid = PasswordHasher.Verify(usersPass, admin.adminsPass);
+                }
+
+                if (valid)
+                {
+                    Session["AdminId"] = admin.adminsId;
+                    Session["AdminName"] = admin.adminsName;
+                    Session["AdminEmail"] = admin.adminsEmail;
+                    Session["AdminRoleId"] = admin.role_AdminId;
+                    Session["AdminRoleName"] = admin.role_Admin.role_AdminName;
+                    Session["IsAdmin"] = true;
+                    Session["IsLoggedIn"] = true;
+
+                    string controllerName = GetControllerByRole((int)admin.role_AdminId);
+                    return RedirectToAction(controllerName, "Admin");
+                }
             }
 
-            // Nếu không phải admin, kiểm tra user
-            var user = db.users.FirstOrDefault(u => u.usersEmail == usersEmail && u.usersPass == usersPass);
+            // Kiểm tra user thường
+            var user = db.users.FirstOrDefault(u => u.usersEmail == usersEmail);
+
             if (user != null)
             {
-                Session["UserId"] = user.usersId;
-                Session["UserName"] = user.usersName;
-                Session["IsAdmin"] = false;
-                Session["IsLoggedIn"] = true;
-                return RedirectToAction("Login", "Web_Com");
+                bool valid = false;
+
+                if (PasswordHasher.IsLegacyPlainText(user.usersPass))
+                {
+                    if (user.usersPass == usersPass)
+                    {
+                        valid = true;
+                        user.usersPass = PasswordHasher.Hash(usersPass);
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    valid = PasswordHasher.Verify(usersPass, user.usersPass);
+                }
+
+                if (valid)
+                {
+                    if (user.isDisabled == true)
+                    {
+                        ViewBag.ErrorMessage = "Account is disabled.";
+                        return View();
+                    }
+
+                    Session["UserId"] = user.usersId;
+                    Session["UserName"] = user.usersName;
+                    Session["IsAdmin"] = false;
+                    Session["IsLoggedIn"] = true;
+                    return RedirectToAction("Index", "Web_Com");  // sửa từ "Login" thành "Index" cho hợp lý
+                }
             }
+
             ViewBag.ErrorMessage = "Invalid email or password!";
             return View();
         }
@@ -59,88 +104,103 @@ namespace Web_com.Controllers
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine($"LoginAjax: Email={usersEmail}");
+                if (string.IsNullOrWhiteSpace(usersEmail) || string.IsNullOrWhiteSpace(usersPass))
+                    return Json(new { success = false, message = "Email and password are required." });
 
-                // Kiểm tra admin trước
+                // Kiểm tra admin
                 var admin = db.admins
                     .Include("role_Admin")
-                    .FirstOrDefault(a => a.adminsEmail == usersEmail && a.adminsPass == usersPass);
+                    .FirstOrDefault(a => a.adminsEmail == usersEmail);
 
                 if (admin != null)
                 {
-                    // Lưu session cho admin
-                    Session["AdminId"] = admin.adminsId;
-                    Session["AdminName"] = admin.adminsName;
-                    Session["AdminEmail"] = admin.adminsEmail;
-                    Session["AdminRoleId"] = admin.role_AdminId;
-                    Session["AdminRoleName"] = admin.role_Admin.role_AdminName;
-                    Session["IsAdmin"] = true;
-                    Session["IsLoggedIn"] = true;
+                    bool valid = false;
 
-                    return Json(new
+                    if (PasswordHasher.IsLegacyPlainText(admin.adminsPass))
                     {
-                        success = true,
-                        isAdmin = true,
-                        name = admin.adminsName,
-                        role = admin.role_Admin.role_AdminName,
-                        controller = GetControllerByRole((int)admin.role_AdminId),
-                        message = $"Admin {admin.adminsName} has logged in"
-                    });
+                        if (admin.adminsPass == usersPass)
+                        {
+                            valid = true;
+                            admin.adminsPass = PasswordHasher.Hash(usersPass);
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        valid = PasswordHasher.Verify(usersPass, admin.adminsPass);
+                    }
+
+                    if (valid)
+                    {
+                        Session["AdminId"] = admin.adminsId;
+                        Session["AdminName"] = admin.adminsName;
+                        Session["AdminEmail"] = admin.adminsEmail;
+                        Session["AdminRoleId"] = admin.role_AdminId;
+                        Session["AdminRoleName"] = admin.role_Admin.role_AdminName;
+                        Session["IsAdmin"] = true;
+                        Session["IsLoggedIn"] = true;
+
+                        return Json(new
+                        {
+                            success = true,
+                            isAdmin = true,
+                            name = admin.adminsName,
+                            role = admin.role_Admin.role_AdminName,
+                            controller = GetControllerByRole((int)admin.role_AdminId),
+                            message = $"Admin {admin.adminsName} has logged in"
+                        });
+                    }
                 }
 
-                // Nếu không phải admin, kiểm tra user
-                var user = db.users.FirstOrDefault(u => u.usersEmail == usersEmail && u.usersPass == usersPass);
+                // Kiểm tra user
+                var user = db.users.FirstOrDefault(u => u.usersEmail == usersEmail);
 
                 if (user != null)
                 {
-                    // ⚠ Kiểm tra tài khoản bị vô hiệu hóa
-                    if (user.isDisabled == true)
+                    bool valid = false;
+
+                    if (PasswordHasher.IsLegacyPlainText(user.usersPass))
                     {
-                        return Json(new { success = false, message = "Account is disabled" });
+                        if (user.usersPass == usersPass)
+                        {
+                            valid = true;
+                            user.usersPass = PasswordHasher.Hash(usersPass);
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        valid = PasswordHasher.Verify(usersPass, user.usersPass);
                     }
 
-                    Session["UserId"] = user.usersId;
-                    Session["UserName"] = user.usersName;
-                    Session["IsAdmin"] = false;
-                    Session["IsLoggedIn"] = true;
-
-                    return Json(new
+                    if (valid)
                     {
-                        success = true,
-                        isAdmin = false,
-                        message = "Login successful!",
-                        userId = user.usersId
-                    });
+                        if (user.isDisabled == true)
+                            return Json(new { success = false, message = "Account is disabled" });
+
+                        Session["UserId"] = user.usersId;
+                        Session["UserName"] = user.usersName;
+                        Session["IsAdmin"] = false;
+                        Session["IsLoggedIn"] = true;
+
+                        return Json(new
+                        {
+                            success = true,
+                            isAdmin = false,
+                            message = "Login successful!",
+                            userId = user.usersId
+                        });
+                    }
                 }
 
                 return Json(new { success = false, message = "Invalid email or password!" });
             }
             catch (Exception ex)
             {
+                // Giữ lại log lỗi thật, nhưng không hiển thị chi tiết cho client
                 System.Diagnostics.Debug.WriteLine($"LoginAjax error: {ex.Message}");
                 return Json(new { success = false, message = "Server error occurred." });
             }
-        }
-
-        public ActionResult Guest()
-        {
-            Session["IsGuest"] = true;
-            Session["UserName"] = null;
-            Session["UserId"] = null;
-            Session["IsAdmin"] = false;
-            return RedirectToAction("Guest", "Web_Com");
-        }
-
-        public ActionResult Logout()
-        {
-            Session.Clear();
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Web_Com");
-        }
-
-        public ActionResult Register()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -149,9 +209,6 @@ namespace Web_com.Controllers
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine($"RegisterAjax: usersName={usersName}, usersEmail={usersEmail}");
-
-                // Kiểm tra trống
                 if (string.IsNullOrEmpty(usersName))
                     return Json(new { success = false, message = "Username cannot be empty!" });
                 if (string.IsNullOrEmpty(usersEmail))
@@ -159,22 +216,23 @@ namespace Web_com.Controllers
                 if (string.IsNullOrEmpty(usersPass))
                     return Json(new { success = false, message = "Password cannot be empty!" });
 
-                // Kiểm tra trùng tên (cả trong users và admins)
+                // Kiểm tra trùng
                 if (db.users.Any(u => u.usersName == usersName) ||
                     db.admins.Any(a => a.adminsName == usersName))
                     return Json(new { success = false, message = "Username already exists!" });
 
-                // Kiểm tra trùng email (cả trong users và admins)
                 if (db.users.Any(u => u.usersEmail == usersEmail) ||
                     db.admins.Any(a => a.adminsEmail == usersEmail))
                     return Json(new { success = false, message = "Email already registered!" });
 
-                // Tạo user mới
+                // Hash mật khẩu trước khi lưu
+                string hashedPassword = PasswordHasher.Hash(usersPass);
+
                 var newUser = new user
                 {
                     usersName = usersName,
                     usersEmail = usersEmail,
-                    usersPass = usersPass,
+                    usersPass = hashedPassword,   // ← ĐÃ HASH
                     usersCreated = DateTime.Now,
                     usersAvatar = "DefaultAvatar.png",
                     usersCover = "DefaultCover.png",
@@ -183,10 +241,8 @@ namespace Web_com.Controllers
                 };
 
                 db.users.Add(newUser);
-                int rowsAffected = db.SaveChanges();
-                System.Diagnostics.Debug.WriteLine($"SaveChanges affected {rowsAffected} rows");
+                db.SaveChanges();
 
-                // Set session
                 Session["UserId"] = newUser.usersId;
                 Session["UserName"] = newUser.usersName;
                 Session["IsAdmin"] = false;
@@ -202,11 +258,27 @@ namespace Web_com.Controllers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"RegisterAjax error: {ex.Message}\n{ex.StackTrace}");
+                string detailedMessage = ex.Message;
+
+                if (ex is System.Data.Entity.Validation.DbEntityValidationException valEx)
+                {
+                    var sb = new System.Text.StringBuilder("Validation errors:\n");
+                    foreach (var eve in valEx.EntityValidationErrors)
+                    {
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            sb.AppendLine($" - Property: {ve.PropertyName}, Error: {ve.ErrorMessage}");
+                        }
+                    }
+                    detailedMessage += "\n" + sb.ToString();
+                }
+
+                System.Diagnostics.Debug.WriteLine($"RegisterAjax FAIL: {detailedMessage}\n{ex.StackTrace}");
+
                 return Json(new
                 {
                     success = false,
-                    message = "Registration failed. Please try again later. Error: " + ex.Message
+                    message = "Registration failed: " + detailedMessage
                 });
             }
         }
