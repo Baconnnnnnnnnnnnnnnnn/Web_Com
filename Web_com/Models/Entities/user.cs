@@ -31,6 +31,11 @@ namespace Web_com.Models.Entities
             this.work_Favorite = new HashSet<work_Favorite>();
             this.work_Heart = new HashSet<work_Heart>();
             this.work_View = new HashSet<work_View>();
+            this.user_Conversation = new HashSet<user_Conversation>();
+            this.user_ConversationParticipant = new HashSet<user_ConversationParticipant>();
+            this.user_Message = new HashSet<user_Message>();
+            this.user_MessageBlock = new HashSet<user_MessageBlock>();
+            this.user_MessageBlock1 = new HashSet<user_MessageBlock>();
         }
     
         public int usersId { get; set; }
@@ -71,5 +76,15 @@ namespace Web_com.Models.Entities
         public virtual ICollection<work_Heart> work_Heart { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<work_View> work_View { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_Conversation> user_Conversation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_ConversationParticipant> user_ConversationParticipant { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_Message> user_Message { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_MessageBlock> user_MessageBlock { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_MessageBlock> user_MessageBlock1 { get; set; }
     }
 }

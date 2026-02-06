@@ -65,6 +65,17 @@
         <AssociationConnector Association="web_comModel.FK__work_Chap__work___160F4887" ManuallyRouted="false" />
         <AssociationConnector Association="web_comModel.FK__work_Comm__chapt__68487DD7" ManuallyRouted="false" />
         <EntityTypeShape EntityType="web_comModel.sysdiagram" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="web_comModel.user_Conversation" Width="1.5" PointX="3" PointY="27.5" />
+        <EntityTypeShape EntityType="web_comModel.user_ConversationParticipant" Width="1.5" PointX="8.25" PointY="25.875" />
+        <EntityTypeShape EntityType="web_comModel.user_Message" Width="1.5" PointX="9.25" PointY="29.75" />
+        <EntityTypeShape EntityType="web_comModel.user_MessageBlock" Width="1.5" PointX="3" PointY="30.75" />
+        <AssociationConnector Association="web_comModel.FK__user_Conv__user___7B264821" />
+        <AssociationConnector Association="web_comModel.FK__user_Conv__userI__7849DB76" />
+        <AssociationConnector Association="web_comModel.FK__user_Mess__user___01D345B0" />
+        <AssociationConnector Association="web_comModel.FK__user_Conv__userI__7C1A6C5A" />
+        <AssociationConnector Association="web_comModel.FK__user_Mess__userI__02C769E9" />
+        <AssociationConnector Association="web_comModel.FK__user_Mess__userI__078C1F06" />
+        <AssociationConnector Association="web_comModel.FK__user_Mess__userI__0880433F" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

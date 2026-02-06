@@ -49,5 +49,9 @@ namespace Web_com.Models.Entities
         public virtual DbSet<work_Tag> work_Tag { get; set; }
         public virtual DbSet<work_View> work_View { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<user_Conversation> user_Conversation { get; set; }
+        public virtual DbSet<user_ConversationParticipant> user_ConversationParticipant { get; set; }
+        public virtual DbSet<user_Message> user_Message { get; set; }
+        public virtual DbSet<user_MessageBlock> user_MessageBlock { get; set; }
     }
 }
