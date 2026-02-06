@@ -1,0 +1,133 @@
+﻿.chat-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: 20px;
+    cursor: pointer;
+    color: #ff99cc;
+    font-size: 28px;
+}
+
+.chat-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff3366;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* ============================
+   Chat Menu
+============================ */
+
+.chat-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 35px;
+    width: 600px;
+    height: 450px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border: 2px solid #ff99cc;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.chat-header {
+    padding: 10px 15px;
+    border-bottom: 2px solid #ffe6f0;
+}
+
+.chat-title {
+    margin: 0;
+    font-size: 18px;
+    color: #ff66b2;
+}
+
+/* ============================
+   Chat Body Layout
+============================ */
+
+.chat-body {
+    display: flex;
+    height: calc(100% - 50px);
+}
+
+/* LEFT SIDE - User list */
+
+.chat-list {
+    width: 35%;
+    border-right: 1px solid #ffe6f0;
+    overflow-y: auto;
+}
+
+.chat-user {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .chat-user:hover {
+        background: rgba(255, 230, 240, 0.6);
+    }
+
+    .chat-user.active {
+        background: rgba(255, 230, 240, 0.9);
+    }
+
+    .chat-user img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+.chat-preview {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+}
+
+/* RIGHT SIDE - Message window */
+
+.chat-window {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-empty {
+    margin: auto;
+    text-align: center;
+    color: #999;
+}
+
+    .chat-empty i {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+.chat-dropdown {
+    position: relative;
+    cursor: pointer;
+    color: #ff99cc;
+    font-size: 28px;
+    transition: 0.3s ease;
+}
+
+    .chat-dropdown:hover {
+        color: #ff66b2;
+    }
+
+    .chat-dropdown.shake .chat-icon {
+        animation: shakeBell 0.6s ease;
+    }

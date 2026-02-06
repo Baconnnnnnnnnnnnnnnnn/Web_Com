@@ -26,6 +26,7 @@
     <link href="~/Content/anime-login.css" rel="stylesheet" />
     <link href="~/Content/work-list.css" rel="stylesheet" />
     <link href="~/Content/notification.css" rel="stylesheet" />
+    <link href="~/Content/chat.css" rel="stylesheet" />
 </head>
 <body>
     <!-- Background and overlay -->
@@ -89,6 +90,39 @@
                     </div>
                 </div>
             </div>
+            <!-- Chat -->
+            <div class="chat-dropdown">
+                <i class="fas fa-comments chat-icon"></i>
+                <span id="chat-count" class="chat-count" style="display:none;">0</span>
+
+                <div class="chat-menu">
+                    <div class="chat-header">
+                        <h4 class="chat-title">Messages</h4>
+                    </div>
+
+                    <div class="chat-body">
+                        <!-- Left: conversation list -->
+                        <div class="chat-list">
+                            <!-- Tạm hardcode demo -->
+                            <div class="chat-user active">
+                                <img src="/Content/Images/Avatar/DefaultAvatar.png" />
+                                <div class="chat-preview">
+                                    <strong>WhiteQueen</strong>
+                                    <span>Last message preview...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: message box -->
+                        <div class="chat-window">
+                            <div class="chat-empty">
+                                <i class="fas fa-comment-dots"></i>
+                                <p>Select a conversation to start chatting</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- User -->
             <div class="user-dropdown">
                 @if (Session["UserName"] != null)
@@ -141,5 +175,6 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/search.js"></script>
     <script src="~/Scripts/notification.js"></script>
+    <script src="~/Scripts/chat.js"></script>
 </body>
 </html>
